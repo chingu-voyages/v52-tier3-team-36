@@ -39,3 +39,4 @@ coding!
 
    ...
 - Heba Rezk, [GitHub](https://github.com/hebarezk) / [Linkedin](https://www.linkedin.com/in/hebarezk/)
+- Rumen Ivanov: [GitHub](https://github.com/rumenji) / [LinkedIn](https://www.linkedin.com/in/rumen-ivanov-it/)
