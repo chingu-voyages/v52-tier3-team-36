@@ -36,6 +36,6 @@ coding!
 
 - Heba Rezk, [GitHub](https://github.com/hebarezk) / [Linkedin](https://www.linkedin.com/in/hebarezk/)
 - Rumen Ivanov: [GitHub](https://github.com/rumenji) / [LinkedIn](https://www.linkedin.com/in/rumen-ivanov-it/)
-- Valerie Johnson - [LinkedIn](https://www.linkedin/in/valeriemichellejohnson)  valeriejohnsonprofessional@gmail.com
-- Yi - https://github.com/yi-lin-1234?tab=repositories
-- Sunny - https://www.linkedin.com/in/sunnymaster/ , https://github.com/Sunny-Master , master.codeworks@gmail.com 
+- Valerie Johnson - [LinkedIn](https://www.linkedin/in/valeriemichellejohnson) , [Email(valeriejohnsonprofessional@gmail.com)
+- Yi - [Github](https://github.com/yi-lin-1234?tab=repositories)
+- Sunny - [Linkedin](https://www.linkedin.com/in/sunnymaster/) , [GitHub](https://github.com/Sunny-Master) , [Email](master.codeworks@gmail.com) 
