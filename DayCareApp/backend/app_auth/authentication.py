@@ -1,6 +1,7 @@
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
 class CookiesJWTAuthentication(JWTAuthentication):
+    '''Used to authenticate the user. Checks if the cookies contain a valid access token'''
     def authenticate(self, request):
         access_token = request.COOKIES.get('access_token')
 

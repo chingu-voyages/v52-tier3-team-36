@@ -11,6 +11,7 @@ from rest_framework_simplejwt.views import (
 )
 
 class CustomTokenObtainPairView(TokenObtainPairView):
+    '''View to obtain access and refresh tokens from SimpleJWT, and set a cookie containing the tokens. Creates an HTTP-only cookie'''
     def post(self, request, *args, **kwargs):
         try:
             response = super().post(request, *args, **kwargs)
@@ -45,8 +46,10 @@ class CustomTokenObtainPairView(TokenObtainPairView):
             return Response({'success': False})
         
 class CustomRefreshTokenView(TokenRefreshView):
+    '''View to refresh an access token using a valid refresh token'''
     def post(self, request, *args, **kwargs):
         try:
+            #Get the refresh token from the cookie
             refresh_token = request.COOKIES.get('refresh_token')
             request.data['refresh'] = refresh_token
 
@@ -56,7 +59,7 @@ class CustomRefreshTokenView(TokenRefreshView):
 
             res = Response()
             res.data = {'refreshed': True}
-
+            #Create new cookie with the new token
             res.set_cookie(
                 key="access_token",
                 value=access_token,
@@ -82,6 +85,20 @@ class CustomRefreshTokenView(TokenRefreshView):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated, IsAdministrator])
 def register(request):
+    '''API endpoint for user registration. 
+    Expects {
+    username,
+    password,
+    first_name,
+    last_name,
+    email,
+    groups: [group.id,...]}
+    => {
+    username,
+    first_name,
+    last_name,
+    email,
+    groups: [group.id,...]}'''
     serializer = UserRegistrationSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
@@ -92,6 +109,7 @@ def register(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def logout(request):
+    '''API endpoint to delete cookies after user logout'''
     try:
         res = Response()
         res.data = {'success': True}
