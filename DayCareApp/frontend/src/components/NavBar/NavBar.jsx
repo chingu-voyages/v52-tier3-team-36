@@ -4,6 +4,7 @@ import { NavLink } from 'react-router-dom'
 const NavBar = ({ user, handleLogout }) => {
   return (
     <nav>
+      <h1>🚼🧷Kinderly</h1>
       {user ?
         <ul>
           <li>Welcome, {user.name}</li>
