@@ -83,8 +83,8 @@ Everyone on your team should add their name along with a link to their GitHub
 your repo access and to practice PR'ing with your team *before* you start
 coding!
 
-- Heba Rezk, [GitHub](https://github.com/hebarezk) / [Linkedin](https://www.linkedin.com/in/hebarezk/)
-- Rumen Ivanov: [GitHub](https://github.com/rumenji) / [LinkedIn](https://www.linkedin.com/in/rumen-ivanov-it/)
-- Valerie Johnson - [LinkedIn](https://www.linkedin/in/valeriemichellejohnson) , [Email](valeriejohnsonprofessional@gmail.com) / [GitHub] (https://github.com/johnsonval)
-- Yi - [Github](https://github.com/yi-lin-1234?tab=repositories)
-- Sunny - [Linkedin](https://www.linkedin.com/in/sunnymaster/) , [GitHub](https://github.com/Sunny-Master) , [Email](master.codeworks@gmail.com) 
+- Heba Rezk, PO/Primary SM: [GitHub](https://github.com/hebarezk) / [Linkedin](https://www.linkedin.com/in/hebarezk/)
+- Valerie Johnson, Secondary SM: [LinkedIn](https://www.linkedin/in/valeriemichellejohnson) , [Email](valeriejohnsonprofessional@gmail.com) / [GitHub](https://github.com/johnsonval)
+- Sunny, Developer: [Linkedin](https://www.linkedin.com/in/sunnymaster/) , [GitHub](https://github.com/Sunny-Master) , [Email](master.codeworks@gmail.com) 
+- Rumen Ivanov, Developer: [GitHub](https://github.com/rumenji) / [LinkedIn](https://www.linkedin.com/in/rumen-ivanov-it/)
+- Yi, Developer: [Github](https://github.com/yi-lin-1234?tab=repositories), [Email](chinesejasonlin@gmail.com)
