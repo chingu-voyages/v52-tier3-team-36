@@ -19,10 +19,12 @@ from rest_framework import routers
 
 
 from app_auth import views
+from child_reg.views import ChildViewSet
 
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
 router.register(r'groups', views.GroupViewSet)
+router.register(r'children', ChildViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),

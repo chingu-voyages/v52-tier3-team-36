@@ -120,7 +120,7 @@ def logout(request):
         return {'success': False}
     
 @api_view(['POST'])
-@permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated, IsAdministrator or IsStaff])
 def is_authenticated(request):
     return Response({'authenticated': True})
 

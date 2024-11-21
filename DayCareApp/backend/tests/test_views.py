@@ -3,11 +3,8 @@ from django.contrib.auth.models import Group, User
 from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from app_auth.views import register
 
-class UserRegTestCase(TestCase):
-    user1_pass = '1X<ISRUkw+tuK'
-    user2_pass = '2HJ1vRV0Z&3iD'
-    def setUp(self):
-        # Create two users
+def create_users():
+    # Create two users
         test_user1 = User.objects.create_user(username='testuser1', 
                                               password='1X<ISRUkw+tuK', 
                                               email='testuser1@daycareapp.com',
@@ -18,9 +15,15 @@ class UserRegTestCase(TestCase):
                                               email='testuser2@daycareapp.com',
                                               first_name='test2',
                                               last_name='test2last')
-
+        test_user1.groups.set(1)
+        test_user2.groups.set(2)
         test_user1.save()
         test_user2.save()
+
+class UserRegTestCase(TestCase):
+    def setUp(self):
+        # Create two users
+        create_users()
 
     def test_user_created(self):
         '''Tests if a user has been successfully saved'''

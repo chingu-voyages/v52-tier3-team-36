@@ -1,4 +1,5 @@
 from rest_framework import permissions
+from django.contrib.auth.decorators import user_passes_test
 
 class IsAdministrator(permissions.BasePermission):
     def has_permission(self, request, view):
@@ -9,7 +10,7 @@ class IsAdministrator(permissions.BasePermission):
         required_groups = ['Administrators']
 
         if request.user.is_authenticated:
-            return any(group.name in required_groups for group in request.user.groups.all())
+            return any(group.name in required_groups for group in request.user.groups.all()) or user_passes_test(lambda u: u.is_superuser)
         return False
     
 class IsStaff(permissions.BasePermission):
