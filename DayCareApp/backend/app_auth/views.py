@@ -83,7 +83,7 @@ class CustomRefreshTokenView(TokenRefreshView):
             return Response({'refreshed': False})
         
 @api_view(['POST'])
-# @permission_classes([IsAuthenticated, IsAdministrator])
+@permission_classes([IsAuthenticated, IsAdministrator])
 def register(request):
     '''API endpoint for user registration. 
     Expects {
@@ -124,7 +124,7 @@ def logout(request):
 def is_authenticated(request):
     return Response({'authenticated': True})
 
-# @permission_classes([IsAuthenticated, IsAdministrator])
+@permission_classes([IsAuthenticated, IsAdministrator])
 class UserViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows users to be viewed or edited.
@@ -133,7 +133,7 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all().order_by('-date_joined')
     serializer_class = UserSerializer
 
-# @permission_classes([IsAuthenticated, IsAdministrator])
+@permission_classes([IsAuthenticated, IsAdministrator])
 class GroupViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows groups to be viewed or edited.
@@ -141,4 +141,3 @@ class GroupViewSet(viewsets.ModelViewSet):
     """
     queryset = Group.objects.all().order_by('name')
     serializer_class = GroupSerializer
-    permission_classes = [permissions.IsAuthenticated]
