@@ -34,7 +34,9 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
             #Sets a password for the user instance. Django automatically hashes the password before storing
             user.set_password(validated_data['password'])
             #Adds groups to the user
-            user.groups.set(validated_data['groups'])
+            user.save()
+            for group_id in validated_data['groups']:
+                user.groups.add(group_id)
             user.save()
 
             return user
