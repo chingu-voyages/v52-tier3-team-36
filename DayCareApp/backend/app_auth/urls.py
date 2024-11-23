@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import CustomTokenObtainPairView, CustomRefreshTokenView, logout, is_authenticated, register
+from .views import CustomTokenObtainPairView, CustomRefreshTokenView, change_password, logout, is_authenticated, register
 
 urlpatterns = [
     #Path to obtain new tokens - used for user login
@@ -7,5 +7,6 @@ urlpatterns = [
     path('token/refresh/', CustomRefreshTokenView.as_view(), name='token_refresh'),
     path('logout/', logout),
     path('authenticated/', is_authenticated),
-    path('register/', register)
+    path('register/', register),
+    path('change-password/', change_password, name='change-password')
 ]
