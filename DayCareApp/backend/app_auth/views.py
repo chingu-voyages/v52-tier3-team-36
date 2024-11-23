@@ -21,7 +21,17 @@ class CustomTokenObtainPairView(TokenObtainPairView):
             refresh_token = tokens['refresh']
 
             res = Response()
-            res.data = {'success': True}
+            username = request.data['username']
+            user = User.objects.get(username=username)
+            group_ids = [group.id for group in user.groups.all()]
+            user_json = {
+                "username": user.username,
+                "first_name": user.first_name,
+                "last_name": user.last_name,
+                "email": user.email,
+                "groups": group_ids
+            }
+            res.data = {'success': True, 'user': user_json}
 
             res.set_cookie(
                 key="access_token",
