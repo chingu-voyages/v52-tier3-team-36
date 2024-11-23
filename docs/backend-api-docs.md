@@ -15,12 +15,14 @@ Required:
 **URL request example**:
 https://{base_url}/api/token/
 Request body JSON:
+```json
 {
  "username": "user_username",
  "password": "user_password"
 }
-
+```
 Response - success:
+```json
 {
 	"success": true,
 	"user": {
@@ -34,12 +36,13 @@ Response - success:
 		]
 	}
 }
-
+```
 Response - failure:
+```json
 {
 	"success": false
 }
-
+```
 #### Refresh token: /token/refresh/
 Expects a cookie with a valid access token, re-issues a new cookie with the updated tokens 
 **HTTPS Methods**: POST
@@ -49,15 +52,17 @@ https://{base_url}/api/token/refresh/
 
 
 Response - success:
+```json
 {
     "refreshed": true
 }
-
+```
 Response - failure:
+```json
 {
     "refreshed": false
 }
-
+```
 #### User logout: /logout/
 **HTTPS Methods**: POST
 
@@ -65,10 +70,11 @@ Response - failure:
 https://{base_url}/api/logout/
 
 Response:
+```json
 {
 	"success": true
 }
-
+```
 #### User registration: /register/
 **HTTPS Methods:** POST
 **Parameters**:
@@ -85,6 +91,7 @@ Optional:
 https://{base_url}/api/register/
 
 Request body JSON:
+```json
 {
 	"username": "user_username",
 	"password": "user_password",
@@ -95,8 +102,9 @@ Request body JSON:
         group_id, ...
     ]
 }
-
+```
 Response - success:
+```json
 {
 	"username": "user_username",
 	"email": "user_email@kinderly.com",
@@ -107,13 +115,15 @@ Response - success:
         group_id, ...
     ]
 }
+```
 Response - failure:
+```json
 {
 	"username": [
 		"A user with that username already exists."
 	]
 }
-
+```
 #### User password change: /change-password/
 **HTTPS Methods:** POST
 **Parameters**:
@@ -125,22 +135,26 @@ Required:
 https://{base_url}/api/change-password/
 
 Request body JSON:
+```json
 {
     "new_password": "new_user_password",
     "old_password": "current_user_password"
 }
-
+```
 Response - success:
+```json
 {
 	"message": "Password updated successfully"
 }
+```
 Response - failure:
+```json
 {
 	"old_password": [
 		"Wrong password."
 	]
 }
-
+```
 ## User operations
 ### App: app_auth
 Endpoint: /users
@@ -152,6 +166,7 @@ Endpoint: /users
 https://{base_url}/users
 
 Response - success:
+```json
 [
 	{
 		"url": "https://{base_url}/users/{user_id}/",
@@ -169,7 +184,7 @@ Response - success:
         ...
     }
 ]
-
+```
 #### Get specific user: /{user_id}
 **HTTPS Methods:** GET
 
@@ -177,6 +192,7 @@ Response - success:
 https://{base_url}/users/{user_id}
 
 Response - success:
+```json
 {
 		"url": "https://{base_url}/users/{user_id}/",
 		"id": 8,
@@ -189,12 +205,13 @@ Response - success:
 			"https://{base_url}/groups/{group_id}/"
 		]
 }
-
+```
 Response - failure:
+```json
 {
 	"detail": "No User matches the given query."
 }
-
+```
 #### Update user contact information: /{user_id}/
 **HTTPS Methods:** PATCH
 **Parameters**:
@@ -208,14 +225,16 @@ Optional:
 https://{base_url}/users/{user_id}/
 
 Request body JSON:
+```json
 {
     "first_name": "new_first_name",
     "last_name": "new_last_name",
     "email": "new_email",
     "is_active": false
 }
-
+```
 Response - success:
+```json
 {
 		"url": "https://{base_url}/users/{user_id}/",
 		"id": 8,
@@ -228,7 +247,7 @@ Response - success:
 			"https://{base_url}/groups/{group_id}/"
 		]
 }
-
+```
 #### User delete: /{user_id}/
 **HTTPS Methods:** DELETE
 
@@ -239,10 +258,11 @@ https://{base_url}/users/{user_id}/
 Response - success:
 Status code: 204
 Response - failure:
+```json
 {
 	"detail": "No User matches the given query."
 }
-
+```
 ## Group operations
 ### App: app_auth
 Endpoint: /groups
@@ -254,6 +274,7 @@ Endpoint: /groups
 https://{base_url}/groups
 
 Response - success:
+```json
 [
 	{
 		"url": "http://127.0.0.1:8000/groups/1/",
@@ -271,3 +292,4 @@ Response - success:
 		"name": "Staff"
 	}
 ]
+```
