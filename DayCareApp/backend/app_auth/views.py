@@ -1,9 +1,9 @@
 from django.contrib.auth.models import Group, User
-from rest_framework import permissions, viewsets
+from rest_framework import permissions, viewsets, status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
-from .serializers import UserSerializer, GroupSerializer, UserRegistrationSerializer
+from .serializers import UserSerializer, GroupSerializer, UserRegistrationSerializer, ChangePasswordSerializer
 from .permissions import IsParent, IsAdministrator, IsStaff
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
@@ -115,7 +115,22 @@ def register(request):
         return Response(serializer.data)
     return Response(serializer.errors)
 
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def change_password(request):
+    serializer = ChangePasswordSerializer(data=request.data)
+    if serializer.is_valid():
+        user = request.user
 
+        if not user.check_password(serializer.validated_data['old_password']):
+            return Response({"old_password": ["Wrong password."]}, status=status.HTTP_400_BAD_REQUEST)
+
+        user.set_password(serializer.validated_data['new_password'])
+        user.save()
+        return Response({"message": "Password updated successfully"}, status=status.HTTP_200_OK)
+
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def logout(request):
