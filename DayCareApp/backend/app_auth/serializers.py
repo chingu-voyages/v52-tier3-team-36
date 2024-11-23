@@ -7,7 +7,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
     Hyperlinked - returns a full URL to get the user, instead of constructing one on the frontend'''
     class Meta:
         model = User
-        fields = ['url', 'id', 'username', 'first_name', 'last_name', 'email', 'groups']
+        fields = ['url', 'id', 'username', 'first_name', 'last_name', 'email', 'is_active', 'groups']
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
     '''Serializer for user registration'''
@@ -53,4 +53,4 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
     Hyperlinked - returns a full URL to get the group, instead of constructing one on the frontend'''
     class Meta:
         model = Group
-        fields = ['url', 'name']
+        fields = ['url', 'id', 'name']
