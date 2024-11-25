@@ -8,12 +8,12 @@ import * as authService from '../../services/authService'
 // css
 import styles from './Login.module.css'
 
-const LoginPage = ({ handleAuthEvt }) => {
+const LoginPage = ({ handleAuthEvt, setLoggedUser }) => {
   const navigate = useNavigate()
 
   const [message, setMessage] = useState('')
   const [formData, setFormData] = useState({
-    email: '',
+    username: '',
     password: '',
   })
 
@@ -28,8 +28,9 @@ const LoginPage = ({ handleAuthEvt }) => {
       if (!import.meta.env.VITE_BACK_END_SERVER_URL) {
         throw new Error('No VITE_BACK_END_SERVER_URL in front-end .env')
       }
-      await authService.login(formData)
+      const response = await authService.login(formData)
       handleAuthEvt()
+      setLoggedUser(response.user)
       navigate('/')
     } catch (err) {
       console.log(err)
@@ -37,10 +38,10 @@ const LoginPage = ({ handleAuthEvt }) => {
     }
   }
 
-  const { email, password } = formData
+  const { username, password } = formData
 
   const isFormInvalid = () => {
-    return !(email && password)
+    return !(username && password)
   }
 
   return (
@@ -49,11 +50,11 @@ const LoginPage = ({ handleAuthEvt }) => {
       <p className={styles.message}>{message}</p>
       <form autoComplete="off" onSubmit={handleSubmit} className={styles.form}>
         <label className={styles.label}>
-          Email
+          Username
           <input
             type="text"
-            value={email}
-            name="email"
+            value={username}
+            name="username"
             onChange={handleChange}
           />
         </label>

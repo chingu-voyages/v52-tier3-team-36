@@ -7,7 +7,7 @@ const NavBar = ({ user, handleLogout }) => {
       <h1>🚼🧷Kinderly</h1>
       {user ?
         <ul>
-          <li>Welcome, {user.name}</li>
+          <li>Welcome, {user.first_name}</li>
           <li><NavLink to="" onClick={handleLogout}>LOG OUT</NavLink></li>
         </ul>
       :

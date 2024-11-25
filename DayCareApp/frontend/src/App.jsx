@@ -36,7 +36,7 @@ function App() {
         <Route path="/" element={<Landing />} />
         <Route
           path="/auth/login"
-          element={<Login handleAuthEvt={handleAuthEvt} />}
+          element={<Login handleAuthEvt={handleAuthEvt} setLoggedUser={setUser}/>}
         />
       </Routes>
     </>
