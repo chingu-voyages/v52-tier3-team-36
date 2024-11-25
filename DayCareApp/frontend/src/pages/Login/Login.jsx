@@ -1,16 +1,16 @@
 // npm modules
-import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../contexts/useAuth';
 // services
-import * as authService from '../../services/authService'
+// import * as authService from '../../services/authService'
 
 // css
 import styles from './Login.module.css'
 
-const LoginPage = ({ handleAuthEvt, setLoggedUser }) => {
+const LoginPage = ({ setLoggedUser }) => {
   const navigate = useNavigate()
-
+  const { loginUser } = useAuth();
   const [message, setMessage] = useState('')
   const [formData, setFormData] = useState({
     username: '',
@@ -28,8 +28,7 @@ const LoginPage = ({ handleAuthEvt, setLoggedUser }) => {
       if (!import.meta.env.VITE_BACK_END_SERVER_URL) {
         throw new Error('No VITE_BACK_END_SERVER_URL in front-end .env')
       }
-      const response = await authService.login(formData)
-      handleAuthEvt()
+      const response = await loginUser(formData);
       setLoggedUser(response.user)
       navigate('/')
     } catch (err) {
