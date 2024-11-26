@@ -1,13 +1,16 @@
 // npm modules
 import { NavLink } from 'react-router-dom'
+import { useAuth } from '../../contexts/useAuth'
 
 const NavBar = ({ user, handleLogout }) => {
+  const{ curUser } = useAuth();
+
   return (
     <nav>
       <h1>🚼🧷Kinderly</h1>
-      {user ?
+      {curUser ?
         <ul>
-          <li>Welcome, {user.first_name}</li>
+          <li>Welcome, {curUser.username}</li>
           <li><NavLink to="" onClick={handleLogout}>LOG OUT</NavLink></li>
         </ul>
       :

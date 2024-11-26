@@ -6,13 +6,15 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({children}) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const [loading, setLoading] = useState(true)
+    const [loading, setLoading] = useState(true);
+    const [curUser, setCurUser] = useState();
     const navigate = useNavigate();
 
     const getAuthenticated = async () =>{
         try{
             const success = await isAuth();
-            setIsAuthenticated(success)
+            setCurUser(success)
+            setIsAuthenticated(true)
         } catch(error){
             setIsAuthenticated(false)
         } finally {
@@ -33,7 +35,7 @@ export const AuthProvider = ({children}) => {
         getAuthenticated();   
     }, [window.location.pathname])
     return(
-    <AuthContext.Provider value={{isAuthenticated, loading, loginUser}}>
+    <AuthContext.Provider value={{isAuthenticated, loading, loginUser, curUser}}>
         {children}
     </AuthContext.Provider>
     )

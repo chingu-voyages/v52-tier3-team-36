@@ -6,7 +6,7 @@ import { Routes, Route, useNavigate} from 'react-router-dom'
 import Landing from './pages/Landing/Landing'
 import Login from './pages/Login/Login'
 import RegisterPage from './pages/Register/Register'
-import { AuthProvider } from './contexts/useAuth';
+import { AuthProvider, useAuth } from './contexts/useAuth';
 import { PrivateRoute } from './components/PrivateRoute';
 // components
 import NavBar from './components/NavBar/NavBar'
@@ -18,13 +18,15 @@ import * as authService from './services/authService'
 import './App.css'
 
 function App() {
-  const [user, setUser] = useState()
+  // const [user, setUser] = useState()
+  // const { curUser } = useAuth();
+  // console.log(curUser)
   const navigate = useNavigate()
 
   const handleLogout = async () => {
     const success = await authService.logout();
     if(success){
-      setUser(null)
+      // setUser(null)
       navigate('/auth/login')
     }
 
@@ -36,8 +38,8 @@ function App() {
 
   return (
     <>
-      <NavBar user={user} handleLogout={handleLogout} />
-      <AuthProvider>
+    <AuthProvider>
+      <NavBar handleLogout={handleLogout} />
         <Routes>
           <Route path="/" element={<PrivateRoute><Landing /></PrivateRoute>} />
           <Route
@@ -46,7 +48,7 @@ function App() {
           />
           <Route
             path="/auth/login"
-            element={<Login setLoggedUser={setUser}/>}
+            element={<Login />}
           />
         </Routes>
       </AuthProvider>
