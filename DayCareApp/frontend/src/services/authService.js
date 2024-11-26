@@ -74,8 +74,8 @@ async function register(registerFormData){
 // Checks to see if a user is authenticated
 async function isAuth() {
   try {
-    await axios.post(`${BASE_URL}/api/authenticated/`, {}, {withCredentials: true});
-    return true;
+    const success = await axios.post(`${BASE_URL}/api/authenticated/`, {}, {withCredentials: true});
+    return success.data.authenticated;
   } catch(error){
     return false;
   }
