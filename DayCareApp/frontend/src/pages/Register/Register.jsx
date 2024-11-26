@@ -74,7 +74,7 @@ const RegisterPage = () => {
 
   return (
     <main className={styles.container}>
-      <h1>Log In</h1>
+      <h1>Create user</h1>
       <p className={styles.message}>{message}</p>
       <form autoComplete="off" onSubmit={handleSubmit} className={styles.form}>
         <label className={styles.label}>
@@ -84,6 +84,7 @@ const RegisterPage = () => {
             value={username}
             name="username"
             onChange={handleChange}
+            autoComplete='off'
           />
         </label>
         <label className={styles.label}>
@@ -93,6 +94,7 @@ const RegisterPage = () => {
             value={first_name}
             name="first_name"
             onChange={handleChange}
+            autoComplete='on'
           />
         </label>
         <label className={styles.label}>
@@ -102,6 +104,7 @@ const RegisterPage = () => {
             value={last_name}
             name="last_name"
             onChange={handleChange}
+            autoComplete='on'
           />
         </label>
         <label className={styles.label}>
@@ -111,6 +114,7 @@ const RegisterPage = () => {
             value={email}
             name="email"
             onChange={handleChange}
+            autoComplete='on'
           />
         </label>
         <label className={styles.label}>
@@ -120,6 +124,7 @@ const RegisterPage = () => {
             value={password}
             name="password"
             onChange={handleChange}
+            autoComplete='off'
           />
         </label>
         <label className={styles.label}>
@@ -129,6 +134,7 @@ const RegisterPage = () => {
             value={confirm_password}
             name="confirm_password"
             onChange={handleChange}
+            autoComplete='off'
           />
         </label>
         <label className={styles.label}>

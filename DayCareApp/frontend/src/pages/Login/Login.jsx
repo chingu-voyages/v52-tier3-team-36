@@ -8,7 +8,7 @@ import { useAuth } from '../../contexts/useAuth'
 // css
 import styles from './Login.module.css'
 
-const LoginPage = ({ setLoggedUser }) => {
+const LoginPage = () => {
   const navigate = useNavigate()
   const { loginUser } = useAuth();
   const [message, setMessage] = useState('')
@@ -28,8 +28,7 @@ const LoginPage = ({ setLoggedUser }) => {
       if (!import.meta.env.VITE_BACK_END_SERVER_URL) {
         throw new Error('No VITE_BACK_END_SERVER_URL in front-end .env')
       }
-      const response = await loginUser(formData);
-      setLoggedUser(response.user)
+      await loginUser(formData);
       navigate('/')
     } catch (err) {
       console.log(err)
@@ -45,7 +44,7 @@ const LoginPage = ({ setLoggedUser }) => {
 
   return (
     <main className={styles.container}>
-      <section >
+      <section>
         <h1>Log In</h1>
         <p className={styles.message}>{message}</p>
         <form autoComplete="off" onSubmit={handleSubmit} className={styles.form}>
@@ -56,6 +55,7 @@ const LoginPage = ({ setLoggedUser }) => {
               value={username}
               name="username"
               onChange={handleChange}
+              autoComplete='on'
             />
           </label>
           <label className={styles.label}>
@@ -65,11 +65,13 @@ const LoginPage = ({ setLoggedUser }) => {
               value={password}
               name="password"
               onChange={handleChange}
+              autoComplete='off'
             />
           </label>
           <div>
+            <Link to="/">Cancel</Link>
             <button className={styles.button} disabled={isFormInvalid()}>
-              Login
+              Log In
             </button>
           </div>
         </form>
