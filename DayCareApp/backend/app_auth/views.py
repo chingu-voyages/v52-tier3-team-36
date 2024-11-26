@@ -145,7 +145,7 @@ def logout(request):
         return {'success': False}
     
 @api_view(['POST'])
-@permission_classes([IsAuthenticated, IsAdministrator or IsStaff])
+@permission_classes([IsAuthenticated])
 def is_authenticated(request):
     return Response({'authenticated': True})
 
