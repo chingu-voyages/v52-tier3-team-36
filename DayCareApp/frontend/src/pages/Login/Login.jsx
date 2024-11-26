@@ -1,9 +1,9 @@
 // npm modules
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../../contexts/useAuth';
-// services
-// import * as authService from '../../services/authService'
+import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+
+// contexts
+import { useAuth } from '../../contexts/useAuth'
 
 // css
 import styles from './Login.module.css'
@@ -45,34 +45,35 @@ const LoginPage = ({ setLoggedUser }) => {
 
   return (
     <main className={styles.container}>
-      <h1>Log In</h1>
-      <p className={styles.message}>{message}</p>
-      <form autoComplete="off" onSubmit={handleSubmit} className={styles.form}>
-        <label className={styles.label}>
-          Username
-          <input
-            type="text"
-            value={username}
-            name="username"
-            onChange={handleChange}
-          />
-        </label>
-        <label className={styles.label}>
-          Password
-          <input
-            type="password"
-            value={password}
-            name="password"
-            onChange={handleChange}
-          />
-        </label>
-        <div>
-          <Link to="/">Cancel</Link>
-          <button className={styles.button} disabled={isFormInvalid()}>
-            Log In
-          </button>
-        </div>
-      </form>
+      <section >
+        <h1>Log In</h1>
+        <p className={styles.message}>{message}</p>
+        <form autoComplete="off" onSubmit={handleSubmit} className={styles.form}>
+          <label className={styles.label}>
+            Username
+            <input
+              type="text"
+              value={username}
+              name="username"
+              onChange={handleChange}
+            />
+          </label>
+          <label className={styles.label}>
+            Password
+            <input
+              type="password"
+              value={password}
+              name="password"
+              onChange={handleChange}
+            />
+          </label>
+          <div>
+            <button className={styles.button} disabled={isFormInvalid()}>
+              Login
+            </button>
+          </div>
+        </form>
+      </section>
     </main>
   )
 }

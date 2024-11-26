@@ -5,16 +5,26 @@ input {
   width: 300px;
 }
 
-input[type="file"] {
-  padding: 0;
-}
-
 .container {
   display: flex;
   align-items: center;
   flex-direction: column;
 }
 
+.container > section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--lightmint);
+  margin-top: 5rem;
+  padding: 1rem;
+  border-radius: 1rem;
+  box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
+}
+
+.container > section > h1 {
+  margin: 0;
+}
 .message {
   margin-top: 0;
   height: 22px;
@@ -27,7 +37,6 @@ input[type="file"] {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 50px;
 }
 
 .label {
@@ -39,9 +48,10 @@ input[type="file"] {
 }
 
 .button {
-  margin-left: 16px;
-}
-
-.form > label:last-of-type {
-  margin-bottom: 16px;
+  width: 5rem;
+  margin: 1rem;
+  padding: 0.5rem;
+  border-radius: 7px;
+  color: var(--darkmint);
+  font-weight: bold;
 }
