@@ -5,6 +5,7 @@ import { Routes, Route, useNavigate, BrowserRouter} from 'react-router-dom'
 import Landing from './pages/Landing/Landing'
 import Login from './pages/Login/Login'
 import RegisterPage from './pages/Register/Register'
+import RegisterChildPage from './pages/Register/RegisterChild'
 import { AuthProvider } from './contexts/useAuth';
 import { PrivateRoute } from './components/PrivateRoute';
 // components
@@ -39,6 +40,10 @@ function App() {
           <Route
             path="/auth/login"
             element={<Login />}
+          />
+          <Route
+            path="/register-child"
+            element={<PrivateRoute><RegisterChildPage /></PrivateRoute>}
           />
         </Routes>
       </AuthProvider>

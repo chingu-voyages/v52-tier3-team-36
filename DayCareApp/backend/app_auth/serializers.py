@@ -1,7 +1,7 @@
 from django.contrib.auth.models import Group, User
 from rest_framework import serializers
 
-class UserSerializer(serializers.HyperlinkedModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
     '''Serializer to convert the Django user model instance to JSON.
     The fields selected are what fields are included from the user model.
     Hyperlinked - returns a full URL to get the user, instead of constructing one on the frontend'''

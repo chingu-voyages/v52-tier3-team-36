@@ -10,7 +10,7 @@ class Child(models.Model):
     }
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
-    notes = models.TextField()
+    notes = models.TextField(blank=True)
     dob = models.DateField()
     gender = models.CharField(choices=GENDER)
     address = models.CharField(max_length=200)

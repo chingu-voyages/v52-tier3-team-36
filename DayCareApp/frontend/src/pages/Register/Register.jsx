@@ -60,7 +60,7 @@ const RegisterPage = () => {
   const { username, password, confirm_password, first_name, last_name, email, groups } = formData
 
   const isFormInvalid = () => {
-    return !(username && password && confirm_password && password === confirm_password)
+    return !(username && password && selectedGroup && confirm_password && password === confirm_password)
   }
 
   return (
@@ -131,6 +131,7 @@ const RegisterPage = () => {
         <label className={styles.label}>
           Groups
           <select value={selectedGroup} onChange={handleGroupChange}>
+            <option key="blank-group">Select user group</option>
             {userGroups.map((option) => (
               <option key={option.id} value={option.id}>
                 {option.name}
