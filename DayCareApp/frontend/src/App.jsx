@@ -18,23 +18,15 @@ import * as authService from './services/authService'
 import './App.css'
 
 function App() {
-  // const [user, setUser] = useState()
-  // const { curUser } = useAuth();
-  // console.log(curUser)
   const navigate = useNavigate()
 
   const handleLogout = async () => {
     const success = await authService.logout();
     if(success){
-      // setUser(null)
       navigate('/auth/login')
     }
 
   }
-
-  // const handleAuthEvt = () => {
-  //   setUser(authService.getUser())
-  // }
 
   return (
     <>
