@@ -42,7 +42,7 @@ input[type="file"] {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 50px;
+  margin-bottom: 20px;
 }
 
 .label {
@@ -71,13 +71,14 @@ input[type="file"] {
   color: var(--darkmint);
   font-weight: bold;
   font-size: 0.9rem;
+  cursor: pointer;
 }
 
 .form > label:last-of-type {
   margin-bottom: 16px;
 }
 
-.label select {
+.label select, .label textarea {
   margin-left: 16px;
   padding: 4px 8px;
   font-size: 16px;

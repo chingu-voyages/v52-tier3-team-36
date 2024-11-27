@@ -66,7 +66,7 @@ const RegisterPage = () => {
   return (
     <main className={styles.container}>
       <section>
-        <h1>Create user</h1>
+        <h1>Add user</h1>
         <p className={styles.message}>{message}</p>
         <form autoComplete="off" onSubmit={handleSubmit} className={styles.form}>
           <label className={styles.label}>
