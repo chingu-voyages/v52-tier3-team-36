@@ -1,8 +1,10 @@
+import ChildCareIcon from '@mui/icons-material/ChildCare';
+
 const ChildrenList = ({children}) => {
     return (
         <ul>
         {children.map((child) => {
-          return <li key={child.id}>{`${child.first_name} ${child.last_name}`}<a href={child.url}>Edit</a></li>
+          return <a href={child.url} key={child.id}><ChildCareIcon sx={{ fontSize: 20 }}></ChildCareIcon><li>{`${child.first_name} ${child.last_name}`}</li></a>
         })}
       </ul>
     )
