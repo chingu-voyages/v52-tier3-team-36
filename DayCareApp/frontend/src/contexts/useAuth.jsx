@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { isAuth, login, logout, register } from "../services/authService";
+import { isAuth, login, logout } from "../services/authService";
 
 const AuthContext = createContext();
 
@@ -12,9 +12,14 @@ export const AuthProvider = ({children}) => {
 
     const getAuthenticated = async () =>{
         try{
-            const success = await isAuth();
-            setCurUser(success)
-            setIsAuthenticated(true)
+            const response = await isAuth();
+            if(response){
+                setCurUser(response)
+                setIsAuthenticated(true)
+            } else {
+                setIsAuthenticated(false)
+                setCurUser()
+            }
         } catch(error){
             setIsAuthenticated(false)
         } finally {
@@ -30,19 +35,12 @@ export const AuthProvider = ({children}) => {
         } 
     }
 
-    const logoutUser = async () => {
-        const success = await logout();
-        if(success) {
-            setIsAuthenticated(false)
-            navigate('/')
-        }
-    }
     // If the URL chnages, check if user is authenticated
     useEffect(() => {
         getAuthenticated();   
     }, [window.location.pathname])
     return(
-    <AuthContext.Provider value={{isAuthenticated, loading, loginUser, logoutUser, curUser}}>
+    <AuthContext.Provider value={{isAuthenticated, loading, loginUser, curUser}}>
         {children}
     </AuthContext.Provider>
     )

@@ -1,10 +1,7 @@
 // npm modules
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../../contexts/useAuth';
 import { register } from '../../services/authService';
-// services
-// import * as authService from '../../services/authService'
 
 // css
 import styles from './Register.module.css'
@@ -32,12 +29,6 @@ const RegisterPage = () => {
     };
     fetchGroups();
   }, [])
-
-  // const group_options = [
-  //   { value: 1, label: 'Administrators' },
-  //   { value: 2, label: 'Staff' },
-  //   { value: 3, label: 'Parents' },
-  // ];
 
   const handleGroupChange = (evt) => {
     setSelectedGroup(evt.target.value)

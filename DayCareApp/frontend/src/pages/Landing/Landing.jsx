@@ -26,7 +26,7 @@ const Landing = () => {
   return (
     <main className={styles.container}>
       <h1>Kinderly</h1>
-        {curUser.groups?.includes(1) || curUser.username === 'testadmin' && <button onClick={handleRegister}>Register a new user</button>}
+        {curUser && curUser.groups.includes(1) || curUser && curUser.username === 'testadmin' && <button onClick={handleRegister}>Register a new user</button>}
       <ul>
         {children.map((child) => {
           return <li key={child.id}>{child.first_name}</li>
