@@ -28,10 +28,14 @@ const LoginPage = () => {
       if (!import.meta.env.VITE_BACK_END_SERVER_URL) {
         throw new Error('No VITE_BACK_END_SERVER_URL in front-end .env')
       }
-      await loginUser(formData);
-      navigate('/')
+      const success = await loginUser(formData);
+      if(success){
+        navigate('/')
+      } else {
+        setMessage('Incorrect username or password.')
+      }
+      
     } catch (err) {
-      console.log(err)
       setMessage(err.message)
     }
   }

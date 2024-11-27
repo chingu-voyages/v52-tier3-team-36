@@ -31,8 +31,10 @@ export const AuthProvider = ({children}) => {
         const success = await login(formData);
         if(success) {
             setIsAuthenticated(true);
-            navigate('/');
-        } 
+            return true
+        } else {
+            return false
+        }
     }
 
     // If the URL chnages, check if user is authenticated

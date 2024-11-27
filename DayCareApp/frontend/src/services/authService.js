@@ -20,7 +20,7 @@ async function login(loginFormData) {
       'password': loginFormData.password
     }, { withCredentials: true})
 
-    return res.data
+    return res.data.success
   } catch (err) {
     throw new Error(err)
   }
