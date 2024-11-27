@@ -80,105 +80,116 @@ const RegisterChildPage = () => {
 
   return (
     <main className={styles.container}>
-      <h1>Register a child</h1>
-      <p className={styles.message}>{message}</p>
-      <form autoComplete="off" onSubmit={handleSubmit} className={styles.form}>
-        <label className={styles.label}>
-          First name
-          <input
-            type="text"
-            value={first_name}
-            name="first_name"
-            onChange={handleChange}
-            autoComplete='on'
-          />
-        </label>
-        <label className={styles.label}>
-          Last name
-          <input
-            type="text"
-            value={last_name}
-            name="last_name"
-            onChange={handleChange}
-            autoComplete='on'
-          />
-        </label>
-        <label className={styles.label}>
-          Date of birth
-          <input
-            type="date"
-            value={dob}
-            name="dob"
-            onChange={handleChange}
-            autoComplete='of'
-          />
-        </label>
-        <label className={styles.label}>
-          Gender
-          <select value={selectedGender} onChange={handleGenderChange}>
-            <option key="blank-gender">Select gender</option>
-            {genderOptions.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.name}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label className={styles.label}>
-          Address
-          <input
-            type="text"
-            value={address}
-            name="address"
-            onChange={handleChange}
-            autoComplete='on'
-          />
-        </label>
-        <label className={styles.label}>
-          Parent
-          <select value={selectedParent} onChange={handleParentChange}>
-            <option key="blank-parent">Select parent</option>
-            {parents.map((option) => (
-              <option key={option.id} value={option.url}>
-                {`${option.first_name} ${option.last_name}`}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label className={styles.label}>
-          Name of emergency contact
-          <input
-            type="text"
-            value={em_contact_name}
-            name="em_contact_name"
-            onChange={handleChange}
-            autoComplete='on'
-          />
-        </label>
-        <label className={styles.label}>
-          Phone number of emergency contact
-          <input
-            type="text"
-            value={em_contact_number}
-            name="em_contact_number"
-            onChange={handleChange}
-            autoComplete='on'
-          />
-        </label>
-        <label className={styles.label}>
-          Notes
-          <textarea 
-            value={notes} 
-            onChange={handleChange}
-            name='notes' />
-        </label>
-        <div>
-          <Link to="/">Cancel</Link>
-          <button className={styles.button} disabled={isFormInvalid()}>
-            Register child
-          </button>
-        </div>
-      </form>
+      <section>
+        <h1>Register a child</h1>
+        <p className={styles.message}>{message}</p>
+        <form autoComplete="off" onSubmit={handleSubmit} className={styles.form}>
+          <label className={styles.label}>
+            First name
+            <input
+              type="text"
+              value={first_name}
+              name="first_name"
+              onChange={handleChange}
+              autoComplete='on'
+              required
+            />
+          </label>
+          <label className={styles.label}>
+            Last name
+            <input
+              type="text"
+              value={last_name}
+              name="last_name"
+              onChange={handleChange}
+              autoComplete='on'
+              required
+            />
+          </label>
+          <label className={styles.label}>
+            Date of birth
+            <input
+              type="date"
+              value={dob}
+              name="dob"
+              onChange={handleChange}
+              autoComplete='off'
+              required
+            />
+          </label>
+          <label className={styles.label}>
+            Gender
+            <select value={selectedGender} onChange={handleGenderChange}>
+              <option key="blank-gender">Select gender</option>
+              {genderOptions.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.name}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className={styles.label}>
+            Address
+            <input
+              type="text"
+              value={address}
+              name="address"
+              onChange={handleChange}
+              autoComplete='on'
+              required
+            />
+          </label>
+          <label className={styles.label}>
+            Parent
+            <select value={selectedParent} onChange={handleParentChange}>
+              <option key="blank-parent">Select parent</option>
+              {parents.map((option) => (
+                <option key={option.id} value={option.url}>
+                  {`${option.first_name} ${option.last_name}`}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className={styles.label}>
+            Name of emergency contact
+            <input
+              type="text"
+              value={em_contact_name}
+              name="em_contact_name"
+              onChange={handleChange}
+              autoComplete='on'
+              required
+            />
+          </label>
+          <label className={styles.label}>
+            Phone number of emergency contact
+            <input
+              type="text"
+              value={em_contact_number}
+              name="em_contact_number"
+              onChange={handleChange}
+              autoComplete='on'
+              required
+            />
+          </label>
+          <label className={styles.label}>
+            Notes
+            <textarea 
+              value={notes} 
+              onChange={handleChange}
+              name='notes'
+              placeholder='Any dietary restrictions, allergies or special needs'
+              rows={3}
+            />
+          </label>
+          <div className={styles.actions}>
+            <Link to="/">Cancel</Link>
+            <button className={styles.button} disabled={isFormInvalid()}>
+              Submit
+            </button>
+          </div>
+        </form>
+      </section>
     </main>
   )
 }

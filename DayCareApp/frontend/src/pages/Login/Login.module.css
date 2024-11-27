@@ -54,4 +54,5 @@ input {
   border-radius: 7px;
   color: var(--darkmint);
   font-weight: bold;
+  cursor: pointer;
 }
