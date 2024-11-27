@@ -1,18 +1,12 @@
 // services
-// import * as tokenService from './tokenService'
 import axios from 'axios';
-import { useAuth } from '../contexts/useAuth';
+
 const BASE_URL = `${import.meta.env.VITE_BACK_END_SERVER_URL}`
 
-// function getUser() {
-//   return tokenService.getUserFromToken()
-// }
-// const{ setIsAuthenticated } = useAuth();
 
 async function logout() {
   try{ 
     const response = await axios.post(`${BASE_URL}/api/logout/`, {}, {withCredentials: true})
-    // setIsAuthenticated(false)
     return true
   } catch(error) {
     return false

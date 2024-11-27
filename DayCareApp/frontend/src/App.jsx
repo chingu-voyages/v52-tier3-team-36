@@ -1,12 +1,11 @@
 // npm modules
-import { useState } from 'react'
-import { Routes, Route, useNavigate} from 'react-router-dom'
+import { Routes, Route, useNavigate, BrowserRouter} from 'react-router-dom'
 
 // pages
 import Landing from './pages/Landing/Landing'
 import Login from './pages/Login/Login'
 import RegisterPage from './pages/Register/Register'
-import { AuthProvider, useAuth } from './contexts/useAuth';
+import { AuthProvider } from './contexts/useAuth';
 import { PrivateRoute } from './components/PrivateRoute';
 // components
 import NavBar from './components/NavBar/NavBar'
@@ -25,7 +24,6 @@ function App() {
     if(success){
       navigate('/auth/login')
     }
-
   }
 
   return (
