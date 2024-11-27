@@ -15,3 +15,9 @@ class ChildViewSet(viewsets.ModelViewSet):
     """
     queryset = Child.objects.all().order_by('last_name')
     serializer_class = ChildSerializer
+
+    def filter_queryset(self, queryset):
+        required_groups = ['Parents']
+        if any(group.name in required_groups for group in self.request.user.groups.all()):
+            queryset = queryset.filter(parent=self.request.user)
+            return queryset

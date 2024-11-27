@@ -60,93 +60,94 @@ const RegisterPage = () => {
   const { username, password, confirm_password, first_name, last_name, email, groups } = formData
 
   const isFormInvalid = () => {
-    return !(username && password && confirm_password && password === confirm_password)
+    return !(username && password && selectedGroup && confirm_password && password === confirm_password)
   }
 
   return (
     <main className={styles.container}>
       <section>
-        <h1>Create user</h1>
-        <p className={styles.message}>{message}</p>
-        <form autoComplete="off" onSubmit={handleSubmit} className={styles.form}>
-          <label className={styles.label}>
-            Username
-            <input
-              type="text"
-              value={username}
-              name="username"
-              onChange={handleChange}
-              autoComplete='off'
-            />
-          </label>
-          <label className={styles.label}>
-            First name
-            <input
-              type="text"
-              value={first_name}
-              name="first_name"
-              onChange={handleChange}
-              autoComplete='on'
-            />
-          </label>
-          <label className={styles.label}>
-            Last name
-            <input
-              type="text"
-              value={last_name}
-              name="last_name"
-              onChange={handleChange}
-              autoComplete='on'
-            />
-          </label>
-          <label className={styles.label}>
-            Email address
-            <input
-              type="email"
-              value={email}
-              name="email"
-              onChange={handleChange}
-              autoComplete='on'
-            />
-          </label>
-          <label className={styles.label}>
-            Password
-            <input
-              type="password"
-              value={password}
-              name="password"
-              onChange={handleChange}
-              autoComplete='off'
-            />
-          </label>
-          <label className={styles.label}>
-            Confirm password
-            <input
-              type="password"
-              value={confirm_password}
-              name="confirm_password"
-              onChange={handleChange}
-              autoComplete='off'
-            />
-          </label>
-          <label className={styles.label}>
-            Groups &nbsp;&nbsp;
-            <select value={selectedGroup} onChange={handleGroupChange}>
-              {userGroups.map((option) => (
-                <option key={option.id} value={option.id}>
-                  {option.name}
-                </option>
-              ))}
-            </select>
-          </label>
-          <div className={styles.actions}>
-            <Link to="/">Cancel</Link>
-            <button className={styles.button} disabled={isFormInvalid()}>
-              Submit
-            </button>
-          </div>
-        </form>
-      </section>
+      <h1>Create user</h1>
+      <p className={styles.message}>{message}</p>
+      <form autoComplete="off" onSubmit={handleSubmit} className={styles.form}>
+        <label className={styles.label}>
+          Username
+          <input
+            type="text"
+            value={username}
+            name="username"
+            onChange={handleChange}
+            autoComplete='off'
+          />
+        </label>
+        <label className={styles.label}>
+          First name
+          <input
+            type="text"
+            value={first_name}
+            name="first_name"
+            onChange={handleChange}
+            autoComplete='on'
+          />
+        </label>
+        <label className={styles.label}>
+          Last name
+          <input
+            type="text"
+            value={last_name}
+            name="last_name"
+            onChange={handleChange}
+            autoComplete='on'
+          />
+        </label>
+        <label className={styles.label}>
+          Email address
+          <input
+            type="email"
+            value={email}
+            name="email"
+            onChange={handleChange}
+            autoComplete='on'
+          />
+        </label>
+        <label className={styles.label}>
+          Password
+          <input
+            type="password"
+            value={password}
+            name="password"
+            onChange={handleChange}
+            autoComplete='off'
+          />
+        </label>
+        <label className={styles.label}>
+          Confirm password
+          <input
+            type="password"
+            value={confirm_password}
+            name="confirm_password"
+            onChange={handleChange}
+            autoComplete='off'
+          />
+        </label>
+        <label className={styles.label}>
+          Groups
+          <select value={selectedGroup} onChange={handleGroupChange}>
+            <option key="blank-group">Select user group</option>
+            {userGroups.map((option) => (
+              <option key={option.id} value={option.id}>
+                {option.name}
+              </option>
+            ))}
+          </select>
+        </label>
+        <div>
+          <Link to="/">Cancel</Link>
+          <button className={styles.button} disabled={isFormInvalid()}>
+            Create user
+          </button>
+        </div>
+      </form>
+     </section>
     </main>
   )
 }
