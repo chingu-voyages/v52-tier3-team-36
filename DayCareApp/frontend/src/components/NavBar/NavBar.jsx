@@ -1,13 +1,17 @@
 // npm modules
 import { NavLink } from 'react-router-dom'
+import ChildFriendlyIcon from '@mui/icons-material/ChildFriendly'
 import { useAuth } from '../../contexts/useAuth'
 
-const NavBar = ({ user, handleLogout }) => {
+const NavBar = ({ handleLogout }) => {
   const{ curUser } = useAuth();
 
   return (
     <nav>
-      <h1>🚼🧷Kinderly</h1>
+      <div>
+        <ChildFriendlyIcon fontSize="large" ></ChildFriendlyIcon>
+        <h1>Kinderly</h1>
+      </div>
       {curUser ?
         <ul>
           <li>Welcome, {curUser.username}</li>
@@ -15,7 +19,7 @@ const NavBar = ({ user, handleLogout }) => {
         </ul>
       :
         <ul>
-          <li><NavLink to="/auth/login">Log In</NavLink></li>
+          <li><NavLink to="/auth/login">Login</NavLink></li>
         </ul>
       }
     </nav>
