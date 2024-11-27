@@ -15,6 +15,21 @@ input[type="file"] {
   flex-direction: column;
 }
 
+.container > section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--lightmint);
+  margin-top: 5rem;
+  padding: 1rem 2rem ;
+  border-radius: 1rem;
+  box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
+}
+
+.container > section > h1 {
+  margin: 0;
+}
+
 .message {
   margin-top: 0;
   height: 22px;
@@ -38,8 +53,22 @@ input[type="file"] {
   margin-bottom: 8px;
 }
 
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  padding-left: 2rem;
+  font-weight: bold;
+}
+
 .button {
-  margin-left: 16px;
+  width: 5rem;
+  margin: 1rem;
+  padding: 0.5rem;
+  border-radius: 7px;
+  color: var(--darkmint);
+  font-weight: bold;
+  font-size: 0.9rem;
 }
 
 .form > label:last-of-type {
