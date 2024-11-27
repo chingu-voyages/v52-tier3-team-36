@@ -21,3 +21,5 @@ class ChildViewSet(viewsets.ModelViewSet):
         if any(group.name in required_groups for group in self.request.user.groups.all()):
             queryset = queryset.filter(parent=self.request.user)
             return queryset
+        else:
+            return queryset
