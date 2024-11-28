@@ -2,7 +2,7 @@
 import { Routes, Route, useNavigate, BrowserRouter} from 'react-router-dom'
 
 // pages
-import Landing from './pages/Landing/Landing'
+import Landing from './pages/Landing/Homepage'
 import Login from './pages/Login/Login'
 import RegisterPage from './pages/Register/Register'
 import RegisterChildPage from './pages/Register/RegisterChild'
@@ -16,6 +16,7 @@ import * as authService from './services/authService'
 
 // styles
 import './App.css'
+import Homepage from './pages/Landing/Homepage'
 
 function App() {
   const navigate = useNavigate()
@@ -32,7 +33,7 @@ function App() {
     <AuthProvider>
       <NavBar handleLogout={handleLogout} />
         <Routes>
-          <Route path="/" element={<PrivateRoute><Landing /></PrivateRoute>} />
+          <Route path="/" element={<Homepage />} />
           <Route
             path="/auth/register"
             element={<PrivateRoute><RegisterPage /></PrivateRoute>}
