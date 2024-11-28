@@ -3,7 +3,7 @@ from rest_framework import permissions, viewsets, status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
-from .serializers import UserSerializer, GroupSerializer, UserRegistrationSerializer, ChangePasswordSerializer
+from .serializers import UserSerializer, GroupSerializer, UserRegistrationSerializer, ChangePasswordSerializer, ResetPasswordSerializer
 from .permissions import IsParent, IsAdministrator, IsStaff
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
@@ -111,7 +111,7 @@ def register(request):
 def change_password(request):
     serializer = ChangePasswordSerializer(data=request.data)
     if serializer.is_valid():
-        user = request.user
+        user = User.objects.get(username=serializer.validated_data['username'])
 
         if not user.check_password(serializer.validated_data['old_password']):
             return Response({"old_password": ["Wrong password."]}, status=status.HTTP_400_BAD_REQUEST)
@@ -122,6 +122,19 @@ def change_password(request):
 
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
+@api_view(['POST'])
+@permission_classes([IsAuthenticated, IsAdministrator])
+def reset_password(request):
+    serializer = ResetPasswordSerializer(data=request.data)
+    if serializer.is_valid():
+        user = User.objects.get(username=serializer.validated_data['username'])
+
+        user.set_password(serializer.validated_data['new_password'])
+        user.save()
+        return Response({"message": "Password updated successfully"}, status=status.HTTP_200_OK)
+
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def logout(request):

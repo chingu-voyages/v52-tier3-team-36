@@ -1,4 +1,5 @@
 import EscalatorWarningIcon from '@mui/icons-material/EscalatorWarning';
+import { Link } from 'react-router-dom';
 
 const ParentsList = ({parents}) => {
     return (
@@ -6,7 +7,7 @@ const ParentsList = ({parents}) => {
         {parents.filter((user) => {
           return user.groups.includes(3)
         }).map((user) => {
-          return <a href={user.url} key={user.id}><EscalatorWarningIcon sx={{ fontSize: 20 }}></EscalatorWarningIcon><li > {`${user.first_name} ${user.last_name}`}</li></a>
+          return <Link to='/user' state={user} key={user.id}><EscalatorWarningIcon sx={{ fontSize: 20 }}></EscalatorWarningIcon><li > {`${user.first_name} ${user.last_name}`}</li></Link>
         })}
       </ul>
     )

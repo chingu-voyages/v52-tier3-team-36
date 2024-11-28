@@ -70,3 +70,20 @@ export const registerChild = async (formData) => {
         }))
     }
 }
+
+export const editRecord = async (formData, url) => {
+    try {
+        const response = await axios.patch(url, 
+            formData
+        , {
+            withCredentials: true
+        })
+        return response.data
+    } catch (error) {
+        return call_refresh (error, axios.patch(url, 
+            formData
+        , {
+            withCredentials: true
+        }))
+    }
+}

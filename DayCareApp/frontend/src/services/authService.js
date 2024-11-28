@@ -67,6 +67,40 @@ async function register(registerFormData){
   return response.data
 }
 
+const changePass = async (formData) => {
+  try {
+      const response = await axios.post(`${BASE_URL}/api/change-password/`,
+          formData
+      , {
+          withCredentials: true
+      })
+      return response.data
+  } catch (error) {
+      return call_refresh (error, axios.post(`${BASE_URL}/api/change-password/`, 
+          formData
+      , {
+          withCredentials: true
+      }))
+  }
+}
+
+const adminResetPass = async (formData) => {
+  try {
+      const response = await axios.post(`${BASE_URL}/api/reset-password/`,
+          formData
+      , {
+          withCredentials: true
+      })
+      return response.data
+  } catch (error) {
+      return call_refresh (error, axios.post(`${BASE_URL}/api/reset-password/`, 
+          formData
+      , {
+          withCredentials: true
+      }))
+  }
+}
+
 // Checks to see if a user is authenticated
 async function isAuth() {
   try {
@@ -76,4 +110,4 @@ async function isAuth() {
     return false;
   }
 }
-export { login, logout, refresh_token, call_refresh, register, isAuth }
+export { login, logout, refresh_token, call_refresh, register, adminResetPass, changePass, isAuth }

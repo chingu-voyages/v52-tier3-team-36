@@ -46,6 +46,11 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
 class ChangePasswordSerializer(serializers.Serializer):
     old_password = serializers.CharField(required=True)
     new_password = serializers.CharField(required=True)
+    username = serializers.CharField(required=True)
+
+class ResetPasswordSerializer(serializers.Serializer):
+    new_password = serializers.CharField(required=True)
+    username = serializers.CharField(required=True)
     
 class GroupSerializer(serializers.HyperlinkedModelSerializer):
     '''Serializer to convert the Django group model instance to JSON.
