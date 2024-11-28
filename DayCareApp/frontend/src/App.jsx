@@ -17,6 +17,7 @@ import * as authService from './services/authService'
 // styles
 import './App.css'
 import Homepage from './pages/Landing/Homepage'
+import UserDetails from './pages/Users/UserDetails'
 
 function App() {
   const navigate = useNavigate()
@@ -37,6 +38,10 @@ function App() {
           <Route
             path="/auth/register"
             element={<PrivateRoute><RegisterPage /></PrivateRoute>}
+          />
+          <Route
+            path="/user"
+            element={<PrivateRoute><UserDetails /></PrivateRoute>}
           />
           <Route
             path="/auth/login"
