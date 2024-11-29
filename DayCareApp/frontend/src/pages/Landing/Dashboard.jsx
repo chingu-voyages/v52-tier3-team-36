@@ -9,7 +9,7 @@ import styles from './Dashboard.module.css';
 const Dashboard = ({curUser}) => {
     const [children, setChildren] = useState([])
     const [users, setUsers] = useState([])
-    
+    const parents = users.filter((user) => user.groups.includes(3))
     const navigate = useNavigate();
   
     useEffect(() => {
@@ -50,14 +50,14 @@ const Dashboard = ({curUser}) => {
                 <h4>Parents/Guardians</h4>
                 {/* If there is a logged in user, and not a parent, display parents list */}
                 { curUser && !curUser.groups.includes(3) &&
-                <ParentsList parents={users} />
+                <ParentsList parents={parents} />
                 }
             </div>
             <div className={styles.column}>
                 <h4>Children</h4>
                 {/* If there is a logged in user and it is Parents - filter only children with that parent, otherwise - all children */}
                 { curUser &&
-                <ChildrenList children={children} />
+                <ChildrenList children={children} parents={parents}/>
                 }
             </div>
             </div>
