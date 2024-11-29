@@ -18,6 +18,7 @@ import * as authService from './services/authService'
 import './App.css'
 import Homepage from './pages/Landing/Homepage'
 import UserDetails from './pages/Users/UserDetails'
+import ChildDetails from './pages/Children/ChildDetails'
 
 function App() {
   const navigate = useNavigate()
@@ -42,6 +43,10 @@ function App() {
           <Route
             path="/user"
             element={<PrivateRoute><UserDetails /></PrivateRoute>}
+          />
+          <Route
+            path="/child"
+            element={<PrivateRoute><ChildDetails /></PrivateRoute>}
           />
           <Route
             path="/auth/login"

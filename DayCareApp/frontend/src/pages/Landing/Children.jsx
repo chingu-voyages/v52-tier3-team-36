@@ -1,10 +1,11 @@
 import ChildCareIcon from '@mui/icons-material/ChildCare';
+import { Link } from 'react-router-dom';
 
-const ChildrenList = ({children}) => {
+const ChildrenList = ({children, parents}) => {
     return (
         <ul>
         {children.map((child) => {
-          return <a href={child.url} key={child.id}><ChildCareIcon sx={{ fontSize: 20 }}></ChildCareIcon><li>{`${child.first_name} ${child.last_name}`}</li></a>
+          return <Link to='/child' state={{child: child, parents: parents}} key={child.id}><ChildCareIcon sx={{ fontSize: 20 }}></ChildCareIcon><li>{`${child.first_name} ${child.last_name}`}</li></Link>
         })}
       </ul>
     )
