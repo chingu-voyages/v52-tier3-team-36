@@ -1,14 +1,3 @@
-input {
-  margin-left: 16px;
-  padding: 4px 8px;
-  font-size: 16px;
-  width: 300px;
-}
-
-input[type="file"] {
-  padding: 0;
-}
-
 .container {
   display: flex;
   align-items: center;
@@ -30,27 +19,19 @@ input[type="file"] {
   margin: 0;
 }
 
-.message {
-  margin-top: 0;
-  height: 22px;
-  color: #dd1b16;
-  font-size: 18px;
-  font-weight: bold;
+.info {
+  display: flex;
+  gap: 2rem;
+  margin: 1rem 0;
+
 }
 
-.form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.label {
-  width: 100%;
-  display: flex;
-  justify-content: end;
-  align-items: center;
-  margin-bottom: 8px;
+.info img {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: solid white;
 }
 
 .actions {
@@ -63,7 +44,7 @@ input[type="file"] {
   font-weight: bold;
 }
 
-.button {
+.actions button {
   width: 5rem;
   margin: 1rem;
   padding: 0.5rem;
@@ -72,15 +53,4 @@ input[type="file"] {
   font-weight: bold;
   font-size: 0.9rem;
   cursor: pointer;
-}
-
-.form > label:last-of-type {
-  margin-bottom: 16px;
-}
-
-.label select, .label textarea {
-  margin-left: 16px;
-  padding: 4px 8px;
-  font-size: 16px;
-  width: 300px;
 }

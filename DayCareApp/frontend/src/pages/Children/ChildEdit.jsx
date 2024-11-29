@@ -7,7 +7,7 @@ import styles from './ChildEdit.module.css';
 
 const ChildEdit = ({child, parents, childParent, edit, editedChild}) => {
   const [message, setMessage] = useState('');
-  const [selectedParent, setSelectedParent] = useState(childParent[0].id);
+  const [selectedParent, setSelectedParent] = useState(childParent[0]?.id);
   const [selectedGender, setSelectedGender] = useState(child.gender);
   const [formData, setFormData] = useState({
     first_name: child.first_name,
@@ -65,7 +65,7 @@ const ChildEdit = ({child, parents, childParent, edit, editedChild}) => {
   const { first_name, last_name, gender, dob, address, em_contact_name, em_contact_number, parent, notes } = formData
 
   const isFormInvalid = () => {
-    return !(first_name, last_name, selectedGender, dob, address, em_contact_name, em_contact_number, selectedParent)
+    return (first_name, last_name, selectedGender, dob, address, em_contact_name, em_contact_number, selectedParent)
   }
 
   return (
