@@ -60,7 +60,7 @@ const RegisterPage = () => {
   const { username, password, confirm_password, first_name, last_name, email, groups } = formData
 
   const isFormInvalid = () => {
-    return !(username && password && selectedGroup && confirm_password && password === confirm_password)
+    return !(username && password && selectedGroup && confirm_password)
   }
 
   return (

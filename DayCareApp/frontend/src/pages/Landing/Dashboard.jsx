@@ -40,14 +40,12 @@ const Dashboard = ({curUser}) => {
             </div>
             <div className={styles.dashView}>
             <div className={styles.column}>
-                <h4>Staffs</h4>
                 {/* If there is a logged in user, and the user is assinged Administrators group display list of users */}
                 { curUser && curUser.groups.includes(1) || curUser && curUser.username === 'testadmin' &&
                 <UsersList users={users} />
                 }
             </div>
             <div className={styles.column}>
-                <h4>Parents/Guardians</h4>
                 {/* If there is a logged in user, and not a parent, display parents list */}
                 { curUser && !curUser.groups.includes(3) &&
                 <ParentsList parents={parents} />
