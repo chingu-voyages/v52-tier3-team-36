@@ -48,7 +48,9 @@ const ChildDetails = () => {
         </div>
         <div className={styles.actions}>
           <Link to={'/'}>Go back</Link>
+          { !curUser.groups.includes(3) &&
           <button onClick={handleEditing}>Edit</button>
+        }
         </div>
       </section>
     </main>

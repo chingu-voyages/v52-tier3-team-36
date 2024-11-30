@@ -8,6 +8,7 @@ const SelfPasswordChange = ({user, edit}) => {
   const [formData, setFormData] = useState({
     username: user.username,
     new_password: '',
+    confirm_password: '',
     old_password: ''
   })
 
@@ -23,6 +24,9 @@ const SelfPasswordChange = ({user, edit}) => {
       if (!import.meta.env.VITE_BACK_END_SERVER_URL) {
         throw new Error('No VITE_BACK_END_SERVER_URL in front-end .env')
       }
+      if (formData.new_password !== formData.confirm_password){
+        throw new Error('Password and confirm password do not match!')
+      }
       const response = await changePass(formData);
       edit()
     } catch (err) {
@@ -31,10 +35,10 @@ const SelfPasswordChange = ({user, edit}) => {
     }
   }
 
-  const { username, new_password, old_password } = formData
+  const { username, new_password, confirm_password, old_password } = formData
 
   const isFormInvalid = () => {
-    return !(username && new_password && old_password && new_password === old_password)
+    return !(username && new_password && old_password && new_password !== old_password)
   }
 
   return (
@@ -43,6 +47,16 @@ const SelfPasswordChange = ({user, edit}) => {
         <h1>Change your {user.username} password</h1>
         <p className={styles.message}>{message}</p>
         <form autoComplete="off" onSubmit={handleSubmit} className={styles.form}>
+        <label className={styles.label}>
+            Current password
+            <input
+              type="password"
+              value={old_password}
+              name="old_password"
+              onChange={handleChange}
+              autoComplete='off'
+            />
+          </label>
           <label className={styles.label}>
             New password
             <input
@@ -54,11 +68,11 @@ const SelfPasswordChange = ({user, edit}) => {
             />
           </label>
           <label className={styles.label}>
-            Current password
+            Confirm password
             <input
               type="password"
-              value={old_password}
-              name="old_password"
+              value={confirm_password}
+              name="confirm_password"
               onChange={handleChange}
               autoComplete='off'
             />
@@ -66,7 +80,7 @@ const SelfPasswordChange = ({user, edit}) => {
           <div className={styles.actions}>
           <button onClick={() => edit()} className={styles.button}>Cancel</button>
             <button className={styles.button} disabled={isFormInvalid()}>
-              Reset
+              Change
             </button>
           </div>
         </form>
