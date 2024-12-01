@@ -155,6 +155,10 @@ def is_authenticated(request):
     group_ids = [group.id for group in user.groups.all()]
     user_json = {
         "username": user.username,
+        "id": user.id,
+        "first_name": user.first_name,
+        "last_name": user.last_name,
+        "email": user.email,
         "groups": group_ids
     }
     return Response({'authenticated': user_json})

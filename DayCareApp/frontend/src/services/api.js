@@ -87,3 +87,74 @@ export const editRecord = async (formData, url) => {
         }))
     }
 }
+
+export const getCheckins = async (formData) => {
+    const today = new Date()
+    const todayJSON = today.toJSON().slice(0, 10);
+    const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1).toJSON().slice(0,10);
+    const from_default = formData.child && !formData.from ? firstDayOfMonth : todayJSON;
+    const params = {
+        "child": formData.child,
+        "from": formData.from || from_default,
+        "to": formData.to
+    }
+    try {
+        const response = await axios.get(`${BASE_URL}/checkin`,
+         {
+            params: params,
+            withCredentials: true
+        })
+        return response.data
+    } catch (error) {
+        return call_refresh (error, axios.get(`${BASE_URL}/checkin`,
+        {
+            params: params,
+            withCredentials: true
+        })
+    )
+    }
+}
+
+export const postCheckin = async (child, checkin_staff) => {
+    const today = new Date().toJSON();
+    try {
+        const response = await axios.post(`${BASE_URL}/checkin/`, {
+            "checkin": today,
+            "child": child,
+            "checkin_staff": checkin_staff
+        } , {
+            withCredentials: true
+        })
+        return response.data
+    } catch (error) {
+        return call_refresh (error, axios.post(`${BASE_URL}/checkin/`, {
+            "checkin": today,
+            "child": child,
+            "checkin_staff": checkin_staff
+        } , {
+            withCredentials: true
+        })
+    )
+}
+}
+
+export const postCheckout = async (checkin, checkout_staff) => {
+    const today = new Date().toJSON();
+    try {
+        const response = await axios.patch(`${BASE_URL}/checkin/${checkin}/`, {
+            "checkout": today,
+            "checkout_staff": checkout_staff
+        } , {
+            withCredentials: true
+        })
+        return response.data
+    } catch (error) {
+        return call_refresh (error, axios.patch(`${BASE_URL}/checkin/`, {
+            "checkout": today,
+            "checkout_staff": checkout_staff
+        } , {
+            withCredentials: true
+        })
+    )
+}
+}
