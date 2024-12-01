@@ -65,7 +65,7 @@ const ChildEdit = ({child, parents, childParent, edit, editedChild}) => {
   const { first_name, last_name, gender, dob, address, em_contact_name, em_contact_number, parent, notes } = formData
 
   const isFormInvalid = () => {
-    return (first_name, last_name, selectedGender, dob, address, em_contact_name, em_contact_number, selectedParent)
+    return !(first_name, last_name, selectedGender, dob, address, em_contact_name, em_contact_number, selectedParent)
   }
 
   return (
