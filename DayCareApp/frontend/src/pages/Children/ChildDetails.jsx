@@ -82,14 +82,13 @@ const ChildDetails = () => {
           <div>
             <button disabled={checkInId} onClick={handleCheckin}>Checkin</button>
             <button disabled={!checkInId} onClick={handleCheckOut}>Checkout</button>
-            <p>{child.address}</p>
-            <p>{childParent.first_name} {childParent.last_name}</p>
-            <p>{child.dob}</p>
-            <p>{child.gender}</p>
-            <p>{child.em_contact_name}</p>
-            <p>{child.em_contact_number}</p>
-            <p>{child.notes}</p>
-            
+            <label>Address: <span>{child.address}</span></label>
+            <label>Parent/Guardian: <span>{childParent.first_name} {childParent.last_name}</span></label>
+            <label>Dob: <span>{child.dob}</span></label>
+            <label>Gender: <span>{child.gender}</span></label>
+            <label>Emergency Contact Name: <span>{child.em_contact_name}</span></label>
+            <label>Emergency Contact Phone: <span>{child.em_contact_number}</span></label>
+            <label>Notes: <span>{child.notes}</span></label>
           </div>
         </div>
         <div className={styles.actions}>

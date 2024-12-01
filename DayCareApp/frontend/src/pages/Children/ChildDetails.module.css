@@ -34,6 +34,23 @@
   border: solid white;
 }
 
+.info div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.info label {
+  font-style: italic;
+  font-weight: bold;
+}
+
+.info span {
+  font-style: normal;
+  font-weight: normal;
+
+}
+
 .actions {
   width: 100%;
   display: flex;
