@@ -12,3 +12,12 @@ class CheckinSerializer(serializers.ModelSerializer):
         model = Checkin
         fields = ['url', 'id', 'child', 'checkin', 'checkout', 'checkin_staff', 
                   'checkout_staff', 'report_card', 'report_staff']
+        
+class CheckinGETSerializer(serializers.ModelSerializer):
+    checkin_staff = serializers.StringRelatedField()
+    checkout_staff = serializers.StringRelatedField()
+    report_staff = serializers.StringRelatedField()
+    class Meta:
+        model = Checkin
+        fields = ['url', 'id', 'child', 'checkin', 'checkout', 'checkin_staff', 
+                  'checkout_staff', 'report_card', 'report_staff']

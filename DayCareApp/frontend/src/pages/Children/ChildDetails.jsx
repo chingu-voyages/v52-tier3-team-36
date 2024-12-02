@@ -8,6 +8,7 @@ import profilePic from '../../assets/profile.png'
 // CSS
 import styles from './ChildDetails.module.css'
 import { getCheckins, postCheckin, postCheckout } from "../../services/api";
+import CheckinList from "./CheckinList";
 
 const ChildDetails = () => {
     const location = useLocation();
@@ -16,6 +17,9 @@ const ChildDetails = () => {
     const [child, setChild] = useState(location.state.child);
     const [checkins, setCheckins] = useState([]);
     const [checkInId, setCheckInId] = useState(null);
+    const [fromDate, setFromDate] = useState('');
+    const [toDate, setToDate] = useState('');
+    const [resetDates, setResetDates] = useState(false);
     const parents = location.state.parents;
     
     const childParent = parents.filter(parent => child.parent === parent.id)
@@ -31,6 +35,7 @@ const ChildDetails = () => {
     const handleCheckin = async () => {
         try{
             const response = await postCheckin(child.id, curUser.id)
+            response.checkin_staff = curUser.username
             setCheckInId(response.id)
             setCheckins([response, ...checkins])
         } catch (error) {
@@ -41,6 +46,8 @@ const ChildDetails = () => {
     const handleCheckOut = async () => {
         try{
             const response = await postCheckout(checkInId, curUser.id);
+            response.checkout_staff = curUser.username
+            response.checkin_staff = curUser.username
             setCheckInId(null)
             setCheckins(prev_checkins => prev_checkins.map(checkin => checkin.id === response.id ?
                 {...checkin, ...response} : checkin
@@ -49,6 +56,33 @@ const ChildDetails = () => {
             console.log(error)
         }
     };
+
+    const handleFromDateChange = (e) => {
+        setFromDate(e.target.value);
+      };
+    
+      const handleToDateChange = (e) => {
+        const newToDate = e.target.value;
+    
+        // Check if newToDate is before fromDate
+        if (newToDate < fromDate) {
+          console.log('To Date cannot be before From Date.');
+          return; // Don't update toDate
+        }
+    
+        setToDate(newToDate);
+      };
+
+      const handleResetDates = () => {
+        setResetDates(resetDates => !resetDates);
+        setFromDate('');
+        setToDate('');
+      };
+
+      const handleFiltering = async () => {
+        const response = await getCheckins({child: child.id, from: fromDate, to: toDate});
+        setCheckins(response)
+      };
      
     useEffect(()=> {
         const fetchCheckins = async() => {
@@ -66,7 +100,7 @@ const ChildDetails = () => {
            
         };
         fetchCheckins();
-    }, []
+    }, [resetDates]
     )
 
     const photo = child.upload ? child.upload : profilePic
@@ -97,13 +131,19 @@ const ChildDetails = () => {
           <button onClick={handleEditing}>Edit</button>
         }
         </div>
-        <div>
-            <ul>
-                {checkins.map(checkin => {
-                    return <li key={checkin.id}>{checkin.checkin} {checkin.checkin_staff} {checkin.report_card} {checkin.report_staff} {checkin.checkout} {checkin.checkout_staff}</li>
-                })}
-            </ul>
-        </div>
+            <div>
+            <label>
+        From Date:
+        <input type="date" value={fromDate} onChange={handleFromDateChange} />
+      </label>
+      <label>
+        To Date:
+        <input type="date" value={toDate} onChange={handleToDateChange} />
+      </label>
+      <button onClick={handleFiltering}>Search</button>
+      <button onClick={handleResetDates}>Reset</button>
+            </div>
+        <CheckinList checkins={checkins} />
       </section>
     </main>
   return (

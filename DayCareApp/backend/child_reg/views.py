@@ -1,14 +1,10 @@
-from django.shortcuts import render
 from datetime import datetime
 from django.utils import timezone
-from django.utils.timezone import make_aware
 from django.utils.dateparse import parse_date
-from rest_framework import permissions, viewsets
-from rest_framework.response import Response
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework import viewsets
+from rest_framework.decorators import permission_classes
 from rest_framework.permissions import IsAuthenticated
-from .serializers import ChildSerializer, CheckinSerializer
-from app_auth.permissions import IsParent, IsAdministrator, IsStaff
+from .serializers import ChildSerializer, CheckinSerializer, CheckinGETSerializer
 from .models import Child, Checkin
 
 @permission_classes([IsAuthenticated])
@@ -35,7 +31,10 @@ class CheckinViewSet(viewsets.ModelViewSet):
     Requires the user to be in the Administrators group => {'detail': 'You do not have permissions to perform this action'}
     """
     queryset = Checkin.objects.all().order_by('-checkin')
-    serializer_class = CheckinSerializer
+    def get_serializer_class(self):
+        if self.action == 'list' or self.action == 'retrieve':
+            return CheckinGETSerializer
+        return CheckinSerializer
 
     def filter_queryset(self, queryset):
         request = self.request
@@ -53,7 +52,7 @@ class CheckinViewSet(viewsets.ModelViewSet):
             aware_from = timezone.make_aware(from_date_object)
             if to_date:
                 parse_to = parse_date(to_date)
-                to_date_object = datetime(parse_to.year, parse_to.month, parse_to.day)
+                to_date_object = datetime(parse_to.year, parse_to.month, parse_to.day, hour=23, minute=59, second = 59)
                 aware_to = timezone.make_aware(to_date_object)
                 queryset = queryset.filter(checkin__range=(aware_from, aware_to))
             else:
