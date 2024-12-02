@@ -1,0 +1,16 @@
+.reports table {
+  max-width: 50rem;
+  border-collapse: collapse;
+}
+
+
+.reports tr {
+  border: 1px solid black;
+  font-size: 0.75rem;
+}
+
+.reports td {
+  padding: 0.5rem;
+}
+
+

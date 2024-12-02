@@ -83,7 +83,7 @@ const ChildDetails = () => {
         const response = await getCheckins({child: child.id, from: fromDate, to: toDate});
         setCheckins(response)
       };
-     
+
     useEffect(()=> {
         const fetchCheckins = async() => {
             const response = await getCheckins({child: child.id});
@@ -97,7 +97,6 @@ const ChildDetails = () => {
             if(todayCheckin.length > 0){
                 setCheckInId(todayCheckin[0].id)
             }
-           
         };
         fetchCheckins();
     }, [resetDates]
@@ -111,11 +110,14 @@ const ChildDetails = () => {
     <main className={styles.container}>
       <section>
         <h1>{child.first_name} {child.last_name}</h1>
+        {checkInId ? <p>Checked In</p> : <p>Checked Out</p>}
+        <div className={styles.actions}>
+          <button disabled={checkInId} onClick={handleCheckin}>Checkin</button>
+          <button disabled={!checkInId} onClick={handleCheckOut}>Checkout</button>
+        </div>
         <div className={styles.info}>
           <img src={photo} alt="child's photo" />
           <div>
-            <button disabled={checkInId} onClick={handleCheckin}>Checkin</button>
-            <button disabled={!checkInId} onClick={handleCheckOut}>Checkout</button>
             <label>Address: <span>{child.address}</span></label>
             <label>Parent/Guardian: <span>{childParent.first_name} {childParent.last_name}</span></label>
             <label>Dob: <span>{child.dob}</span></label>
@@ -131,18 +133,20 @@ const ChildDetails = () => {
           <button onClick={handleEditing}>Edit</button>
         }
         </div>
-            <div>
-            <label>
-        From Date:
-        <input type="date" value={fromDate} onChange={handleFromDateChange} />
-      </label>
-      <label>
-        To Date:
-        <input type="date" value={toDate} onChange={handleToDateChange} />
-      </label>
-      <button onClick={handleFiltering}>Search</button>
-      <button onClick={handleResetDates}>Reset</button>
-            </div>
+      </section>  
+      <section >
+        <div className={styles.reportFilter}>
+          <button onClick={handleResetDates}>Reset</button>
+          <label>
+            From: 
+            <input type="date" value={fromDate} onChange={handleFromDateChange} />
+          </label>
+          <label>
+            To:
+            <input type="date" value={toDate} onChange={handleToDateChange} />
+          </label>
+          <button onClick={handleFiltering}>Search</button>
+        </div>
         <CheckinList checkins={checkins} />
       </section>
     </main>

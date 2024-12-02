@@ -2,6 +2,8 @@
   display: flex;
   align-items: center;
   flex-direction: column;
+  padding: 2rem;
+  gap: 1rem;
 }
 
 .container > section {
@@ -9,7 +11,6 @@
   flex-direction: column;
   align-items: center;
   background-color: var(--lightmint);
-  margin-top: 2rem;
   padding: 1rem 2rem ;
   border-radius: 1rem;
   box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
@@ -18,6 +19,12 @@
 .container > section > h1 {
   margin: 0;
 }
+
+.container > section > p {
+  margin: 0.5rem;
+  font-size: 0.9rem;
+}
+
 
 .info {
   display: flex;
@@ -55,14 +62,27 @@
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: space-evenly;
-  /* gap: 2rem; */
+  justify-content: space-between;
   padding-left: 3rem;
   font-weight: bold;
 }
 
+.actions a {
+  border: 2px solid black;
+  width: 6rem;
+  margin: 1rem;
+  padding: 0.5rem;
+  border-radius: 7px;
+  background-color: rgb(245, 242, 242);
+  color: var(--darkmint);
+  font-weight: bold;
+  font-size: 0.9rem;
+  cursor: pointer;
+  text-align: center;
+}
+
 .actions button {
-  width: 5rem;
+  width: 6rem;
   margin: 1rem;
   padding: 0.5rem;
   border-radius: 7px;
@@ -70,4 +90,27 @@
   font-weight: bold;
   font-size: 0.9rem;
   cursor: pointer;
+}
+
+.reportFilter {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.reportFilter button {
+  width: 4.5rem;
+  padding: 0.5rem;
+  border-radius: 7px;
+  color: var(--darkmint);
+  font-weight: bold;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.reportFilter input {
+  width: 8.5rem;
+  margin: 0.5rem;
 }
