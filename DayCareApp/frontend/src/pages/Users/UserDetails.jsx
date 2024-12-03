@@ -7,6 +7,9 @@ import AdminPasswordChange from "./AdminPasswordChange";
 import { useAuth } from "../../contexts/useAuth";
 import SelfPasswordChange from "./SelfPasswordChange";
 
+// css
+import styles from './UserDetails.module.css';
+
 const UserDetails = () => {
     const location = useLocation();
     const{ curUser } = useAuth();
@@ -40,15 +43,21 @@ const UserDetails = () => {
                             <AdminPasswordChange user={user} edit={handleIsChangingPass}/>
     const content = isEditing ? <UserEdit user={user} userGroups={userGroups} edit={handleEditing} editedUser={handleSetUser} /> :
                    isChangingPass ? resetOrChangePass :
-                  <div>
-                    <p>{user.username}</p>
-                    <p>{user.first_name} {user.last_name}</p>
-                    <p>{user.email}</p>
-                    <p>{groupName[0]}</p>
-                    <Link to={'/'}>Go back</Link>
-                    <button onClick={handleEditing}>Edit</button>
-                    <button onClick={handleIsChangingPass}>Change password</button>
-                  </div>
+                  <main className={styles.container}>
+                    <section>
+                      <h1>{user.first_name} {user.last_name}</h1>
+                      <div className={styles.info}>
+                        <label>Username: <span>{user.username}</span></label>
+                        <label>Email: <span>{user.email}</span></label>
+                        <label>Access Level: <span>{groupName[0]}</span></label>
+                      </div>
+                      <div className={styles.actions}>
+                        <Link to={'/'}>Go back</Link>
+                        <button onClick={handleEditing}>Edit</button>
+                      </div>
+                      <button onClick={handleIsChangingPass} className={styles.button}>Change password</button>
+                    </section>
+                  </main>
     return (
         <>
         {content}
