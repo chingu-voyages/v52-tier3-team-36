@@ -42,6 +42,15 @@ const ChildDetails = () => {
             console.log(error)
         }
     };
+
+    const updateCheckins = async (updatedCheckin) => {
+        updatedCheckin.checkout_staff = curUser.username
+        updatedCheckin.checkin_staff = curUser.username
+        updatedCheckin.report_staff = curUser.username
+        setCheckins(prev_checkins => prev_checkins.map(checkin => checkin.id === updatedCheckin.id ?
+            {...checkin, ...updatedCheckin} : checkin
+            ))
+    };
     
     const handleCheckOut = async () => {
         try{
@@ -147,7 +156,7 @@ const ChildDetails = () => {
           </label>
           <button onClick={handleFiltering}>Search</button>
         </div>
-        <CheckinList checkins={checkins} />
+        <CheckinList checkins={checkins} updateCheckins={updateCheckins} user={curUser}/>
       </section>
     </main>
   return (
