@@ -2,8 +2,10 @@ from datetime import datetime
 from django.utils import timezone
 from django.utils.dateparse import parse_date
 from rest_framework import viewsets
-from rest_framework.decorators import permission_classes
+from rest_framework.response import Response
+from rest_framework.decorators import permission_classes, api_view
 from rest_framework.permissions import IsAuthenticated
+from app_auth.permissions import IsAdministrator, IsStaff
 from .serializers import ChildSerializer, CheckinSerializer, CheckinGETSerializer
 from .models import Child, Checkin
 
@@ -60,3 +62,13 @@ class CheckinViewSet(viewsets.ModelViewSet):
 
 
         return queryset
+
+@permission_classes([IsAuthenticated, IsAdministrator or IsStaff])
+class CurrentlyCheckedViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows groups to be viewed or edited.
+    Requires the user to be in the Administrators group => {'detail': 'You do not have permissions to perform this action'}
+    """
+    checkins = Checkin.objects.filter(checkout__isnull=True)
+    queryset = Child.objects.filter(id__in=checkins)
+    serializer_class = ChildSerializer
