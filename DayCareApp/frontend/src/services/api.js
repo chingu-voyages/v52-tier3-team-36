@@ -159,6 +159,26 @@ export const postCheckout = async (checkin, checkout_staff) => {
 }
 }
 
+export const postReportCard = async (report_text, report_staff, checkin) => {
+    try {
+        const response = await axios.patch(`${BASE_URL}/checkin/${checkin}/`, {
+            "report_card": report_text,
+            "report_staff": report_staff
+        } , {
+            withCredentials: true
+        })
+        return response.data
+    } catch (error) {
+        return call_refresh (error, axios.patch(`${BASE_URL}/checkin/${checkin}/`, {
+            "report_card": report_text,
+            "report_staff": report_staff
+        } , {
+            withCredentials: true
+        })
+    )
+}
+}
+
 export const getCheckedIn = async () => {
     try {
         const response = await axios.get(`${BASE_URL}/checkedin`, {
