@@ -158,3 +158,17 @@ export const postCheckout = async (checkin, checkout_staff) => {
     )
 }
 }
+
+export const getCheckedIn = async () => {
+    try {
+        const response = await axios.get(`${BASE_URL}/checkedin`, {
+            withCredentials: true
+        })
+        return response.data
+    } catch (error){
+        return call_refresh (error, axios.get(`${BASE_URL}/checkedin`, {
+            withCredentials: true
+        })
+    )
+    }
+}
