@@ -50,9 +50,12 @@ const RegisterPage = () => {
       }
       formData.groups = [+selectedGroup];
       const response = await register(formData);
+      if(response.username[0] === 'A user with that username already exists.'){
+        throw new Error('A user with that username already exists.')
+      }
       navigate('/')
     } catch (err) {
-      console.log(err)
+      console.error(err)
       setMessage(err.message)
     }
   }

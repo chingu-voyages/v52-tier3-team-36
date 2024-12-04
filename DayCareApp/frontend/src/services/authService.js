@@ -55,7 +55,7 @@ async function call_refresh(error, func) {
 }
 
 async function register(registerFormData){
-  const response = axios.post(`${BASE_URL}/api/register/`, {
+  const response = await axios.post(`${BASE_URL}/api/register/`, {
     'username': registerFormData.username,
     'password': registerFormData.password,
     'confirm_password': registerFormData.confirm_password,
