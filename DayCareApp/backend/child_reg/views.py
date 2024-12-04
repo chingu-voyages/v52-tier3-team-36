@@ -70,5 +70,6 @@ class CurrentlyCheckedViewSet(viewsets.ModelViewSet):
     Requires the user to be in the Administrators group => {'detail': 'You do not have permissions to perform this action'}
     """
     checkins = Checkin.objects.filter(checkout__isnull=True)
-    queryset = Child.objects.filter(id__in=checkins)
+    queryset = Child.objects.all()
+    # queryset = Child.objects.filter(id__in=checkins)
     serializer_class = ChildSerializer
