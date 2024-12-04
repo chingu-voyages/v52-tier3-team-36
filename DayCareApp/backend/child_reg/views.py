@@ -69,7 +69,6 @@ class CurrentlyCheckedViewSet(viewsets.ModelViewSet):
     API endpoint that allows groups to be viewed or edited.
     Requires the user to be in the Administrators group => {'detail': 'You do not have permissions to perform this action'}
     """
-    checkins = Checkin.objects.filter(checkout__isnull=True)
-    queryset = Child.objects.all()
-    # queryset = Child.objects.filter(id__in=checkins)
+    checkins = Checkin.objects.filter(checkout__isnull=True).values_list('child', flat=True)
+    queryset = Child.objects.filter(id__in = checkins)
     serializer_class = ChildSerializer
