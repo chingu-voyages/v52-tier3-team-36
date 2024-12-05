@@ -4,11 +4,12 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../../contexts/useAuth";
 import ChildEdit from "./ChildEdit";
 import profilePic from '../../assets/profile.png'
+import { getCheckins, postCheckin, postCheckout } from "../../services/api";
+import CheckinList from "./CheckinList";
 
 // CSS
 import styles from './ChildDetails.module.css'
-import { getCheckins, postCheckin, postCheckout } from "../../services/api";
-import CheckinList from "./CheckinList";
+
 
 const ChildDetails = () => {
     const location = useLocation();
