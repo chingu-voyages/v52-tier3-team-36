@@ -38,6 +38,20 @@ export const getChildren = async () => {
     }
 }
 
+export const getParents = async () => {
+    try {
+        const response = await axios.get(`${BASE_URL}/parents`, {
+            withCredentials: true
+        })
+        return response.data
+    } catch (error){
+        return call_refresh (error, axios.get(`${BASE_URL}/parents`, {
+            withCredentials: true
+        })
+    )
+    }
+}
+
 export const registerChild = async (formData) => {
     try {
         const response = await axios.post(`${BASE_URL}/children/`, {

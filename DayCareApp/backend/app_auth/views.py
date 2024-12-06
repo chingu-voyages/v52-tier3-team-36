@@ -3,8 +3,9 @@ from rest_framework import permissions, viewsets, status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
-from .serializers import UserSerializer, GroupSerializer, UserRegistrationSerializer, ChangePasswordSerializer, ResetPasswordSerializer
+from .serializers import UserSerializer, GroupSerializer, UserRegistrationSerializer, ChangePasswordSerializer, ResetPasswordSerializer, PermissionSerializer
 from .permissions import IsParent, IsAdministrator, IsStaff
+from .models import Permission
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
@@ -84,7 +85,7 @@ class CustomRefreshTokenView(TokenRefreshView):
             return Response({'refreshed': False})
         
 @api_view(['POST'])
-@permission_classes([IsAuthenticated, IsAdministrator])
+@permission_classes([IsAuthenticated])
 def register(request):
     '''API endpoint for user registration. 
     Expects {
@@ -123,7 +124,7 @@ def change_password(request):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 @api_view(['POST'])
-@permission_classes([IsAuthenticated, IsAdministrator])
+@permission_classes([IsAuthenticated])
 def reset_password(request):
     serializer = ResetPasswordSerializer(data=request.data)
     if serializer.is_valid():
@@ -153,17 +154,43 @@ def logout(request):
 def is_authenticated(request):
     user = request.user
     group_ids = [group.id for group in user.groups.all()]
+    perm_filtered = Permission.objects.filter(group__in=group_ids) if len(group_ids) > 0 else Permission.objects.filter(group=1)
+    perm_json = [{
+            "list_users": True,
+            "edit_users": True,
+            "edit_parents": True,
+            "list_parents": True,
+            "list_children": True,
+            "edit_report_cards": True,
+            "list_own_children": True,
+            "edit_children": True,
+            "check_in": True,
+            "view_stats": True
+    }] if request.user.is_superuser else PermissionSerializer(perm_filtered, many=True).data
+    perm_validated = perm_json[0] if len(perm_json) > 0 else {
+            "list_users": False,
+            "edit_users": False,
+            "edit_parents": False,
+            "list_parents": False,
+            "list_children": False,
+            "edit_report_cards": False,
+            "list_own_children": True,
+            "edit_children": False,
+            "check_in": False,
+            "view_stats": False
+    }
     user_json = {
         "username": user.username,
         "id": user.id,
         "first_name": user.first_name,
         "last_name": user.last_name,
         "email": user.email,
-        "groups": group_ids
+        "groups": group_ids,
+        "permissions": perm_validated
     }
     return Response({'authenticated': user_json})
 
-@permission_classes([IsAuthenticated, IsAdministrator])
+@permission_classes([IsAuthenticated])
 class UserViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows users to be viewed or edited.
@@ -172,7 +199,7 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all().order_by('-date_joined')
     serializer_class = UserSerializer
 
-@permission_classes([IsAuthenticated, IsAdministrator])
+@permission_classes([IsAuthenticated])
 class GroupViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows groups to be viewed or edited.
@@ -180,3 +207,32 @@ class GroupViewSet(viewsets.ModelViewSet):
     """
     queryset = Group.objects.all().order_by('name')
     serializer_class = GroupSerializer
+
+@permission_classes([IsAuthenticated])
+class PermissionViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows groups to be viewed or edited.
+    Requires the user to be in the Administrators group => {'detail': 'You do not have permissions to perform this action'}
+    """
+    queryset = Permission.objects.all()
+    serializer_class = PermissionSerializer
+
+    def filter_queryset(self, queryset):
+        request = self.request
+        group = request.query_params.get('group')
+        if group:
+            queryset = queryset.filter(group=group)
+            return queryset
+
+        return queryset
+    
+@permission_classes([IsAuthenticated])
+class ParentViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    Requires the user to be in the Administrators group => {'detail': 'You do not have permissions to perform this action'}
+    """
+    queryset = User.objects.all().order_by('-date_joined')
+    permissions = Permission.objects.filter(list_own_children=True).values_list('group', flat=True)
+    queryset = queryset.filter(groups__in = permissions)
+    serializer_class = UserSerializer

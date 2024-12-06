@@ -1,6 +1,6 @@
 // npm modules
 import { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 // css
 import styles from './Register.module.css'
@@ -8,7 +8,6 @@ import { registerChild, getUsers } from '../../services/api';
 
 const RegisterChildPage = () => {
   const navigate = useNavigate();
-  const [parents, setParents] = useState([]);
   const [message, setMessage] = useState('');
   const [selectedParent, setSelectedParent] = useState('');
   const [selectedGender, setSelectedGender] = useState('');
@@ -23,14 +22,8 @@ const RegisterChildPage = () => {
     em_contact_number: '',
     parent: ''
   })
-
-  useEffect(() => {
-    const fetchParents = async () => {
-      const usersRes = await getUsers();
-      setParents(usersRes.filter(user => user.groups.includes(3)))
-    };
-    fetchParents();
-  }, [])
+  const {state} = useLocation();
+  const parents = state.parents
 
   const genderOptions = [
     {name: "Male", value:"MALE"},

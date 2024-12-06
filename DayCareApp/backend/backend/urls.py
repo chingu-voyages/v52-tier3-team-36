@@ -24,13 +24,14 @@ from child_reg.views import ChildViewSet, CheckinViewSet, CurrentlyCheckedViewSe
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
 router.register(r'groups', views.GroupViewSet)
+router.register(r'parents', views.ParentViewSet, basename="parents")
+router.register(r'permissions', views.PermissionViewSet)
 router.register(r'children', ChildViewSet)
 router.register(r'checkin', CheckinViewSet)
 router.register(r'checkedin', CurrentlyCheckedViewSet, basename='currently_checked')
 
 urlpatterns = [
     path('', include(router.urls)),
-    # path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('admin/', admin.site.urls),
     path('api/', include('app_auth.urls'))
 ]

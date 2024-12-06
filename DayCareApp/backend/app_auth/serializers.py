@@ -1,5 +1,6 @@
 from django.contrib.auth.models import Group, User
 from rest_framework import serializers
+from .models import Permission
 
 class UserSerializer(serializers.ModelSerializer):
     '''Serializer to convert the Django user model instance to JSON.
@@ -59,3 +60,19 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Group
         fields = ['url', 'id', 'name']
+
+class PermissionSerializer(serializers.ModelSerializer):
+    list_users = serializers.BooleanField(),
+    edit_users = serializers.BooleanField(),
+    edit_parents = serializers.BooleanField(),
+    list_parents = serializers.BooleanField(),
+    list_children = serializers.BooleanField(),
+    list_own_children = serializers.BooleanField(),
+    edit_children = serializers.BooleanField(),
+    check_in = serializers.BooleanField(),
+    edit_report_cards = serializers.BooleanField(),
+    view_stats = serializers.BooleanField()
+    class Meta:
+        model = Permission
+        fields = ['group', 'id', 'list_users', 'edit_users', 'edit_parents', 'list_parents', 'list_children', 'edit_report_cards',
+                 'list_own_children', 'edit_children', 'check_in', 'view_stats']

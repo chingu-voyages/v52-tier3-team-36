@@ -1,8 +1,8 @@
 // npm modules
-import { Routes, Route, useNavigate, BrowserRouter} from 'react-router-dom'
+import { Routes, Route, useNavigate} from 'react-router-dom'
 
 // pages
-import Landing from './pages/Landing/Homepage'
+import SettingsPage from './pages/Users/Settings'
 import Login from './pages/Login/Login'
 import RegisterPage from './pages/Register/Register'
 import RegisterChildPage from './pages/Register/RegisterChild'
@@ -39,6 +39,10 @@ function App() {
           <Route
             path="/auth/register"
             element={<PrivateRoute><RegisterPage /></PrivateRoute>}
+          />
+          <Route
+            path="/settings"
+            element={<PrivateRoute><SettingsPage /></PrivateRoute>}
           />
           <Route
             path="/user"

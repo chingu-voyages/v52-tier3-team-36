@@ -41,7 +41,7 @@ const UserDetails = () => {
 
     const resetOrChangePass = user.username === curUser.username ? <SelfPasswordChange user={user} edit={handleIsChangingPass}/> :
                             <AdminPasswordChange user={user} edit={handleIsChangingPass}/>
-    const content = isEditing ? <UserEdit user={user} userGroups={userGroups} edit={handleEditing} editedUser={handleSetUser} /> :
+    const content = isEditing ? <UserEdit curUser={curUser} user={user} userGroups={userGroups} edit={handleEditing} editedUser={handleSetUser} /> :
                    isChangingPass ? resetOrChangePass :
                   <main className={styles.container}>
                     <section>

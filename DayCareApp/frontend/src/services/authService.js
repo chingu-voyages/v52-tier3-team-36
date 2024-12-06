@@ -101,6 +101,97 @@ const adminResetPass = async (formData) => {
   }
 }
 
+export const getGroupPermissions = async (id) => {
+  const params = {
+      "group": id,
+  }
+  try {
+      const response = await axios.get(`${BASE_URL}/permissions`,
+       {
+          params: params,
+          withCredentials: true
+      })
+      return response.data
+  } catch (error) {
+      return call_refresh (error, await axios.get(`${BASE_URL}/permissions`,
+        {
+           params: params,
+           withCredentials: true
+       })
+  )
+  }
+}
+
+export const editGroupPermissions = async (permissions, name) => {
+      const submitRequest = async () => {
+        console.log(permissions)
+        const groupEditResponse = await axios.patch(`${BASE_URL}/groups/${permissions.group}/`,
+          {"name": name},
+         {
+            withCredentials: true
+        })
+        if(groupEditResponse){
+          await axios.patch(`${BASE_URL}/permissions/${permissions.id}/`,
+            permissions,
+           {
+              withCredentials: true
+          })
+        }
+        return true
+      };
+  try {
+      await submitRequest()
+      return {"success": true}
+  } catch (error) {
+      return call_refresh (error, await submitRequest()
+    )
+  }
+}
+
+export const addGroup = async (permissions, name) => {
+  const submitRequest = async () => {
+    const groupAddResponse = await axios.post(`${BASE_URL}/groups/`,
+      {"name": name},
+     {
+        withCredentials: true
+    })
+    if(groupAddResponse){
+      try {
+      permissions.group = groupAddResponse.data.id
+      const permAddResponse = await axios.post(`${BASE_URL}/permissions/`,
+        permissions,
+       {
+          withCredentials: true
+      })
+    } catch(error) {
+      await axios.delete(`${BASE_URL}/groups/${groupAddResponse.data.id}`)
+    }
+    return groupAddResponse.data
+  }
+  };
+try {
+  const response = await submitRequest()
+  return response
+} catch (error) {
+  return call_refresh (error, await submitRequest()
+)
+}
+}
+
+export const deleteGroup = async (id) => {
+  try {
+    await axios.delete(`${BASE_URL}/groups/${id}/`,
+      { withCredentials: true }
+    )
+    return {"success": true}
+  } catch (error) {
+    return call_refresh (error, await axios.delete(`${BASE_URL}/groups/${id}/`,
+      { withCredentials: true }
+    )
+  )
+  }
+  }
+
 // Checks to see if a user is authenticated
 async function isAuth() {
   try {

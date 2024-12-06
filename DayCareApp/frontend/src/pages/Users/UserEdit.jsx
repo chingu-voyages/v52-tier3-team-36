@@ -5,7 +5,7 @@ import { editRecord } from '../../services/api.js';
 // css
 import styles from './UserEdit.module.css';
 
-const UserEdit = ({user, userGroups, edit, editedUser}) => {
+const UserEdit = ({curUser, user, edit, editedUser, userGroups}) => {
   const [message, setMessage] = useState('');
   const [selectedGroup, setSelectedGroup] = useState(user.groups[0]);
   const [formData, setFormData] = useState({
@@ -35,7 +35,7 @@ const UserEdit = ({user, userGroups, edit, editedUser}) => {
       editedUser(formData)
       edit()
     } catch (err) {
-      console.log(err)
+      console.error(err)
       setMessage(err.message)
     }
   }
@@ -84,7 +84,7 @@ const UserEdit = ({user, userGroups, edit, editedUser}) => {
           </label>
           <label className={styles.label}>
             Groups
-            <select name="groups" value={selectedGroup} onChange={handleGroupChange}>
+            <select name="groups" value={selectedGroup} onChange={handleGroupChange} disabled={!curUser.permissions.edit_users}>
               <option key="blank-group">Select user group</option>
               {userGroups.map((option) => (
                 <option key={option.id} value={option.id}>
@@ -94,7 +94,6 @@ const UserEdit = ({user, userGroups, edit, editedUser}) => {
             </select>
           </label>
           <div className={styles.actions}>
-            
             <button onClick={() => edit()} className={styles.button}>Cancel</button>
             <button className={styles.button} disabled={isFormInvalid()}>
               Submit
