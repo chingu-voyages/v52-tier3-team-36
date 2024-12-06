@@ -236,3 +236,14 @@ class ParentViewSet(viewsets.ModelViewSet):
     permissions = Permission.objects.filter(list_own_children=True).values_list('group', flat=True)
     queryset = queryset.filter(groups__in = permissions)
     serializer_class = UserSerializer
+
+@permission_classes([IsAuthenticated])
+class StaffViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    Requires the user to be in the Administrators group => {'detail': 'You do not have permissions to perform this action'}
+    """
+    queryset = User.objects.all().order_by('-date_joined')
+    permissions = Permission.objects.filter(list_own_children=False).values_list('group', flat=True)
+    queryset = queryset.filter(groups__in = permissions)
+    serializer_class = UserSerializer

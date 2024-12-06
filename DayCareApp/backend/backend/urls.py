@@ -24,6 +24,7 @@ from child_reg.views import ChildViewSet, CheckinViewSet, CurrentlyCheckedViewSe
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
 router.register(r'groups', views.GroupViewSet)
+router.register(r'staff', views.ParentViewSet, basename="staff")
 router.register(r'parents', views.ParentViewSet, basename="parents")
 router.register(r'permissions', views.PermissionViewSet)
 router.register(r'children', ChildViewSet)

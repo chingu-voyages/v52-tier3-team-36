@@ -32,6 +32,7 @@ const Dashboard = ({curUser}) => {
     const handleRegisterChild = () => {
       navigate('/register-child', {state: {parents}})
     }
+    
     return (
         <section>
             <h1>Dashboard</h1>
