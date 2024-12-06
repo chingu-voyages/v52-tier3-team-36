@@ -16,10 +16,10 @@ export const getGroups = async () => {
 
 export const getUsers = async () => {
     try {
-        const response = await axios.get(`${BASE_URL}/users`, { withCredentials: true});
+        const response = await axios.get(`${BASE_URL}/staff`, { withCredentials: true});
         return response.data
     } catch(error) {
-        return call_refresh (error, axios.get(`${BASE_URL}/users`, { withCredentials: true}), {
+        return call_refresh (error, axios.get(`${BASE_URL}/staff`, { withCredentials: true}), {
             withCredentials: true
         })
     }
