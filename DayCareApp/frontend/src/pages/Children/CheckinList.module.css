@@ -3,14 +3,56 @@
   border-collapse: collapse;
 }
 
-
 .reports tr {
   border: 1px solid black;
   font-size: 0.75rem;
+}
+
+.reports th {
+  padding: 0.5rem;
 }
 
 .reports td {
   padding: 0.5rem;
 }
 
+.noteInput {
+  width: 100%;
+  display: flex;
+  gap: 0.25rem;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+
+}
+
+.actions button {
+  padding: 0.25rem;
+  border-radius: 7px;
+  color: var(--darkmint);
+  font-weight: bold;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.note {
+  color: darkslategrey;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  justify-content: center;
+}
+
+.note button {
+  padding: 0.25rem;
+  height: 2.25rem;
+  border-radius: 7px;
+  color: var(--darkmint);
+  font-weight: bold;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
 

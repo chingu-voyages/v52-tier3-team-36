@@ -1,7 +1,10 @@
 // css
 import styles from './CheckinList.module.css'
+
+// npm modules
 import { useState } from 'react';
 import { postReportCard } from '../../services/api';
+import EditNoteIcon from '@mui/icons-material/EditNote';
 
 const CheckinList = ({checkins, updateCheckins, user}) => {
     const [editingItemId, setEditingItemId] = useState(false);
@@ -18,24 +21,26 @@ const CheckinList = ({checkins, updateCheckins, user}) => {
         setEditingItemId(false)
     }
     
-      const handleSubmit = async () => {
-        try {
-          if (!import.meta.env.VITE_BACK_END_SERVER_URL) {
-            throw new Error('No VITE_BACK_END_SERVER_URL in front-end .env')
-          }
-          const response = await postReportCard(editText, user.id, editingItemId);
-          if(response){
-            updateCheckins(response)
-            setEditingItemId(false)
-            setEditText('')
-          } else {
-            setMessage('There was an issue adding the report')
-          }
-        } catch (err) {
-          console.error(err)
-          setMessage(err.message)
+    const handleSubmit = async () => {
+      try {
+        if (!import.meta.env.VITE_BACK_END_SERVER_URL) {
+          throw new Error('No VITE_BACK_END_SERVER_URL in front-end .env')
         }
+        const response = await postReportCard(editText, user.id, editingItemId);
+        if(response){
+          updateCheckins(response)
+          setEditingItemId(false)
+          setEditText('')
+        } else {
+          setMessage('There was an issue adding the report')
+        }
+      } catch (err) {
+        console.error(err)
+        setMessage(err.message)
       }
+    }
+
+    const editNote = <EditNoteIcon></EditNoteIcon>
     
     return (
         <div className={styles.reports}>
@@ -60,26 +65,28 @@ const CheckinList = ({checkins, updateCheckins, user}) => {
                             <td>{checkinTime}</td>
                             <td>{checkin.report_staff}</td>
                             <td>
-                                { editingItemId === checkin.id ?
-                                <>
-                                <label className={styles.label}>
-                                <textarea 
-                                  value={editText} 
-                                  onChange={e => setEditText(e.target.value)}
-                                  name='report_card'
-                                  placeholder='Any reported information for the day.'
-                                  rows={3}
-                                />
-                              </label>
-                              <div className={styles.actions}>
-                                <button onClick={cancelEditing} className={styles.button}>Cancel</button>
-                                <button className={styles.button} onClick={() => handleSubmit(checkin.url)}>
-                                  Submit
-                                </button>
-                              </div>
-                              </> :
-                                <span>{checkin.report_card}{user && user.permissions.edit_report_cards && <button onClick={() => handleEditing(checkin.id)}>{checkin.report_card && 'Edit' || 'Add'}</button>}</span>
-                                }       
+                              { editingItemId === checkin.id ?
+                                <div className={styles.noteInput}>
+                                  <textarea 
+                                    value={editText} 
+                                    onChange={e => setEditText(e.target.value)}
+                                    name='report_card'
+                                    placeholder='Any reported information for the day.'
+                                    rows={2}
+                                  />
+                                  <div className={styles.actions}>
+                                    <button onClick={cancelEditing} className={styles.button}>Cancel</button>
+                                    <button className={styles.button} onClick={() => handleSubmit(checkin.url)}>
+                                      Submit
+                                    </button>
+                                  </div>
+                                </div> 
+                                :
+                                <div className={styles.note}>
+                                  <span>{checkin.report_card}</span>
+                                  {user && user.permissions.edit_report_cards && <button onClick={() => handleEditing(checkin.id)}>{checkin.report_card && editNote || 'Add Note' }</button>}
+                                </div>
+                              }       
                             </td>
                             <td>{checkoutime}</td>
                         </tr>
