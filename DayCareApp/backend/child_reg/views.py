@@ -63,7 +63,7 @@ class CheckinViewSet(viewsets.ModelViewSet):
 
         return queryset
 
-@permission_classes([IsAuthenticated, IsAdministrator or IsStaff])
+@permission_classes([IsAuthenticated])
 class CurrentlyCheckedViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows groups to be viewed or edited.

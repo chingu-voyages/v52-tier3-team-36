@@ -25,7 +25,7 @@ const AdminPasswordChange = ({user, edit}) => {
       const response = await adminResetPass(formData);
       edit()
     } catch (err) {
-      console.log(err)
+      console.error(err)
       setMessage(err.message)
     }
   }

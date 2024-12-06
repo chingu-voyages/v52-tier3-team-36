@@ -62,7 +62,7 @@ const ChildDetails = () => {
                 {...checkin, ...response} : checkin
                 ))
         } catch (error) {
-            console.log(error)
+            console.error(error)
         }
     };
 
@@ -120,10 +120,12 @@ const ChildDetails = () => {
       <section>
         <h1>{child.first_name} {child.last_name}</h1>
         {checkInId ? <p>Checked In</p> : <p>Checked Out</p>}
+        {curUser && curUser.permissions.check_in &&
         <div className={styles.actions}>
           <button disabled={checkInId} onClick={handleCheckin}>Checkin</button>
           <button disabled={!checkInId} onClick={handleCheckOut}>Checkout</button>
         </div>
+        }
         <div className={styles.info}>
           <img src={photo} alt="child's photo" />
           <div>
@@ -138,7 +140,7 @@ const ChildDetails = () => {
         </div>
         <div className={styles.actions}>
           <Link to={'/'}>Go back</Link>
-          { !curUser.groups.includes(3) &&
+          { curUser && curUser.permissions.edit_children &&
           <button onClick={handleEditing}>Edit</button>
         }
         </div>

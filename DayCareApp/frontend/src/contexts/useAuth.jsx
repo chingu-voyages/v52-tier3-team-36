@@ -1,6 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { isAuth, login, logout } from "../services/authService";
+import { isAuth, login } from "../services/authService";
 
 const AuthContext = createContext();
 
@@ -8,7 +7,6 @@ export const AuthProvider = ({children}) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [loading, setLoading] = useState(true);
     const [curUser, setCurUser] = useState();
-    const navigate = useNavigate();
 
     const getAuthenticated = async () =>{
         try{

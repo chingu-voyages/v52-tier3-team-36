@@ -78,7 +78,7 @@ const CheckinList = ({checkins, updateCheckins, user}) => {
                                 </button>
                               </div>
                               </> :
-                                <span>{checkin.report_card}{user && !user.groups.includes(3) && <button onClick={() => handleEditing(checkin.id)}>{checkin.report_card && 'Edit' || 'Add'}</button>}</span>
+                                <span>{checkin.report_card}{user && user.permissions.edit_report_cards && <button onClick={() => handleEditing(checkin.id)}>{checkin.report_card && 'Edit' || 'Add'}</button>}</span>
                                 }       
                             </td>
                             <td>{checkoutime}</td>

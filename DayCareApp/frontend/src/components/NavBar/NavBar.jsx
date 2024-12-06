@@ -15,6 +15,9 @@ const NavBar = ({ handleLogout }) => {
         <ul>
           <li>Welcome, <Link to='/user' state={curUser} key={curUser.id}>{curUser.username}</Link></li>
           <li><NavLink to="/">Dashboard</NavLink></li>
+          {curUser.permissions.edit_users &&
+          <li><NavLink to="/settings">Settings</NavLink></li>
+          }
           <li><NavLink to="" onClick={handleLogout}>Logout</NavLink></li>
         </ul>
       :
