@@ -52,7 +52,7 @@ const RegisterChildPage = () => {
         throw new Error('No VITE_BACK_END_SERVER_URL in front-end .env')
       }
       formData.gender = selectedGender;
-      formData.parent = selectedParent;
+      formData.parent = +selectedParent;
       const response = await registerChild(formData);
       if(response){
         navigate('/')
@@ -137,7 +137,7 @@ const RegisterChildPage = () => {
             <select value={selectedParent} onChange={handleParentChange}>
               <option key="blank-parent">Select parent</option>
               {parents.map((option) => (
-                <option key={option.id} value={option.url}>
+                <option key={option.id} value={option.id}>
                   {`${option.first_name} ${option.last_name}`}
                 </option>
               ))}
