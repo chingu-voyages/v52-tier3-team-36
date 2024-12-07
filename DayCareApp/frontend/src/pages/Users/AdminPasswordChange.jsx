@@ -2,7 +2,15 @@
 import { adminResetPass } from '../../services/authService';
 import styles from './UserEdit.module.css';
 import { useState } from 'react';
-
+/**
+ * Represents a user password reset component.
+ *
+ * @component
+ * @param {Object} props - The component props.
+ * @param {Object} props.user - An object representing the selected user.
+ * @param {UserDetailsState} props.edit - Set state for the user reset password form.
+ * @returns {React.ReactElement} A form for user password reset by the admin. Only requires single password input - no confirmation.
+ */
 const AdminPasswordChange = ({user, edit}) => {
     const [message, setMessage] = useState('');
   const [formData, setFormData] = useState({
@@ -10,12 +18,12 @@ const AdminPasswordChange = ({user, edit}) => {
     new_password: '',
   })
 
-
+  // Handle input change
   const handleChange = evt => {
     setMessage('')
     setFormData({ ...formData, [evt.target.name]: evt.target.value })
   }
-
+  // Submit password reset to backend API endpoint
   const handleSubmit = async evt => {
     evt.preventDefault()
     try {
@@ -23,6 +31,7 @@ const AdminPasswordChange = ({user, edit}) => {
         throw new Error('No VITE_BACK_END_SERVER_URL in front-end .env')
       }
       const response = await adminResetPass(formData);
+      // Set editing to false to hide the form
       edit()
     } catch (err) {
       console.error(err)
@@ -31,7 +40,7 @@ const AdminPasswordChange = ({user, edit}) => {
   }
 
   const { username, new_password } = formData
-
+  // Checks if the user has inputed a new password and if a username is known
   const isFormInvalid = () => {
     return !(username && new_password)
   }

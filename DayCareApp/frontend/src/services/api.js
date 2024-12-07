@@ -1,30 +1,32 @@
 import axios from 'axios';
 import { call_refresh } from './authService';
-
+// Backend base URL
 const BASE_URL = `${import.meta.env.VITE_BACK_END_SERVER_URL}`
-
+// Gets and returns a list of groups from backend
 export const getGroups = async () => {
     try {
         const response = await axios.get(`${BASE_URL}/groups`, { withCredentials: true});
         return response.data
     } catch(error) {
+        // Calls the API again using call_refresh that refreshes the token if the access one has expired
         return call_refresh (error, axios.get(`${BASE_URL}/groups`, { withCredentials: true}), {
             withCredentials: true
         })
     }
 }
-
+// Gets and returns a list of users from the backend
 export const getUsers = async () => {
     try {
         const response = await axios.get(`${BASE_URL}/staff`, { withCredentials: true});
         return response.data
     } catch(error) {
+        // Calls the API again using call_refresh that refreshes the token if the access one has expired
         return call_refresh (error, axios.get(`${BASE_URL}/staff`, { withCredentials: true}), {
             withCredentials: true
         })
     }
 }
-
+// Gets and returns a list of children from the backend
 export const getChildren = async () => {
     try {
         const response = await axios.get(`${BASE_URL}/children`, {
@@ -32,12 +34,13 @@ export const getChildren = async () => {
         })
         return response.data
     } catch (error) {
+        // Calls the API again using call_refresh that refreshes the token if the access one has expired
         return call_refresh (error, axios.get(`${BASE_URL}/children`, {
             withCredentials: true
         }))
     }
 }
-
+// Gets and returns a list of parents from the backend
 export const getParents = async () => {
     try {
         const response = await axios.get(`${BASE_URL}/parents`, {
@@ -45,46 +48,43 @@ export const getParents = async () => {
         })
         return response.data
     } catch (error){
+        // Calls the API again using call_refresh that refreshes the token if the access one has expired
         return call_refresh (error, axios.get(`${BASE_URL}/parents`, {
             withCredentials: true
         })
     )
     }
 }
-
+/* Posts form data to the backend to register a new child. 
+Expects the following child data:
+"first_name": string,
+"last_name": string,
+"notes": string,
+"dob": date YYYY-MM-DD,
+"gender": MALE/FEMALE/NOT/OTHER,
+"address": string,
+"em_contact_name": string,
+"em_contact_number": string,
+"parent": int for parent ID */
 export const registerChild = async (formData) => {
     try {
-        const response = await axios.post(`${BASE_URL}/children/`, {
-            "first_name": formData.first_name,
-            "last_name": formData.last_name,
-            "notes": formData.notes,
-            "dob": formData.dob,
-            "gender": formData.gender,
-            "address": formData.address,
-            "em_contact_name": formData.em_contact_name,
-            "em_contact_number": formData.em_contact_number,
-            "parent": formData.parent
-        }, {
+        const response = await axios.post(`${BASE_URL}/children/`, 
+            formData, {
             withCredentials: true
         })
         return response.data
     } catch (error) {
-        return call_refresh (error, axios.post(`${BASE_URL}/children/`, {
-            "first_name": formData.first_name,
-            "last_name": formData.last_name,
-            "notes": formData.notes,
-            "dob": formData.dob,
-            "gender": formData.gender,
-            "address": formData.address,
-            "em_contact_name": formData.em_contact_name,
-            "em_contact_number": formData.em_contact_number,
-            "parent": formData.parent
-        }, {
+        // Calls the API again using call_refresh that refreshes the token if the access one has expired
+        return call_refresh (error, axios.post(`${BASE_URL}/children/`, 
+            formData, {
             withCredentials: true
         }))
     }
 }
-
+/* Patch request to backend API to edit generic record
+depending on URL - user/child parent editing.
+The url has to be passed as an argument
+*/
 export const editRecord = async (formData, url) => {
     try {
         const response = await axios.patch(url, 
@@ -101,7 +101,9 @@ export const editRecord = async (formData, url) => {
         }))
     }
 }
-
+/* Get all cehckins for a child between the first of the current month and today.
+Also, can receive optional from-to date range for filtering.
+*/
 export const getCheckins = async (formData) => {
     const today = new Date()
     const todayJSON = today.toJSON().slice(0, 10);
@@ -128,7 +130,7 @@ export const getCheckins = async (formData) => {
     )
     }
 }
-
+// Post child checkin - expects the child ID and staff ID
 export const postCheckin = async (child, checkin_staff) => {
     const today = new Date().toJSON();
     try {
@@ -151,7 +153,7 @@ export const postCheckin = async (child, checkin_staff) => {
     )
 }
 }
-
+// Post child checkou - expects child ID and staff ID
 export const postCheckout = async (checkin, checkout_staff) => {
     const today = new Date().toJSON();
     try {
@@ -172,7 +174,7 @@ export const postCheckout = async (checkin, checkout_staff) => {
     )
 }
 }
-
+// Post report card for child - expects checkin ID, staff ID, and the text for the report card.
 export const postReportCard = async (report_text, report_staff, checkin) => {
     try {
         const response = await axios.patch(`${BASE_URL}/checkin/${checkin}/`, {
@@ -192,7 +194,7 @@ export const postReportCard = async (report_text, report_staff, checkin) => {
     )
 }
 }
-
+// Get a list of the currently checked in children
 export const getCheckedIn = async () => {
     try {
         const response = await axios.get(`${BASE_URL}/checkedin`, {

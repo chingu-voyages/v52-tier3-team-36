@@ -1,6 +1,13 @@
 import BadgeIcon from '@mui/icons-material/Badge';
 import { Link } from 'react-router-dom';
-
+/**
+ * Represents a user/staff list component.
+ *
+ * @component
+ * @param {Object} props - The component props.
+ * @param {Object[]} props.users - An array of objects representing users/staff.
+ * @returns {React.ReactElement} A list of user elements. Each user is a link to user details.
+ */
 const UsersList = ({users}) => {
     return (
         <>

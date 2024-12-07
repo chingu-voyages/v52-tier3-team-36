@@ -1,3 +1,9 @@
+/**
+ * Landing page component to show if a user is not logged in
+ *
+ * @component
+ * @returns {React.ReactElement} A landing page element.
+ */
 const Landing = () => {
     return (
         <section>

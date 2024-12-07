@@ -2,11 +2,15 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { register } from '../../services/authService';
-
 // css
 import styles from './Register.module.css'
 import { getGroups } from '../../services/api';
-
+/**
+ * Represents a user registration component.
+ *
+ * @component
+ * @returns {React.ReactElement} A user registration form element.
+ */
 const RegisterPage = () => {
   const navigate = useNavigate();
   const [userGroups, setUserGroups] = useState([]);
@@ -21,7 +25,7 @@ const RegisterPage = () => {
     confirm_password: '',
     groups: ''
   })
-
+  // Fetch user groups to show a select element
   useEffect(() => {
     const fetchGroups = async () => {
       const groupRes = await getGroups();
@@ -29,16 +33,16 @@ const RegisterPage = () => {
     };
     fetchGroups();
   }, [])
-
+  // Handle change in the group select element
   const handleGroupChange = (evt) => {
     setSelectedGroup(evt.target.value)
   }
-
+  // Handle change in the text input elements
   const handleChange = evt => {
     setMessage('')
     setFormData({ ...formData, [evt.target.name]: evt.target.value })
   }
-
+  // Submit user registration form to the backend API endpoint
   const handleSubmit = async evt => {
     evt.preventDefault()
     try {
@@ -48,6 +52,7 @@ const RegisterPage = () => {
       if (formData.password !== formData.confirm_password){
         throw new Error('Password and confirm password do not match!')
       }
+      // Set the group from the selected option and make sure it is an integer
       formData.groups = [+selectedGroup];
       const response = await register(formData);
       if(response.username[0] === 'A user with that username already exists.'){
@@ -61,7 +66,7 @@ const RegisterPage = () => {
   }
 
   const { username, password, confirm_password, first_name, last_name, email, groups } = formData
-
+  // Check for user input in the form input fields
   const isFormInvalid = () => {
     return !(username && password && selectedGroup && confirm_password)
   }

@@ -1,27 +1,31 @@
 // npm modules
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-
 // contexts
 import { useAuth } from '../../contexts/useAuth'
-
 // css
 import styles from './Login.module.css'
-
+/**
+ * Represents a user login component.
+ *
+ * @component
+ * @returns {React.ReactElement} A login form element.
+ */
 const LoginPage = () => {
   const navigate = useNavigate()
+  // The backend API request query from context
   const { loginUser } = useAuth();
   const [message, setMessage] = useState('')
   const [formData, setFormData] = useState({
     username: '',
     password: '',
   })
-
+  // Handle change in inputs of the form
   const handleChange = evt => {
     setMessage('')
     setFormData({ ...formData, [evt.target.name]: evt.target.value })
   }
-
+  // Submit the form data to backend login API endpoint
   const handleSubmit = async evt => {
     evt.preventDefault()
     try {
@@ -41,7 +45,7 @@ const LoginPage = () => {
   }
 
   const { username, password } = formData
-
+// Check if there is user input in the form input fields
   const isFormInvalid = () => {
     return !(username && password)
   }

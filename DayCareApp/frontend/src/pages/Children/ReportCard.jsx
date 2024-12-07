@@ -1,6 +1,8 @@
 // css
 import styles from './ChildEdit.module.css';
-
+/**
+ * Not currently in use
+ */
 const ReportCard = ({report, handleSubmit, handleEditing}) => {
     return (
         <form autoComplete="off" onSubmit={handleSubmit} className={styles.form}>

@@ -2,12 +2,12 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { isAuth, login } from "../services/authService";
 
 const AuthContext = createContext();
-
+// Create authentication context
 export const AuthProvider = ({children}) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [loading, setLoading] = useState(true);
     const [curUser, setCurUser] = useState();
-
+    // Send request to backend to verify user and set the curUser state to the returned user
     const getAuthenticated = async () =>{
         try{
             const response = await isAuth();
@@ -24,7 +24,7 @@ export const AuthProvider = ({children}) => {
             setLoading(false)
         }
     }
-
+    // Send request to backend API for user login
     const loginUser = async (formData) => {
         const success = await login(formData);
         if(success) {
@@ -35,7 +35,7 @@ export const AuthProvider = ({children}) => {
         }
     }
 
-    // If the URL chnages, check if user is authenticated
+    // If the URL changes, check if user is authenticated
     useEffect(() => {
         getAuthenticated();   
     }, [window.location.pathname])

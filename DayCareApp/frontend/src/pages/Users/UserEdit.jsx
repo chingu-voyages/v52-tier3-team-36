@@ -1,10 +1,18 @@
 // npm modules
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { editRecord } from '../../services/api.js';
-
 // css
 import styles from './UserEdit.module.css';
-
+/**
+ * Represents a user details edit form component.
+ *
+ * @component
+ * @param {Object} props - The component props.
+ * @param {Object} props.user - An object representing the selected user.
+ * @param {UserDetailsState} props.edit - Set state for the user reset password form.
+ * @param {UserDetailsState} props.editedUser - Set state with the new inputs from the edit form
+ * @returns {React.ReactElement} A form for editing user infomration.
+ */
 const UserEdit = ({curUser, user, edit, editedUser, userGroups}) => {
   const [message, setMessage] = useState('');
   const [selectedGroup, setSelectedGroup] = useState(user.groups[0]);
@@ -14,24 +22,26 @@ const UserEdit = ({curUser, user, edit, editedUser, userGroups}) => {
     email: user.email,
     groups: user.groups
   })
-
+  // Handle change for selected group
   const handleGroupChange = (evt) => {
     setSelectedGroup(evt.target.value)
   }
-
+  // Handle change for text inputs
   const handleChange = evt => {
     setMessage('')
     setFormData({ ...formData, [evt.target.name]: evt.target.value })
   }
-
+  // Submit user edit form to backend API endpoint
   const handleSubmit = async evt => {
     evt.preventDefault()
     try {
       if (!import.meta.env.VITE_BACK_END_SERVER_URL) {
         throw new Error('No VITE_BACK_END_SERVER_URL in front-end .env')
       }
+      // Add selected group to form and make sure it is an integer
       formData.groups = [+selectedGroup];
       const response = await editRecord(formData, user.url);
+      // Set new user details to state
       editedUser(formData)
       edit()
     } catch (err) {
@@ -41,7 +51,7 @@ const UserEdit = ({curUser, user, edit, editedUser, userGroups}) => {
   }
 
   const { first_name, last_name, email, groups } = formData
-
+  // Check if all form inputs are filled
   const isFormInvalid = () => {
     return !(first_name, last_name, email, selectedGroup)
   }

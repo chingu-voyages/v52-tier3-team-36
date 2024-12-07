@@ -1,10 +1,20 @@
 // npm modules
 import { useState } from 'react';
 import { editRecord } from '../../services/api.js';
-
 // css
 import styles from './ChildEdit.module.css';
-
+/**
+ * Represents a child edit form component.
+ *
+ * @component
+ * @param {Object} props - The component props.
+ * @param {Object} props.child - An object representing the selected child.
+ * @param {Object} props.childParent- An object representing the selected child's parent.
+ * @param {ChildDetailsState} props.edit - Set state for the user reset password form.
+ * @param {ChildDetailsState} props.editedChild - Set state with the edited child details form.
+ * @param {Object[]} props.parents - A list of objects representing the parents.
+ * @returns {React.ReactElement} A form for child details change element.
+ */
 const ChildEdit = ({child, parents, childParent, edit, editedChild}) => {
   const [message, setMessage] = useState('');
   const [selectedParent, setSelectedParent] = useState(childParent[0]?.id);
@@ -20,33 +30,34 @@ const ChildEdit = ({child, parents, childParent, edit, editedChild}) => {
     em_contact_number: child.em_contact_number,
     parent: child.parent
   });
-
+  // Set the available gender options
   const genderOptions = [
     {name: "Male", value:"MALE"},
     {name: "Female", value:"FEMALE"},
     {name: "Other", value:"OTHER"},
     {name: "Prefer not to say", value:"NOT"}
   ];
-
+  // Handle changing parents from the select element
   const handleParentChange = (evt) => {
     setSelectedParent(evt.target.value)
   };
-
+ // Handle changing gender from the select element
   const handleGenderChange = (evt) => {
     setSelectedGender(evt.target.value)
   }
-
+  // Handle changing text inputs
   const handleChange = evt => {
     setMessage('')
     setFormData({ ...formData, [evt.target.name]: evt.target.value })
   };
-
+  // Submit form to the backend API endpoint
   const handleSubmit = async evt => {
     evt.preventDefault()
     try {
       if (!import.meta.env.VITE_BACK_END_SERVER_URL) {
         throw new Error('No VITE_BACK_END_SERVER_URL in front-end .env')
       }
+      // Set gender and parent to the form data
       formData.gender = selectedGender;
       formData.parent = +selectedParent;
       const response = await editRecord(formData, child.url);
@@ -63,7 +74,7 @@ const ChildEdit = ({child, parents, childParent, edit, editedChild}) => {
   }
 
   const { first_name, last_name, gender, dob, address, em_contact_name, em_contact_number, parent, notes } = formData
-
+  // Checks if all fields are used to validate form 
   const isFormInvalid = () => {
     return !(first_name, last_name, selectedGender, dob, address, em_contact_name, em_contact_number, selectedParent)
   }

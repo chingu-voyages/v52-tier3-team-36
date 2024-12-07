@@ -1,9 +1,9 @@
 // services
 import axios from 'axios';
-
+// Backend server base URL
 const BASE_URL = `${import.meta.env.VITE_BACK_END_SERVER_URL}`
 
-
+// Send a request to logout a user
 async function logout() {
   try{ 
     const response = await axios.post(`${BASE_URL}/api/logout/`, {}, {withCredentials: true})
@@ -12,14 +12,11 @@ async function logout() {
     return false
   }
 }
-
+// Send a request to log in a user. Returns success true/false
 async function login(loginFormData) {
   try {
-    const res = await axios.post(`${BASE_URL}/api/token/`, {
-      'username': loginFormData.username,
-      'password': loginFormData.password
-    }, { withCredentials: true})
-
+    const res = await axios.post(`${BASE_URL}/api/token/`, 
+      loginFormData, { withCredentials: true})
     return res.data.success
   } catch (err) {
     throw new Error(err)
@@ -41,8 +38,8 @@ async function refresh_token() {
 
 }
 
-// Funciton to call the refresh_token call if status is 401/possibly expired token
-// Takes in error and the function that needs to be retried
+/* Funciton to call the refresh_token call if status is 401/possibly expired token
+ Takes in error and the function that needs to be retried */
 async function call_refresh(error, func) {
   if(error.response && error.response.status === 401) {
     const tokenRefreshed = await refresh_token();
@@ -53,20 +50,30 @@ async function call_refresh(error, func) {
   }
   return false
 }
-
+/* Post user registration data to backend.
+Expects the following:
+{
+    'username': string,
+    'password': string,
+    'confirm_password': string,
+    'first_name': string,
+    'last_name': string,
+    'email': string,
+    'groups': array of group IDs
+  }
+*/
 async function register(registerFormData){
-  const response = await axios.post(`${BASE_URL}/api/register/`, {
-    'username': registerFormData.username,
-    'password': registerFormData.password,
-    'confirm_password': registerFormData.confirm_password,
-    'first_name': registerFormData.first_name,
-    'last_name': registerFormData.last_name,
-    'email': registerFormData.email,
-    'groups': registerFormData.groups
-  }, { withCredentials: true})
+  const response = await axios.post(`${BASE_URL}/api/register/`, registerFormData, { withCredentials: true})
   return response.data
 }
-
+/* Post change password to backend.
+Expects:
+{
+	"new_password": string,
+	"old_password": string,
+	"username": string
+}
+*/
 const changePass = async (formData) => {
   try {
       const response = await axios.post(`${BASE_URL}/api/change-password/`,
@@ -83,7 +90,13 @@ const changePass = async (formData) => {
       }))
   }
 }
-
+/* Post reset password to backend.
+Expects:
+{
+	"new_password": string,
+	"username": string
+}
+*/
 const adminResetPass = async (formData) => {
   try {
       const response = await axios.post(`${BASE_URL}/api/reset-password/`,
@@ -100,7 +113,7 @@ const adminResetPass = async (formData) => {
       }))
   }
 }
-
+// Get the permission for the group. Expects a group ID.
 export const getGroupPermissions = async (id) => {
   const params = {
       "group": id,
@@ -121,10 +134,25 @@ export const getGroupPermissions = async (id) => {
   )
   }
 }
-
+/* Patch group permissions. Expects the name of group if changed, and the permissions:
+  'name': string
+{
+	"list_users": boolean,
+  "edit_users": boolean,
+  "edit_parents": boolean,
+  "list_children": boolean,
+  "list_own_children": boolean,
+  "edit_children": boolean,
+  "check_in": boolean,
+	"view_stats": boolean,
+	"list_parents": boolean,
+	"edit_report_cards": boolean,
+	"group": int,
+	"id": int
+}
+  */
 export const editGroupPermissions = async (permissions, name) => {
       const submitRequest = async () => {
-        console.log(permissions)
         const groupEditResponse = await axios.patch(`${BASE_URL}/groups/${permissions.group}/`,
           {"name": name},
          {
@@ -147,7 +175,22 @@ export const editGroupPermissions = async (permissions, name) => {
     )
   }
 }
-
+/* Post add new group. the name of group and the permissions:
+  'name': string
+{
+	"list_users": boolean,
+  "edit_users": boolean,
+  "edit_parents": boolean,
+  "list_children": boolean,
+  "list_own_children": boolean,
+  "edit_children": boolean,
+  "check_in": boolean,
+	"view_stats": boolean,
+	"list_parents": boolean,
+	"edit_report_cards": boolean,
+	"group": int,
+	"id": int
+}*/
 export const addGroup = async (permissions, name) => {
   const submitRequest = async () => {
     const groupAddResponse = await axios.post(`${BASE_URL}/groups/`,
@@ -177,7 +220,7 @@ try {
 )
 }
 }
-
+// Deletes a group. Expects the group ID. Returns success true/false
 export const deleteGroup = async (id) => {
   try {
     await axios.delete(`${BASE_URL}/groups/${id}/`,
@@ -192,7 +235,34 @@ export const deleteGroup = async (id) => {
   }
   }
 
-// Checks to see if a user is authenticated
+/* Checks to see if a user is authenticated. Returns a user object:
+{
+	"authenticated": {
+		"username": string,
+		"id": int,
+		"first_name": string,
+		"last_name": string,
+		"email": string,
+		"groups": [
+			int, ...
+		],
+		"permissions": {
+			"group": int,
+			"id": int,
+			"list_users": boolean,
+			"edit_users": boolean,
+			"edit_parents": boolean,
+			"list_parents": boolean,
+			"list_children": boolean,
+			"edit_report_cards": boolean,
+			"list_own_children": fboolean,
+			"edit_children": boolean,
+			"check_in": boolean,
+			"view_stats": boolean
+		}
+	}
+}
+*/
 async function isAuth() {
   try {
     const success = await axios.post(`${BASE_URL}/api/authenticated/`, {}, {withCredentials: true});

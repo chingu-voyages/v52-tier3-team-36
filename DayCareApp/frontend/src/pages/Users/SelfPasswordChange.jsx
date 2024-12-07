@@ -2,7 +2,15 @@
 import { changePass } from '../../services/authService';
 import styles from './UserEdit.module.css';
 import { useState } from 'react';
-
+/**
+ * Represents a user password se;f change component.
+ *
+ * @component
+ * @param {Object} props - The component props.
+ * @param {Object} props.user - An object representing the selected user.
+ * @param {UserDetailsState} props.edit - Set state for the user reset password form.
+ * @returns {React.ReactElement} A form for self user password chnage. Requires current password and new password confirmation.
+ */
 const SelfPasswordChange = ({user, edit}) => {
     const [message, setMessage] = useState('');
   const [formData, setFormData] = useState({
@@ -12,12 +20,12 @@ const SelfPasswordChange = ({user, edit}) => {
     old_password: ''
   })
 
-
+  // Handle input change
   const handleChange = evt => {
     setMessage('')
     setFormData({ ...formData, [evt.target.name]: evt.target.value })
   }
-
+  // Submit form data to the backend API endpoint
   const handleSubmit = async evt => {
     evt.preventDefault()
     try {
@@ -28,6 +36,7 @@ const SelfPasswordChange = ({user, edit}) => {
         throw new Error('Password and confirm password do not match!')
       }
       const response = await changePass(formData);
+      // Hides the form after submission
       edit()
     } catch (err) {
       console.log(err)
@@ -36,7 +45,7 @@ const SelfPasswordChange = ({user, edit}) => {
   }
 
   const { username, new_password, confirm_password, old_password } = formData
-
+  // Checks if form has user input
   const isFormInvalid = () => {
     return !(username && new_password && old_password && new_password !== old_password)
   }

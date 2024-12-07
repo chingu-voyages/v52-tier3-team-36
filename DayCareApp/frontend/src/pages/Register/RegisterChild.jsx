@@ -1,11 +1,15 @@
 // npm modules
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-
 // css
 import styles from './Register.module.css'
-import { registerChild, getUsers } from '../../services/api';
-
+import { registerChild } from '../../services/api';
+/**
+ * Represents a child registration component.
+ *
+ * @component
+ * @returns {React.ReactElement} A child registration form element.
+ */
 const RegisterChildPage = () => {
   const navigate = useNavigate();
   const [message, setMessage] = useState('');
@@ -22,35 +26,37 @@ const RegisterChildPage = () => {
     em_contact_number: '',
     parent: ''
   })
+  // Get a list of parents from the navigation state
   const {state} = useLocation();
   const parents = state.parents
-
+  // Set the accepted gender options
   const genderOptions = [
     {name: "Male", value:"MALE"},
     {name: "Female", value:"FEMALE"},
     {name: "Other", value:"OTHER"},
     {name: "Prefer not to say", value:"NOT"}
   ]
-
+  // Handle change when selecting a parent from parent select element
   const handleParentChange = (evt) => {
     setSelectedParent(evt.target.value)
   }
-
+  // Handle change when selecting gender from gender select element
   const handleGenderChange = (evt) => {
     setSelectedGender(evt.target.value)
   }
-
+  // Handle change for text inputs
   const handleChange = evt => {
     setMessage('')
     setFormData({ ...formData, [evt.target.name]: evt.target.value })
   }
-
+  // Submit the new child registration to the backend API endpoint
   const handleSubmit = async evt => {
     evt.preventDefault()
     try {
       if (!import.meta.env.VITE_BACK_END_SERVER_URL) {
         throw new Error('No VITE_BACK_END_SERVER_URL in front-end .env')
       }
+      // Add selected gender and parent to the form data
       formData.gender = selectedGender;
       formData.parent = +selectedParent;
       const response = await registerChild(formData);
@@ -66,7 +72,7 @@ const RegisterChildPage = () => {
   }
 
   const { first_name, last_name, notes, dob, address, gender, em_contact_name, em_contact_number, parent } = formData
-
+  // Check if there is user input in the form fields
   const isFormInvalid = () => {
     return !(first_name && last_name && dob && address && em_contact_name && em_contact_number && selectedGender && selectedParent)
   }

@@ -2,8 +2,16 @@
 import { NavLink, Link } from 'react-router-dom'
 import ChildFriendlyIcon from '@mui/icons-material/ChildFriendly'
 import { useAuth } from '../../contexts/useAuth'
-
+/**
+ * Represents a navbar component.
+ *
+ * @component
+ * @param {Object} props - The component props.
+ * @param {AppState} props.handleLogout - Send the request to logout the user.
+ * @returns {React.ReactElement} A navigation element.
+ */
 const NavBar = ({ handleLogout }) => {
+  // Get current user from context if any
   const{ curUser } = useAuth();
   return (
     <nav>

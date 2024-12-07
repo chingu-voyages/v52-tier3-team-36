@@ -1,6 +1,13 @@
 import EscalatorWarningIcon from '@mui/icons-material/EscalatorWarning';
 import { Link } from 'react-router-dom';
-
+/**
+ * Represents a parents list component.
+ *
+ * @component
+ * @param {Object} props - The component props.
+ * @param {Object[]} props.parents - An array of objects representing parents.
+ * @returns {React.ReactElement} A list of parents elements. Each parent is a link to user details.
+ */
 const ParentsList = ({parents}) => {
     return (
       <>
