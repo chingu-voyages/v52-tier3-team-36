@@ -12,9 +12,7 @@ const Dashboard = ({curUser}) => {
     const [users, setUsers] = useState([])
     const [parents, setParents] = useState([]);
     const navigate = useNavigate();
-    
-    useEffect(() => {
-      const fetchData = async () => {
+    const fetchData = curUser?.permissions.list_users ? async () => {
         const [childList, userList, checkedInList, parentsList] = await Promise.all(
           [getChildren(), getUsers(), getCheckedIn(), getParents()]
         );
@@ -22,7 +20,31 @@ const Dashboard = ({curUser}) => {
         setUsers(userList);
         setCurCheckedIn(checkedInList);
         setParents(parentsList);
+      } : curUser?.permissions.list_parents ? async () => {
+        const [childList, checkedInList, parentsList] = await Promise.all(
+          [getChildren(), getCheckedIn(), getParents()]
+        );
+        setChildren(childList);
+        setCurCheckedIn(checkedInList);
+        setParents(parentsList);
+      } : async () => {
+        const [childList, checkedInList] = await Promise.all(
+          [getChildren(), getCheckedIn()]
+        );
+        setChildren(childList);
+        setCurCheckedIn(checkedInList);
       };
+
+    useEffect(() => {
+    //   const fetchData = async () => {
+    //     const [childList, userList, checkedInList, parentsList] = await Promise.all(
+    //       [getChildren(), getUsers(), getCheckedIn(), getParents()]
+    //     );
+    //     setChildren(childList);
+    //     setUsers(userList);
+    //     setCurCheckedIn(checkedInList);
+    //     setParents(parentsList);
+    //   };
       fetchData();
     }, [])
   
