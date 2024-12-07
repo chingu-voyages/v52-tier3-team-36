@@ -1,9 +1,7 @@
-import { useState } from "react"
 // css
 import styles from './ChildEdit.module.css';
 
 const ReportCard = ({report, handleSubmit, handleEditing}) => {
-
     return (
         <form autoComplete="off" onSubmit={handleSubmit} className={styles.form}>
         <label className={styles.label}>

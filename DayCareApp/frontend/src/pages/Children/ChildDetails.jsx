@@ -36,7 +36,6 @@ const ChildDetails = () => {
     const handleCheckin = async () => {
         try{
             const response = await postCheckin(child.id, curUser.id)
-            response.checkin_staff = curUser.username
             setCheckInId(response.id)
             setCheckins([response, ...checkins])
         } catch (error) {
@@ -45,9 +44,6 @@ const ChildDetails = () => {
     };
 
     const updateCheckins = async (updatedCheckin) => {
-        updatedCheckin.checkout_staff = curUser.username
-        updatedCheckin.checkin_staff = curUser.username
-        updatedCheckin.report_staff = curUser.username
         setCheckins(prev_checkins => prev_checkins.map(checkin => checkin.id === updatedCheckin.id ?
             {...checkin, ...updatedCheckin} : checkin
             ))
@@ -56,8 +52,6 @@ const ChildDetails = () => {
     const handleCheckOut = async () => {
         try{
             const response = await postCheckout(checkInId, curUser.id);
-            response.checkout_staff = curUser.username
-            response.checkin_staff = curUser.username
             setCheckInId(null)
             setCheckins(prev_checkins => prev_checkins.map(checkin => checkin.id === response.id ?
                 {...checkin, ...response} : checkin
@@ -131,7 +125,7 @@ const ChildDetails = () => {
           <img src={photo} alt="child's photo" />
           <div>
             <label>Address: <span>{child.address}</span></label>
-            <label>Parent/Guardian: <span>{childParent.first_name} {childParent.last_name}</span></label>
+            <label>Parent/Guardian: <span>{childParent[0].first_name} {childParent[0].last_name}</span></label>
             <label>Dob: <span>{child.dob}</span></label>
             <label>Gender: <span>{child.gender}</span></label>
             <label>Emergency Contact Name: <span>{child.em_contact_name}</span></label>

@@ -76,7 +76,7 @@ const CheckinList = ({checkins, updateCheckins, user}) => {
                                   />
                                   <div className={styles.actions}>
                                     <button onClick={cancelEditing} className={styles.button}>Cancel</button>
-                                    <button className={styles.button} onClick={() => handleSubmit(checkin.url)}>
+                                    <button className={styles.button} onClick={() => handleSubmit(checkin.url)} disabled={editText.length===0}>
                                       Submit
                                     </button>
                                   </div>

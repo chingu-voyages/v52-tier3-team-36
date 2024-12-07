@@ -13,6 +13,11 @@ class CheckinSerializer(serializers.ModelSerializer):
         fields = ['url', 'id', 'child', 'checkin', 'checkout', 'checkin_staff', 
                   'checkout_staff', 'report_card', 'report_staff']
         
+    def to_representation(self, instance):
+        request = self.context.get('request')
+        serializer = CheckinGETSerializer(instance, context={'request': request})
+        return serializer.data 
+        
 class CheckinGETSerializer(serializers.ModelSerializer):
     checkin_staff = serializers.StringRelatedField()
     checkout_staff = serializers.StringRelatedField()
