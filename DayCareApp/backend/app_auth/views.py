@@ -232,10 +232,20 @@ class ParentViewSet(viewsets.ModelViewSet):
     API endpoint that allows users to be viewed or edited.
     Requires the user to be in the Administrators group => {'detail': 'You do not have permissions to perform this action'}
     """
-    queryset = User.objects.all().order_by('-date_joined')
+    queryset = User.objects.all().order_by('last_name')
     permissions = Permission.objects.filter(list_own_children=True).values_list('group', flat=True)
     queryset = queryset.filter(groups__in = permissions)
     serializer_class = UserSerializer
+
+    def filter_queryset(self, queryset):
+        request = self.request
+        active = request.query_params.get('active')
+        if active:
+            active = True if active == "true" else False
+            queryset = queryset.filter(is_active=active)
+            return queryset
+
+        return queryset
 
 @permission_classes([IsAuthenticated])
 class StaffViewSet(viewsets.ModelViewSet):
@@ -243,7 +253,17 @@ class StaffViewSet(viewsets.ModelViewSet):
     API endpoint that allows users to be viewed or edited.
     Requires the user to be in the Administrators group => {'detail': 'You do not have permissions to perform this action'}
     """
-    queryset = User.objects.all().order_by('-date_joined')
+    queryset = User.objects.all().order_by('last_name')
     permissions = Permission.objects.filter(list_own_children=False).values_list('group', flat=True)
     queryset = queryset.filter(groups__in = permissions)
     serializer_class = UserSerializer
+
+    def filter_queryset(self, queryset):
+        request = self.request
+        active = request.query_params.get('active')
+        if active:
+            active = True if active == "true" else False
+            queryset = queryset.filter(is_active=active)
+            return queryset
+
+        return queryset

@@ -16,16 +16,22 @@ import styles from './UserEdit.module.css';
 const UserEdit = ({curUser, user, edit, editedUser, userGroups}) => {
   const [message, setMessage] = useState('');
   const [selectedGroup, setSelectedGroup] = useState(user.groups[0]);
+  const [isActive, setIsActive] = useState(user.is_active);
   const [formData, setFormData] = useState({
     first_name: user.first_name,
     last_name: user.last_name,
     email: user.email,
+    is_active: user.is_active,
     groups: user.groups
   })
   // Handle change for selected group
   const handleGroupChange = (evt) => {
     setSelectedGroup(evt.target.value)
   }
+  // Handle change of is_active checkbox
+  const handleIsActiveChange = (event) => {
+    setIsActive(event.target.checked);
+  };
   // Handle change for text inputs
   const handleChange = evt => {
     setMessage('')
@@ -40,6 +46,7 @@ const UserEdit = ({curUser, user, edit, editedUser, userGroups}) => {
       }
       // Add selected group to form and make sure it is an integer
       formData.groups = [+selectedGroup];
+      formData.is_active = isActive;
       const response = await editRecord(formData, user.url);
       // Set new user details to state
       editedUser(formData)
@@ -50,7 +57,7 @@ const UserEdit = ({curUser, user, edit, editedUser, userGroups}) => {
     }
   }
 
-  const { first_name, last_name, email, groups } = formData
+  const { first_name, last_name, email, is_active, groups } = formData
   // Check if all form inputs are filled
   const isFormInvalid = () => {
     return !(first_name, last_name, email, selectedGroup)
@@ -102,6 +109,16 @@ const UserEdit = ({curUser, user, edit, editedUser, userGroups}) => {
               </option>
               ))}
             </select>
+          </label>
+          <label className={styles.label}>
+              Active
+              <input
+                type="checkbox"
+                name="is_active"
+                checked={isActive}
+                onChange={handleIsActiveChange}
+                autoComplete='off'
+              />
           </label>
           <div className={styles.actions}>
             <button onClick={() => edit()} className={styles.button}>Cancel</button>
