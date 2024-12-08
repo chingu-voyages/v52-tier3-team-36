@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react"
-import { getGroups } from "../../services/api";
+import { getGroups, getParents, getUsers } from "../../services/api";
 import styles from "./UserEdit.module.css";
+import UsersList from "../Landing/Users";
+import ParentsList from "../Landing/Parents";
 import { editGroupPermissions, getGroupPermissions, addGroup, deleteGroup } from "../../services/authService";
 /**
  * Represents a settings component for the app groups and permissions.
@@ -11,6 +13,8 @@ import { editGroupPermissions, getGroupPermissions, addGroup, deleteGroup } from
  */
 const SettingsPage = () => {
   const [groups, setUserGroups] = useState([]);
+  const [deactivatedUsers, setDeactivatedUsers] = useState([]);
+  const [deactivatedParents, setDeactivatedParents] = useState([]);
   const [editing, setEditing] = useState(false);
   const [adding, setAdding] = useState(false);
   const [permissions, setPermissions] = useState({})
@@ -82,19 +86,25 @@ const SettingsPage = () => {
   }
   // Fetch a list of available groups
   useEffect(() => {
-    const fetchGroups = async () => {
-      const groupRes = await getGroups();
+    const fetchData = async () => {
+      const [groupRes, deactivatedUsersRes, deactivatedParentsRes] = await Promise.all(
+        [getGroups(), getUsers({params: {active: false}}), getParents({params: {active: false}})]
+      );
       setUserGroups(groupRes)
+      setDeactivatedUsers(deactivatedUsersRes);
+      setDeactivatedParents(deactivatedParentsRes);
     };
-    fetchGroups();
+    fetchData();
   }, [])
 
 
 
   return (
     <main className={styles.container}>
-      <div>
-        <p>Groups</p>
+      <h1>Settings</h1>
+      <div className={styles.dashView}>
+            <div className={styles.column}>
+            <h2>Groups</h2>
         <button onClick={handleAdding}>Add group</button>
         <ul>
           {groups.map(group => <li key={group.id}>{group.name}<button onClick={() => handleEdit(group.id)}>Edit</button><button onClick={() => handleDelete(group.id)}>Delete</button></li>
@@ -235,9 +245,19 @@ const SettingsPage = () => {
                 Submit
               </button>
             </div>
-          </form>
-        </section>
+            </form>
+            </section>
       }
+            <div>
+              <h2>Deactivated</h2>
+            <div className={styles.column}>
+              <UsersList users={deactivatedUsers} />
+            </div>
+            <div className={styles.column}>
+              <ParentsList parents={deactivatedParents} />
+            </div>
+            </div>
+            </div>
     </main>
   )
 }

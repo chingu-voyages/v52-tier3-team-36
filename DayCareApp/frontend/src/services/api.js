@@ -15,9 +15,11 @@ export const getGroups = async () => {
     }
 }
 // Gets and returns a list of users from the backend
-export const getUsers = async () => {
+export const getUsers = async ({params}) => {
     try {
-        const response = await axios.get(`${BASE_URL}/staff`, { withCredentials: true});
+        const response = await axios.get(`${BASE_URL}/staff`, 
+            { params: params, 
+            withCredentials: true});
         return response.data
     } catch(error) {
         // Calls the API again using call_refresh that refreshes the token if the access one has expired
@@ -41,9 +43,10 @@ export const getChildren = async () => {
     }
 }
 // Gets and returns a list of parents from the backend
-export const getParents = async () => {
+export const getParents = async ({params}) => {
     try {
         const response = await axios.get(`${BASE_URL}/parents`, {
+            params: params,
             withCredentials: true
         })
         return response.data

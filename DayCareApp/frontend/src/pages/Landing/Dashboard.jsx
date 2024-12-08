@@ -22,7 +22,7 @@ const Dashboard = ({curUser}) => {
     // Fetch the necessary data depending on user permissions - list staff, only list parents, or if list own children - only own children
     const fetchData = curUser?.permissions.list_users ? async () => {
         const [childList, userList, checkedInList, parentsList] = await Promise.all(
-          [getChildren(), getUsers(), getCheckedIn(), getParents()]
+          [getChildren(), getUsers({params: {active: true}}), getCheckedIn(), getParents({params: {active: true}})]
         );
         setChildren(childList);
         setUsers(userList);
@@ -30,7 +30,7 @@ const Dashboard = ({curUser}) => {
         setParents(parentsList);
       } : curUser?.permissions.list_parents ? async () => {
         const [childList, checkedInList, parentsList] = await Promise.all(
-          [getChildren(), getCheckedIn(), getParents()]
+          [getChildren(), getCheckedIn(), getParents({params: {active: true}})]
         );
         setChildren(childList);
         setCurCheckedIn(checkedInList);
