@@ -2,14 +2,13 @@ from datetime import datetime
 from django.utils import timezone
 from django.utils.dateparse import parse_date
 from rest_framework import viewsets
-from rest_framework.response import Response
-from rest_framework.decorators import permission_classes, api_view
+from rest_framework.decorators import permission_classes
 from rest_framework.permissions import IsAuthenticated
-from app_auth.permissions import IsAdministrator, IsStaff
+from app_auth.permissions import ChildrenActions, CheckinActions
 from .serializers import ChildSerializer, CheckinSerializer, CheckinGETSerializer
 from .models import Child, Checkin
 
-@permission_classes([IsAuthenticated])
+@permission_classes([ChildrenActions])
 class ChildViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows groups to be viewed or edited.
@@ -26,7 +25,7 @@ class ChildViewSet(viewsets.ModelViewSet):
         else:
             return queryset
 
-@permission_classes([IsAuthenticated])
+@permission_classes([CheckinActions])
 class CheckinViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows groups to be viewed or edited.
@@ -63,7 +62,7 @@ class CheckinViewSet(viewsets.ModelViewSet):
 
         return queryset
 
-@permission_classes([IsAuthenticated])
+@permission_classes([CheckinActions])
 class CurrentlyCheckedViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows groups to be viewed or edited.
