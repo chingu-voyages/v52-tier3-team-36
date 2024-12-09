@@ -1,41 +1,71 @@
-# voyage-tasks
+# Kinderly Day Care App
 
-Your project's `readme` is as important to success as your code. For 
-this reason you should put as much care into its creation and maintenance
-as you would any other component of the application.
+Simple, easy to use, web-based day care management system for registering kids and issuing report cards for parents.
+The app allows for custom permission-based access, that allows external users like parents to log in and view their child/children
+records.
+The staff can register new children and check them in/out for the day. The staff can also enter report cards for the child for the specific day.
+Staff and parents can view all the records of the children and filter them based on a provided date range.
 
-If you are unsure of what should go into the `readme` let this article,
-written by an experienced Chingu, be your starting point - 
-[Keys to a well written README](https://tinyurl.com/yk3wubft).
+## Targeted users and use cases
+Day care admin (setup the day care system), Day care Staff (login, register or add a new child, view list, and fill in the report card), and parents (login, view records)
 
-And before we go there's "one more thing"! Once you decide what to include
-in your `readme` feel free to replace the text we've provided here.
+## Screenshots
+[Kinderly Admin Dashboard](/docs/DashboardAdmin.png)
+[Kinderly Staff Dashboard](/docs/DashboardStaff.png)
+[Kinderly Parent Dashboard](/docs/DashboardParent.png)
+[Kinderly Staff Child Details](/docs/StaffChildDetails.png)
 
-> Own it & Make it your Own!
+### Tech Stack
+- Django / Django REST Framework
+- PostgreSQL
+- JSONWebToken
+- React
+- CSS
+- MaterialUI
+- Axios
 
-## Team Documents
+### Installation
 
-You may find these helpful as you work together to organize your project.
+1. Clone the repository
+2. Backend:
+- Root folder: `DayCareApp\backend`
+- Install dependencies: `pip install -r requirements.txt`
+- Run app: `python manage.py runserver`
+3. Forntend:
+- Root folder: `DayCareApp\frontend`
+- Install dependencies: `npm install`
+- Build app: `npm run build`
+- Run preview: `npm run preview`
+4. Testing - front and backend
 
-- [Team Project Ideas](./docs/team_project_ideas.md)
-- [Team Decision Log](./docs/team_decision_log.md)
+## Main Features
 
-Meeting Agenda templates (located in the `/docs` directory in this repo):
+- A web application that allows day care facility staff to keep a record of children, check them in/out, and issue report cards for parents.
+- The app will require login - custom permission levels based on group membership.
+    - Default administrator account has full access. Can create groups and permissions from the Settings menu.
+    - Users with permission to edit users can register new admins, staff members, and external users like parents.
+    - Users are allowed to change their bio or password. Admins can reset all users passwords.
+    - Admin and staff users with permission to view/edit children can register/edit children.
+    - Admin and staff users with permission to check in/out a child can perform the actions on the details page for the child.
+    - Admin and staff users with permision to edit report cards can create/edit report cards for a child.
+    - Parents can only log in to view child details and report cards for their child/children.
 
-- Meeting - Voyage Kickoff --> ./docs/meeting-voyage_kickoff.docx
-- Meeting - App Vision & Feature Planning --> ./docs/meeting-vision_and_feature_planning.docx
-- Meeting - Sprint Retrospective, Review, and Planning --> ./docs/meeting-sprint_retrospective_review_and_planning.docx
-- Meeting - Sprint Open Topic Session --> ./docs/meeting-sprint_open_topic_session.docx
+## Project management
+
+[Project Board](url to Jira)
+[Issues](url to Issues in Jira)
+
+## Live Demo
+[Live demo](https://kinderly-frontend.onrender.com/)
+Demo admin username and password: testadmin
+Demo admin username and password: teststaff
+Demo admin username and password: testparent
+Notes: The app is deployed as a free instance on Render. The web server spins down after inactivity. Please allow a minute for the server to come back up.
 
 ## Our Team
 
-Everyone on your team should add their name along with a link to their GitHub
-& optionally their LinkedIn profiles below. Do this in Sprint #1 to validate
-your repo access and to practice PR'ing with your team *before* you start
-coding!
-
 - Heba Rezk, PO/Primary SM: [GitHub](https://github.com/hebarezk) / [Linkedin](https://www.linkedin.com/in/hebarezk/)
 - Valerie Johnson, Secondary SM: [LinkedIn](https://www.linkedin/in/valeriemichellejohnson) , [Email](valeriejohnsonprofessional@gmail.com) / [GitHub](https://github.com/johnsonval)
-- Sunny, Developer: [Linkedin](https://www.linkedin.com/in/sunnymaster/) , [GitHub](https://github.com/Sunny-Master) , [Email](master.codeworks@gmail.com) 
 - Rumen Ivanov, Developer: [GitHub](https://github.com/rumenji) / [LinkedIn](https://www.linkedin.com/in/rumen-ivanov-it/)
+- Sunny, Developer: [Linkedin](https://www.linkedin.com/in/sunnymaster/) , [GitHub](https://github.com/Sunny-Master) , [Email](master.codeworks@gmail.com) 
 - Yi, Developer: [Github](https://github.com/yi-lin-1234?tab=repositories), [Email](chinesejasonlin@gmail.com)
