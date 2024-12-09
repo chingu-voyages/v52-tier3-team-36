@@ -1,10 +1,10 @@
 from django.contrib.auth.models import Group, User
-from rest_framework import permissions, viewsets, status
+from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from .serializers import UserSerializer, GroupSerializer, UserRegistrationSerializer, ChangePasswordSerializer, ResetPasswordSerializer, PermissionSerializer
-from .permissions import IsParent, IsAdministrator, IsStaff
+from .permissions import UsersActions, ParentsActions
 from .models import Permission
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
@@ -85,7 +85,7 @@ class CustomRefreshTokenView(TokenRefreshView):
             return Response({'refreshed': False})
         
 @api_view(['POST'])
-@permission_classes([IsAuthenticated])
+@permission_classes([UsersActions])
 def register(request):
     '''API endpoint for user registration. 
     Expects {
@@ -108,7 +108,7 @@ def register(request):
     return Response(serializer.errors)
 
 @api_view(['POST'])
-@permission_classes([IsAuthenticated])
+@permission_classes([UsersActions])
 def change_password(request):
     serializer = ChangePasswordSerializer(data=request.data)
     if serializer.is_valid():
@@ -124,7 +124,7 @@ def change_password(request):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 @api_view(['POST'])
-@permission_classes([IsAuthenticated])
+@permission_classes([UsersActions])
 def reset_password(request):
     serializer = ResetPasswordSerializer(data=request.data)
     if serializer.is_valid():
@@ -186,11 +186,12 @@ def is_authenticated(request):
         "last_name": user.last_name,
         "email": user.email,
         "groups": group_ids,
+        "is_active": user.is_active,
         "permissions": perm_validated
     }
     return Response({'authenticated': user_json})
 
-@permission_classes([IsAuthenticated])
+@permission_classes([UsersActions])
 class UserViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows users to be viewed or edited.
@@ -199,7 +200,7 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all().order_by('-date_joined')
     serializer_class = UserSerializer
 
-@permission_classes([IsAuthenticated])
+@permission_classes([UsersActions])
 class GroupViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows groups to be viewed or edited.
@@ -226,7 +227,7 @@ class PermissionViewSet(viewsets.ModelViewSet):
 
         return queryset
     
-@permission_classes([IsAuthenticated])
+@permission_classes([UsersActions, ParentsActions])
 class ParentViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows users to be viewed or edited.
@@ -247,7 +248,7 @@ class ParentViewSet(viewsets.ModelViewSet):
 
         return queryset
 
-@permission_classes([IsAuthenticated])
+@permission_classes([UsersActions])
 class StaffViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows users to be viewed or edited.

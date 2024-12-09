@@ -47,6 +47,7 @@ const UserEdit = ({curUser, user, edit, editedUser, userGroups}) => {
       // Add selected group to form and make sure it is an integer
       formData.groups = [+selectedGroup];
       formData.is_active = isActive;
+      formData.username = user.username;
       const response = await editRecord(formData, user.url);
       // Set new user details to state
       editedUser(formData)
