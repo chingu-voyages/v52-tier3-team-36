@@ -4,14 +4,14 @@ from .models import Permission
 
 class UserSerializer(serializers.ModelSerializer):
     '''Serializer to convert the Django user model instance to JSON.
-    The fields selected are what fields are included from the user model.
-    Hyperlinked - returns a full URL to get the user, instead of constructing one on the frontend'''
+    The fields selected are what fields are included from the user model.'''
     class Meta:
         model = User
         fields = ['url', 'id', 'username', 'first_name', 'last_name', 'email', 'is_active', 'groups']
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
-    '''Serializer for user registration'''
+    '''Serializer for user registration.
+    The fields are allowed in the POST data'''
     password = serializers.CharField(write_only=True)
 
     class Meta:
@@ -45,11 +45,15 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
             return {'created': False}
 
 class ChangePasswordSerializer(serializers.Serializer):
+    '''Serializer for self password change.
+    Requires current and new passwords'''
     old_password = serializers.CharField(required=True)
     new_password = serializers.CharField(required=True)
     username = serializers.CharField(required=True)
 
 class ResetPasswordSerializer(serializers.Serializer):
+    '''Serializer for admin password reset.
+    Requires only new password'''
     new_password = serializers.CharField(required=True)
     username = serializers.CharField(required=True)
     
@@ -62,6 +66,8 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
         fields = ['url', 'id', 'name']
 
 class PermissionSerializer(serializers.ModelSerializer):
+    '''Serializer for custom permissions.
+    Requires the group ID and a the permissions as a boolean'''
     list_users = serializers.BooleanField(),
     edit_users = serializers.BooleanField(),
     edit_parents = serializers.BooleanField(),
