@@ -100,6 +100,7 @@ def register(request):
     first_name,
     last_name,
     email,
+    is_active,
     groups: [group.id,...]}'''
     serializer = UserRegistrationSerializer(data=request.data)
     if serializer.is_valid():
@@ -110,6 +111,9 @@ def register(request):
 @api_view(['POST'])
 @permission_classes([UsersActions])
 def change_password(request):
+    '''API endpoint for self password change.
+    Expects current and new password, along with the username.
+    Returns success'''
     serializer = ChangePasswordSerializer(data=request.data)
     if serializer.is_valid():
         user = User.objects.get(username=serializer.validated_data['username'])
@@ -126,6 +130,9 @@ def change_password(request):
 @api_view(['POST'])
 @permission_classes([UsersActions])
 def reset_password(request):
+    '''API endpoint for admin password reset.
+    Expects username and new password.
+    Returns success'''
     serializer = ResetPasswordSerializer(data=request.data)
     if serializer.is_valid():
         user = User.objects.get(username=serializer.validated_data['username'])
@@ -152,9 +159,14 @@ def logout(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def is_authenticated(request):
+    '''API endpoint to check if the request is coming from an authenticated user.
+    Returns user info with permissions'''
     user = request.user
+    # Get the groups for the request user
     group_ids = [group.id for group in user.groups.all()]
+    # Get the permission for the group
     perm_filtered = Permission.objects.filter(group__in=group_ids) if len(group_ids) > 0 else Permission.objects.filter(group=1)
+    # If superuser - allow all, if new user - return an object with blank permissions
     perm_json = [{
             "list_users": True,
             "edit_users": True,
@@ -179,6 +191,7 @@ def is_authenticated(request):
             "check_in": False,
             "view_stats": False
     }
+    # Create the currently logged in user object
     user_json = {
         "username": user.username,
         "id": user.id,
@@ -195,7 +208,7 @@ def is_authenticated(request):
 class UserViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows users to be viewed or edited.
-    Requires the user to be in the Administrators group => {'detail': 'You do not have permissions to perform this action'}
+    Requires the user to be a member of a group with UserActions set to True => {'detail': 'You do not have permissions to perform this action'}
     """
     queryset = User.objects.all().order_by('-date_joined')
     serializer_class = UserSerializer
@@ -204,7 +217,7 @@ class UserViewSet(viewsets.ModelViewSet):
 class GroupViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows groups to be viewed or edited.
-    Requires the user to be in the Administrators group => {'detail': 'You do not have permissions to perform this action'}
+    Requires the user to be a member of a group with UserActions set to True => {'detail': 'You do not have permissions to perform this action'}
     """
     queryset = Group.objects.all().order_by('name')
     serializer_class = GroupSerializer
@@ -212,8 +225,7 @@ class GroupViewSet(viewsets.ModelViewSet):
 @permission_classes([IsAuthenticated])
 class PermissionViewSet(viewsets.ModelViewSet):
     """
-    API endpoint that allows groups to be viewed or edited.
-    Requires the user to be in the Administrators group => {'detail': 'You do not have permissions to perform this action'}
+    API endpoint that allows a list of permission to be viewed or edited.
     """
     queryset = Permission.objects.all()
     serializer_class = PermissionSerializer
@@ -230,8 +242,8 @@ class PermissionViewSet(viewsets.ModelViewSet):
 @permission_classes([UsersActions, ParentsActions])
 class ParentViewSet(viewsets.ModelViewSet):
     """
-    API endpoint that allows users to be viewed or edited.
-    Requires the user to be in the Administrators group => {'detail': 'You do not have permissions to perform this action'}
+    API endpoint that allows users to be viewed or edited. Filters by active parameter.
+    Requires the user to be a member of a group with UserActions or ParentsActions set to True => {'detail': 'You do not have permissions to perform this action'}
     """
     queryset = User.objects.all().order_by('last_name')
     permissions = Permission.objects.filter(list_own_children=True).values_list('group', flat=True)
@@ -251,8 +263,8 @@ class ParentViewSet(viewsets.ModelViewSet):
 @permission_classes([UsersActions])
 class StaffViewSet(viewsets.ModelViewSet):
     """
-    API endpoint that allows users to be viewed or edited.
-    Requires the user to be in the Administrators group => {'detail': 'You do not have permissions to perform this action'}
+    API endpoint that allows staff users to be viewed or edited. Filter by active parameter.
+    Requires the user to be a member of a group with UserActions set to True => {'detail': 'You do not have permissions to perform this action'}
     """
     queryset = User.objects.all().order_by('last_name')
     permissions = Permission.objects.filter(list_own_children=False).values_list('group', flat=True)

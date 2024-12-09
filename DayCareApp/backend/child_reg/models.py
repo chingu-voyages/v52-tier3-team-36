@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class Child(models.Model):
+    '''Model for child'''
     GENDER = {
     "MALE": "Male", 
     "FEMALE": "Female", 
@@ -20,6 +21,8 @@ class Child(models.Model):
     upload = models.FileField(upload_to="uploads/", blank=True)
 
 class Checkin(models.Model):
+    '''Model for check in/out, report card records
+    Requires the current user to be passed and recorded, along with the date and time when the action has occured.'''
     child = models.ForeignKey(Child, on_delete=models.CASCADE)
     checkin = models.DateTimeField()
     checkout = models.DateTimeField(blank=True, null=True)

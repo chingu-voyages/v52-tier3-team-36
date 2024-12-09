@@ -3,23 +3,25 @@ from django.utils import timezone
 from django.utils.dateparse import parse_date
 from rest_framework import viewsets
 from rest_framework.decorators import permission_classes
-from rest_framework.permissions import IsAuthenticated
 from app_auth.permissions import ChildrenActions, CheckinActions
+from app_auth.models import Permission
 from .serializers import ChildSerializer, CheckinSerializer, CheckinGETSerializer
 from .models import Child, Checkin
 
 @permission_classes([ChildrenActions])
 class ChildViewSet(viewsets.ModelViewSet):
     """
-    API endpoint that allows groups to be viewed or edited.
-    Requires the user to be in the Administrators group => {'detail': 'You do not have permissions to perform this action'}
+    API endpoint that allows children to be viewed or edited.
+    Requires the user to be a member of a group with ChildrenActions set to True => {'detail': 'You do not have permissions to perform this action'}
     """
     queryset = Child.objects.all().order_by('last_name')
     serializer_class = ChildSerializer
 
     def filter_queryset(self, queryset):
-        required_groups = ['Parents']
-        if any(group.name in required_groups for group in self.request.user.groups.all()):
+        user_groups = self.request.user.groups.all()
+        user_permissions = Permission.objects.filter(group__in=user_groups)
+        required_permissions = {'list_own_children': True}
+        if user_permissions.filter(**required_permissions):
             queryset = queryset.filter(parent=self.request.user)
             return queryset
         else:
@@ -28,8 +30,10 @@ class ChildViewSet(viewsets.ModelViewSet):
 @permission_classes([CheckinActions])
 class CheckinViewSet(viewsets.ModelViewSet):
     """
-    API endpoint that allows groups to be viewed or edited.
-    Requires the user to be in the Administrators group => {'detail': 'You do not have permissions to perform this action'}
+    API endpoint that allows for check in/out and report card operations to be viewed or edited.
+    Can be filtered by date - accepts from/to parameters.
+    Default is from the beginning of the month until the current date if no params are passed.
+    Requires the user to be a member of a group with CheckinActions set to True => {'detail': 'You do not have permissions to perform this action'}
     """
     queryset = Checkin.objects.all().order_by('-checkin')
     def get_serializer_class(self):
@@ -65,8 +69,8 @@ class CheckinViewSet(viewsets.ModelViewSet):
 @permission_classes([CheckinActions])
 class CurrentlyCheckedViewSet(viewsets.ModelViewSet):
     """
-    API endpoint that allows groups to be viewed or edited.
-    Requires the user to be in the Administrators group => {'detail': 'You do not have permissions to perform this action'}
+    API endpoint that allows currently checked in children to be viewed or edited.
+    Requires the user to be a member of a group with CheckinActions set to True => {'detail': 'You do not have permissions to perform this action'}
     """
     checkins = Checkin.objects.filter(checkout__isnull=True).values_list('child', flat=True)
     queryset = Child.objects.filter(id__in = checkins)
