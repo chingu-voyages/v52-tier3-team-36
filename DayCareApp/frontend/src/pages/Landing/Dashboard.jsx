@@ -5,6 +5,7 @@ import ChildrenList from "./Children";
 import UsersList from "./Users";
 import ParentsList from "./Parents";
 import styles from './Dashboard.module.css';
+import DashboardIcon from '@mui/icons-material/Dashboard';
 /**
  * Dashboard component for displaying lists of staff/parents/children when a user logs in
  *
@@ -57,7 +58,11 @@ const Dashboard = ({curUser}) => {
     
     return (
         <section>
-            <h1>Dashboard</h1>
+            <div className={styles.header}>
+              <DashboardIcon></DashboardIcon>
+              <h1>Dashboard</h1>
+            </div>
+            
             {/* If a user is logged in and the user has the view_stats permission, display the stats */}
             { curUser && curUser.permissions.view_stats && 
             <div>

@@ -5,6 +5,7 @@
 }
 
 .container > section {
+  min-width: 350px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -16,7 +17,13 @@
 }
 
 .container > section > h1 {
-  margin: 0 0 1rem 0;
+  margin: 0;
+}
+
+.header {
+  display: flex;
+  align-items: center; 
+  gap: 0.25rem;
 }
 
 .actions {
@@ -38,7 +45,8 @@
 
 .dashView {
   display: flex;
-  gap: 2rem;
+  flex-direction: column;
+  width: 90%;
 }
 
 .column {
@@ -47,10 +55,15 @@
   align-items: center;
   gap: 0.5rem;
   margin: 1rem 0;
+  width: 100%;
 }
 
-.column h4, .column ul {
-  margin: 0;
+.column h2, .column ul, .column h4 {
+  margin: 0 0 0.5rem 0;
+}
+
+.column h2 {
+  font-size: 1.2rem;
 }
 
 .column ul {
@@ -63,4 +76,30 @@
   align-items: center;
   gap: 0.2rem;
   margin: 0.2rem;
+}
+
+.column button {
+  width: 5rem;
+  padding: 0.5rem;
+  border-radius: 7px;
+  color: var(--darkmint);
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.column td {
+  padding: 0.1rem;
+  text-align: center;
+}
+
+.column td button {
+  width: 2.5rem;
+  padding: 0.25rem;
+}
+
+.list {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
 }
