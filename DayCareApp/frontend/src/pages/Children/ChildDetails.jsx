@@ -6,6 +6,8 @@ import ChildEdit from "./ChildEdit";
 import profilePic from '../../assets/profile.png'
 import { getCheckins, postCheckin, postCheckout } from "../../services/api";
 import CheckinList from "./CheckinList";
+import ChildCareIcon from '@mui/icons-material/ChildCare';
+
 // CSS
 import styles from './ChildDetails.module.css'
 /**
@@ -117,7 +119,10 @@ const ChildDetails = () => {
         :
         <main className={styles.container}>
             <section>
-                <h1>{child.first_name} {child.last_name}</h1>
+                <div className={styles.header}>
+                    <ChildCareIcon></ChildCareIcon>
+                    <h1>{child.first_name} {child.last_name}</h1>
+                </div>
                 {checkInId ? <p>Checked In</p> : <p>Checked Out</p>}
                 {curUser && curUser.permissions.check_in &&
                     <div className={styles.actions}>
