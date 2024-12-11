@@ -11,7 +11,7 @@ class UsersActions(permissions.BasePermission):
         """
         if request.user.is_authenticated:
             # If supeuser - allow
-            if user_passes_test(lambda u: u.is_superuser):
+            if request.user.is_superuser:
                 return True
             # If same as the request user - allow changes to own details and password
             if request.user.username == request.data.get('username'):
@@ -36,7 +36,7 @@ class ParentsActions(permissions.BasePermission):
         """
         if request.user.is_authenticated:
             # If superuser - allow
-            if user_passes_test(lambda u: u.is_superuser):
+            if request.user.is_superuser:
                 return True
             # If the same as the edited object - allow details and password changes
             if request.user.username == request.data.get('username'):
@@ -61,7 +61,7 @@ class ChildrenActions(permissions.BasePermission):
         """
         if request.user.is_authenticated:
             # If superuser - allow
-            if user_passes_test(lambda u: u.is_superuser):
+            if request.user.is_superuser:
                 return True
             user_groups = request.user.groups.all()
             user_permissions = Permission.objects.filter(group=user_groups[0])
@@ -83,7 +83,7 @@ class ViewStats(permissions.BasePermission):
         """
         if request.user.is_authenticated:
             # If superuser - allow
-            if user_passes_test(lambda u: u.is_superuser):
+            if request.user.is_superuser:
                 return True
             user_groups = request.user.groups.all()
             user_permissions = Permission.objects.filter(group=user_groups[0])
@@ -99,7 +99,7 @@ class CheckinActions(permissions.BasePermission):
         """
         if request.user.is_authenticated:
             # If superuser - allow
-            if user_passes_test(lambda u: u.is_superuser):
+            if request.user.is_superuser:
                 return True
             user_groups = request.user.groups.all()
             user_permissions = Permission.objects.filter(group__in=user_groups)
@@ -115,7 +115,7 @@ class ReportCardsActions(permissions.BasePermission):
         """
         if request.user.is_authenticated:
             # If superuser - allow
-            if user_passes_test(lambda u: u.is_superuser):
+            if request.user.is_superuser:
                 return True
             user_groups = request.user.groups.all()
             user_permissions = Permission.objects.filter(group=user_groups[0])
