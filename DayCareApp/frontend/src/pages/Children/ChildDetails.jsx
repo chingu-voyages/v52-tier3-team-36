@@ -28,6 +28,7 @@ const ChildDetails = () => {
     const [toDate, setToDate] = useState('');
     const [resetDates, setResetDates] = useState(false);
     const parents = location.state.parents;
+    
     // Get child parent object from the navigation state
     const childParent = parents.filter(parent => child.parent === parent.id)
     // Set state to show details or editing form
