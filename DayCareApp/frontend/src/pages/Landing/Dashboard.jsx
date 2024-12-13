@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { getChildren, getUsers, getCheckedIn, getParents } from '../../services/api';
 import { useNavigate } from 'react-router-dom';
+import { Alert } from '@mui/material';
 import ChildrenList from "./Children";
 import UsersList from "./Users";
 import ParentsList from "./Parents";
@@ -15,6 +16,7 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
  * @returns {React.ReactElement} A dashboard element.
  */
 const Dashboard = ({curUser}) => {
+    const [showAlert, setShowAlert] = useState(false);
     const [children, setChildren] = useState([])
     const [curCheckedIn, setCurCheckedIn] = useState([])
     const [users, setUsers] = useState([])
@@ -47,6 +49,19 @@ const Dashboard = ({curUser}) => {
     useEffect(() => {
       fetchData();
     }, [])
+    useEffect(() => {
+        const queryParams = new URLSearchParams(window.location.search);
+        if (queryParams.get('success') === 'true') {
+            setShowAlert(true)
+            const timeId = setTimeout(() => {
+                setShowAlert(false);
+            }, 15000)
+            
+            return () => {
+                clearTimeout(timeId)
+            }
+        }
+    }, [navigate])
     // Handle user registration - navigate to the Register component
     const handleRegister = () => {
       navigate('/auth/register')
@@ -58,6 +73,7 @@ const Dashboard = ({curUser}) => {
     
     return (
         <section>
+            {showAlert && <Alert severity="success">New record successfully registered!</Alert>}
             <div className={styles.header}>
               <DashboardIcon></DashboardIcon>
               <h1>Dashboard</h1>

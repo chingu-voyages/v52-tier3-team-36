@@ -62,12 +62,12 @@ const RegisterChildPage = () => {
       formData.parent = +selectedParent;
       const response = await registerChild(formData);
       if(response){
-        navigate('/')
+        navigate('/?success=true')
       } else {
         setMessage('There was an issue registering the child')
       }
     } catch (err) {
-      console.log(err)
+      console.error(err)
       setMessage(err.message)
     }
   }
