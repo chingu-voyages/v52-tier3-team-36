@@ -2,6 +2,7 @@
 import { changePass } from '../../services/authService';
 import styles from './UserEdit.module.css';
 import { useState } from 'react';
+import * as yup from 'yup';
 /**
  * Represents a user password se;f change component.
  *
@@ -11,18 +12,23 @@ import { useState } from 'react';
  * @param {UserDetailsState} props.edit - Set state for the user reset password form.
  * @returns {React.ReactElement} A form for self user password chnage. Requires current password and new password confirmation.
  */
-const SelfPasswordChange = ({user, edit}) => {
-    const [message, setMessage] = useState('');
+const SelfPasswordChange = ({user, edit, showBanner}) => {
+    const [message, setMessage] = useState([]);
   const [formData, setFormData] = useState({
     username: user.username,
     new_password: '',
     confirm_password: '',
     old_password: ''
   })
-
+  // Form validation schema
+  const schema = yup.object({
+    old_password: yup.string().required('Current password is required!'),
+    new_password: yup.string().min(8, 'New password must be at least 8 characters!').required('Password is required!').notOneOf([yup.ref('old_password'), null], 'New password cannot be the same as current password!'),
+    confirm_password: yup.string().min(8).required('Password confirmation is required').oneOf([yup.ref('new_password'), null], 'Passwords must match!'),
+  });
   // Handle input change
   const handleChange = evt => {
-    setMessage('')
+    setMessage([])
     setFormData({ ...formData, [evt.target.name]: evt.target.value })
   }
   // Submit form data to the backend API endpoint
@@ -32,32 +38,39 @@ const SelfPasswordChange = ({user, edit}) => {
       if (!import.meta.env.VITE_BACK_END_SERVER_URL) {
         throw new Error('No VITE_BACK_END_SERVER_URL in front-end .env')
       }
-      if (formData.new_password !== formData.confirm_password){
-        throw new Error('Password and confirm password do not match!')
-      }
+      // Validate form
+      await schema.validate(formData, { abortEarly: false });
       const response = await changePass(formData);
       // Hides the form after submission
       edit()
+      // Show banner
+      showBanner();
     } catch (err) {
-      console.log(err)
-      setMessage(err.message)
+      if(err?.inner){
+        const newErrors= [];
+        err.inner.forEach((error) => {
+          newErrors.push(error.message)
+        })
+        setMessage(newErrors)
+      } else {
+        setMessage([err.message])
+      }
     }
   }
 
   const { username, new_password, confirm_password, old_password } = formData
   // Checks if form has user input
   const isFormInvalid = () => {
-    return !(username && new_password && old_password && new_password !== old_password)
+    return !(username && new_password && old_password)
   }
 
   return (
     <main className={styles.container}>
       <section>
         <h1>Change your {user.username} password</h1>
-        <p className={styles.message}>{message}</p>
         <form autoComplete="off" onSubmit={handleSubmit} className={styles.form}>
         <label className={styles.label}>
-            Current password
+            Current password *
             <input
               type="password"
               value={old_password}
@@ -67,7 +80,7 @@ const SelfPasswordChange = ({user, edit}) => {
             />
           </label>
           <label className={styles.label}>
-            New password
+            New password *
             <input
               type="password"
               value={new_password}
@@ -77,7 +90,7 @@ const SelfPasswordChange = ({user, edit}) => {
             />
           </label>
           <label className={styles.label}>
-            Confirm password
+            Confirm password *
             <input
               type="password"
               value={confirm_password}
@@ -93,6 +106,8 @@ const SelfPasswordChange = ({user, edit}) => {
             </button>
           </div>
         </form>
+        {message && message.map( (msg, id) => <p className={styles.message} key={id}>{msg}</p>
+        )}
       </section>
     </main>
   )

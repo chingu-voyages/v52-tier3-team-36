@@ -1,6 +1,7 @@
 // npm modules
 import { useState } from 'react';
 import { editRecord } from '../../services/api.js';
+import * as yup from 'yup';
 // css
 import styles from './ChildEdit.module.css';
 /**
@@ -16,7 +17,7 @@ import styles from './ChildEdit.module.css';
  * @returns {React.ReactElement} A form for child details change element.
  */
 const ChildEdit = ({child, parents, childParent, edit, editedChild}) => {
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState([]);
   const [selectedParent, setSelectedParent] = useState(childParent[0]?.id);
   const [selectedGender, setSelectedGender] = useState(child.gender);
   const [formData, setFormData] = useState({
@@ -30,6 +31,16 @@ const ChildEdit = ({child, parents, childParent, edit, editedChild}) => {
     em_contact_number: child.em_contact_number,
     parent: child.parent
   });
+    // Form validation schema
+    const schema = yup.object({
+      first_name: yup.string().required('First name is required!'),
+      last_name: yup.string().required('Last name is required!'),
+      dob: yup.date().required('Please select date of birth!'),
+      address: yup.string().required('Address is required!'),
+      em_contact_name: yup.string().required('Name of emergency contact is required!'),
+      em_contact_number: yup.string().required('Phone number of emergency contact is required!'),
+      parent: yup.number().required('Please select the child parent!')
+    });
   // Set the available gender options
   const genderOptions = [
     {name: "Male", value:"MALE"},
@@ -47,7 +58,7 @@ const ChildEdit = ({child, parents, childParent, edit, editedChild}) => {
   }
   // Handle changing text inputs
   const handleChange = evt => {
-    setMessage('')
+    setMessage([])
     setFormData({ ...formData, [evt.target.name]: evt.target.value })
   };
   // Submit form to the backend API endpoint
@@ -60,6 +71,8 @@ const ChildEdit = ({child, parents, childParent, edit, editedChild}) => {
       // Set gender and parent to the form data
       formData.gender = selectedGender;
       formData.parent = +selectedParent;
+      // Validate form
+      await schema.validate(formData, { abortEarly: false });
       const response = await editRecord(formData, child.url);
       if(response){
         editedChild(formData)
@@ -68,8 +81,15 @@ const ChildEdit = ({child, parents, childParent, edit, editedChild}) => {
         setMessage('There was an issue registering the child')
       }
     } catch (err) {
-      console.log(err)
-      setMessage(err.message)
+      if(err?.inner){
+        const newErrors= [];
+        err.inner.forEach((error) => {
+          newErrors.push(error.message)
+        })
+        setMessage(newErrors)
+      } else {
+        setMessage([err.message])
+      }
     }
   }
 
@@ -83,10 +103,9 @@ const ChildEdit = ({child, parents, childParent, edit, editedChild}) => {
     <main className={styles.container}>
       <section>
         <h1>Edit details for {child.first_name} {child.last_name}</h1>
-        <p className={styles.message}>{message}</p>
         <form autoComplete="off" onSubmit={handleSubmit} className={styles.form}>
           <label className={styles.label}>
-            First name
+            First name *
             <input
               type="text"
               value={first_name}
@@ -97,7 +116,7 @@ const ChildEdit = ({child, parents, childParent, edit, editedChild}) => {
             />
           </label>
           <label className={styles.label}>
-            Last name
+            Last name *
             <input
               type="text"
               value={last_name}
@@ -108,7 +127,7 @@ const ChildEdit = ({child, parents, childParent, edit, editedChild}) => {
             />
           </label>
           <label className={styles.label}>
-            Date of birth
+            Date of birth *
             <input
               type="date"
               value={dob}
@@ -119,7 +138,7 @@ const ChildEdit = ({child, parents, childParent, edit, editedChild}) => {
             />
           </label>
           <label className={styles.label}>
-            Gender
+            Gender *
             <select value={selectedGender} onChange={handleGenderChange}>
               {genderOptions.map((option) => (
                 <option key={option.value} value={option.value}>
@@ -129,7 +148,7 @@ const ChildEdit = ({child, parents, childParent, edit, editedChild}) => {
             </select>
           </label>
           <label className={styles.label}>
-            Address
+            Address *
             <input
               type="text"
               value={address}
@@ -140,7 +159,7 @@ const ChildEdit = ({child, parents, childParent, edit, editedChild}) => {
             />
           </label>
           <label className={styles.label}>
-            Parent
+            Parent *
             <select value={selectedParent} onChange={handleParentChange}>
               {parents.map((option) => (
                 <option key={option.id} value={option.id}>
@@ -150,7 +169,7 @@ const ChildEdit = ({child, parents, childParent, edit, editedChild}) => {
             </select>
           </label>
           <label className={styles.label}>
-            Name of emergency contact
+            Name of emergency contact *
             <input
               type="text"
               value={em_contact_name}
@@ -161,7 +180,7 @@ const ChildEdit = ({child, parents, childParent, edit, editedChild}) => {
             />
           </label>
           <label className={styles.label}>
-            Phone number of emergency contact
+            Phone number of emergency contact *
             <input
               type="text"
               value={em_contact_number}
@@ -188,6 +207,8 @@ const ChildEdit = ({child, parents, childParent, edit, editedChild}) => {
             </button>
           </div>
         </form>
+        {message && message.map( (msg, id) => <p className={styles.message} key={id}>{msg}</p>
+        )}
       </section>
     </main>
   )

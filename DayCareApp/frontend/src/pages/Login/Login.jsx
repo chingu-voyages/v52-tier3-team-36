@@ -1,6 +1,7 @@
 // npm modules
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { Alert } from '@mui/material'
 // contexts
 import { useAuth } from '../../contexts/useAuth'
 // css
@@ -15,6 +16,7 @@ const LoginPage = () => {
   const navigate = useNavigate()
   // The backend API request query from context
   const { loginUser } = useAuth();
+  const [showAlert, setShowAlert] = useState(false);
   const [message, setMessage] = useState('')
   const [formData, setFormData] = useState({
     username: '',
@@ -43,7 +45,20 @@ const LoginPage = () => {
       setMessage(err.message)
     }
   }
-
+    //Check if success when logging out
+    useEffect(() => {
+      const queryParams = new URLSearchParams(window.location.search);
+      if (queryParams.get('success') === 'true') {
+          setShowAlert(true)
+          const timeId = setTimeout(() => {
+              setShowAlert(false);
+          }, 15000)
+          
+          return () => {
+              clearTimeout(timeId)
+          }
+      }
+  }, [navigate])
   const { username, password } = formData
 // Check if there is user input in the form input fields
   const isFormInvalid = () => {
@@ -52,6 +67,7 @@ const LoginPage = () => {
 
   return (
     <main className={styles.container}>
+      {showAlert && <Alert severity="info">You have successfully logged out!</Alert>}
       <section>
         <h1>Log In</h1>
         <p className={styles.message}>{message}</p>

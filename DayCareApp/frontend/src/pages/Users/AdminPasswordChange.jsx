@@ -2,6 +2,7 @@
 import { adminResetPass } from '../../services/authService';
 import styles from './UserEdit.module.css';
 import { useState } from 'react';
+import * as yup from 'yup';
 /**
  * Represents a user password reset component.
  *
@@ -11,13 +12,16 @@ import { useState } from 'react';
  * @param {UserDetailsState} props.edit - Set state for the user reset password form.
  * @returns {React.ReactElement} A form for user password reset by the admin. Only requires single password input - no confirmation.
  */
-const AdminPasswordChange = ({user, edit}) => {
-    const [message, setMessage] = useState('');
+const AdminPasswordChange = ({user, edit, showBanner}) => {
+    const [message, setMessage] = useState([]);
   const [formData, setFormData] = useState({
     username: user.username,
     new_password: '',
   })
-
+  // Form validation schema
+  const schema = yup.object({
+    new_password: yup.string().required('New password is required!'),
+  });
   // Handle input change
   const handleChange = evt => {
     setMessage('')
@@ -30,12 +34,22 @@ const AdminPasswordChange = ({user, edit}) => {
       if (!import.meta.env.VITE_BACK_END_SERVER_URL) {
         throw new Error('No VITE_BACK_END_SERVER_URL in front-end .env')
       }
+      // Validate form
+      await schema.validate(formData, { abortEarly: false });
       const response = await adminResetPass(formData);
       // Set editing to false to hide the form
       edit()
+      showBanner()
     } catch (err) {
-      console.error(err)
-      setMessage(err.message)
+      if(err?.inner){
+        const newErrors= [];
+        err.inner.forEach((error) => {
+          newErrors.push(error.message)
+        })
+        setMessage(newErrors)
+      } else {
+        setMessage([err.message])
+      }
     }
   }
 
@@ -52,7 +66,7 @@ const AdminPasswordChange = ({user, edit}) => {
         <p className={styles.message}>{message}</p>
         <form autoComplete="off" onSubmit={handleSubmit} className={styles.form}>
           <label className={styles.label}>
-            New password
+            New password *
             <input
               type="password"
               value={new_password}
@@ -68,6 +82,8 @@ const AdminPasswordChange = ({user, edit}) => {
             </button>
           </div>
         </form>
+        {message && message.map( (msg, id) => <p className={styles.message} key={id}>{msg}</p>
+        )}
       </section>
     </main>
   )
