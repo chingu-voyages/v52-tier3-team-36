@@ -27,9 +27,9 @@ input {
 }
 .message {
   margin-top: 0;
-  height: 22px;
+  height: 10px;
   color: #dd1b16;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: bold;
 }
 

@@ -49,6 +49,7 @@ const Dashboard = ({curUser}) => {
     useEffect(() => {
       fetchData();
     }, [])
+    //Check if success when adding users/children and display a banner
     useEffect(() => {
         const queryParams = new URLSearchParams(window.location.search);
         if (queryParams.get('success') === 'true') {

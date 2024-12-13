@@ -1,6 +1,7 @@
 // npm modules
 import { useState } from 'react';
 import { editRecord } from '../../services/api.js';
+import * as yup from 'yup';
 // css
 import styles from './UserEdit.module.css';
 /**
@@ -14,7 +15,7 @@ import styles from './UserEdit.module.css';
  * @returns {React.ReactElement} A form for editing user infomration.
  */
 const UserEdit = ({curUser, user, edit, editedUser, userGroups}) => {
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState([]);
   const [selectedGroup, setSelectedGroup] = useState(user.groups[0]);
   const [isActive, setIsActive] = useState(user.is_active);
   const [formData, setFormData] = useState({
@@ -24,6 +25,13 @@ const UserEdit = ({curUser, user, edit, editedUser, userGroups}) => {
     is_active: user.is_active,
     groups: user.groups
   })
+  // Form validation schema
+  const schema = yup.object({
+    first_name: yup.string().required('First name is required!'),
+    last_name: yup.string().required('Last name is required!'),
+    email: yup.string().email('Please enter a valid email address!').required('Email is required!'),
+    groups: yup.number().required('Please select a user group!')
+  });
   // Handle change for selected group
   const handleGroupChange = (evt) => {
     setSelectedGroup(evt.target.value)
@@ -34,7 +42,7 @@ const UserEdit = ({curUser, user, edit, editedUser, userGroups}) => {
   };
   // Handle change for text inputs
   const handleChange = evt => {
-    setMessage('')
+    setMessage([])
     setFormData({ ...formData, [evt.target.name]: evt.target.value })
   }
   // Submit user edit form to backend API endpoint
@@ -48,13 +56,22 @@ const UserEdit = ({curUser, user, edit, editedUser, userGroups}) => {
       formData.groups = [+selectedGroup];
       formData.is_active = isActive;
       formData.username = user.username;
+      // Validate form
+      await schema.validate(formData, { abortEarly: false });
       const response = await editRecord(formData, user.url);
       // Set new user details to state
       editedUser(formData)
       edit()
     } catch (err) {
-      console.error(err)
-      setMessage(err.message)
+      if(err?.inner){
+        const newErrors= [];
+        err.inner.forEach((error) => {
+          newErrors.push(error.message)
+        })
+        setMessage(newErrors)
+      } else {
+        setMessage([err.message])
+      }
     }
   }
 
@@ -68,7 +85,6 @@ const UserEdit = ({curUser, user, edit, editedUser, userGroups}) => {
     <main className={styles.container}>
       <section>
         <h1>Edit user {user.username}</h1>
-        <p className={styles.message}>{message}</p>
         <form autoComplete="off" onSubmit={handleSubmit} className={styles.form}>
           <label className={styles.label}>
             First name
@@ -128,6 +144,8 @@ const UserEdit = ({curUser, user, edit, editedUser, userGroups}) => {
             </button>
           </div>
         </form>
+        {message && message.map( (msg, id) => <p className={styles.message} key={id}>{msg}</p>
+        )}
       </section>
     </main>
   )

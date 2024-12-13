@@ -33,10 +33,13 @@ const UserDetails = () => {
     };
     // Show hide password reset form
     const handleIsChangingPass = () => {
-        setAlertMsg(`Password successfully changed!`)
-        setShowAlert(true)
         setIsChangingPass(!isChangingPass);
     };
+    // Display banner on successful password change
+    const handlePassChangeSuccess = () => {
+        setAlertMsg(`Password successfully changed!`)
+        setShowAlert(true)
+    }
     // Add selected user details to state
     const handleSetUser = (editedUser) => {
         setAlertMsg(`User ${editedUser.username} successfully updated!`)
@@ -63,8 +66,8 @@ const UserDetails = () => {
             }
     }, [showAlert])
     //   If current user is changing password - show the user change form, if admin - show only reset password form
-    const resetOrChangePass = user.username === curUser.username ? <SelfPasswordChange user={user} edit={handleIsChangingPass}/> :
-                            <AdminPasswordChange user={user} edit={handleIsChangingPass}/>
+    const resetOrChangePass = user.username === curUser.username ? <SelfPasswordChange user={user} edit={handleIsChangingPass} showBanner={handlePassChangeSuccess}/> :
+                            <AdminPasswordChange user={user} edit={handleIsChangingPass} showBanner={handlePassChangeSuccess}/>
     // If editing - show user edit form, if changing/resetting pass - show pass forms, otherwise show user details
     const content = isEditing ? <UserEdit curUser={curUser} user={user} userGroups={userGroups} edit={handleEditing} editedUser={handleSetUser} /> :
                    isChangingPass ? resetOrChangePass :
