@@ -7,6 +7,7 @@ import profilePic from '../../assets/profile.png'
 import { getCheckins, postCheckin, postCheckout } from "../../services/api";
 import CheckinList from "./CheckinList";
 import ChildCareIcon from '@mui/icons-material/ChildCare';
+import { Alert } from "@mui/material";
 
 // CSS
 import styles from './ChildDetails.module.css'
@@ -19,6 +20,9 @@ import styles from './ChildDetails.module.css'
 const ChildDetails = () => {
     const location = useLocation();
     const { curUser } = useAuth();
+    const [showAlert, setShowAlert] = useState(false);
+    const [alertMessage, setAlertMsg] = useState('');
+    const [alertSeverity, setAlertSeverity] = useState('');
     const [isEditing, setIsEditing] = useState(false);
     // Get child details object from the navigation state
     const [child, setChild] = useState(location.state.child);
@@ -37,6 +41,9 @@ const ChildDetails = () => {
     };
     // Add edited data to state
     const handleSetChild = (editedChild) => {
+        setAlertMsg(`Details for ${editedChild.first_name} successfully updated!`)
+        setAlertSeverity("success")
+        setShowAlert(true)
         setChild(editedChild)
     };
     // Check in a child - send the request to the backend
@@ -45,8 +52,11 @@ const ChildDetails = () => {
             const response = await postCheckin(child.id, curUser.id)
             setCheckInId(response.id)
             setCheckins([response, ...checkins])
+            setAlertMsg(`${child.first_name} successfully checked in!`)
+            setAlertSeverity("success")
+            setShowAlert(true)
         } catch (error) {
-            console.log(error)
+            console.error(error)
         }
     };
     // Add the new checkin data to the checkin state
@@ -54,6 +64,9 @@ const ChildDetails = () => {
         setCheckins(prev_checkins => prev_checkins.map(checkin => checkin.id === updatedCheckin.id ?
             { ...checkin, ...updatedCheckin } : checkin
         ))
+        setAlertSeverity("info")
+        setAlertMsg(`Report card for ${new Date(updatedCheckin.checkin).toLocaleDateString()} successfully added!`)
+        setShowAlert(true)
     };
     // Send checkout request to the backend API and add the new checkin data to the checkin list state
     const handleCheckOut = async () => {
@@ -63,6 +76,9 @@ const ChildDetails = () => {
             setCheckins(prev_checkins => prev_checkins.map(checkin => checkin.id === response.id ?
                 { ...checkin, ...response } : checkin
             ))
+            setAlertMsg(`${child.first_name} successfully checked out!`)
+            setAlertSeverity("warning")
+            setShowAlert(true)
         } catch (error) {
             console.error(error)
         }
@@ -112,6 +128,18 @@ const ChildDetails = () => {
         fetchCheckins();
     }, [resetDates]
     )
+
+    //Hide alert after 3 seconds.
+    useEffect(() => {
+            const timeId = setTimeout(() => {
+                setShowAlert(false);
+                setAlertMsg('')
+            }, 15000)
+            
+            return () => {
+                clearTimeout(timeId)
+            }
+    }, [showAlert])
     
     const photo = child.upload ? child.upload : profilePic
     // If editing - show edit form, else show child details
@@ -168,6 +196,7 @@ const ChildDetails = () => {
         </main>
     return (
         <>
+            {showAlert && <Alert severity={alertSeverity}>{alertMessage}</Alert>}
             {content}
         </>
     )

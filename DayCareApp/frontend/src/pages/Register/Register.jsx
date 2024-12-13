@@ -58,7 +58,7 @@ const RegisterPage = () => {
       if(response.username[0] === 'A user with that username already exists.'){
         throw new Error('A user with that username already exists.')
       }
-      navigate('/')
+      navigate('/?success=true')
     } catch (err) {
       console.error(err)
       setMessage(err.message)

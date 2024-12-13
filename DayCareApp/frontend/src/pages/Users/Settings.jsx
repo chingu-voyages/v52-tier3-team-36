@@ -115,12 +115,14 @@ const SettingsPage = () => {
             <h2>Groups</h2>
             <button onClick={handleAdding}>Add New</button>
             <table>
+              <tbody>
               {groups.map(group => <tr key={group.id}>
                 
                 <td><button onClick={() => handleEdit(group.id)}><ManageAccountsIcon></ManageAccountsIcon></button></td>
                 <td>{group.name}</td>
                 <td><button onClick={() => handleDelete(group.id)}><PersonOffIcon></PersonOffIcon></button></td></tr>
               )}
+              </tbody>
             </table>
           </div>
 
