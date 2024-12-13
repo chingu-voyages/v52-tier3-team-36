@@ -28,6 +28,7 @@ const RegisterChildPage = () => {
   })
   // Get a list of parents from the navigation state
   const {state} = useLocation();
+ 
   const parents = state.parents
   // Set the accepted gender options
   const genderOptions = [
