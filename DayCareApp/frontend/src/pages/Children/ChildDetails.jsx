@@ -4,11 +4,12 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../../contexts/useAuth";
 import ChildEdit from "./ChildEdit";
 import profilePic from '../../assets/profile.png'
-import { getCheckins, postCheckin, postCheckout } from "../../services/api";
+import { getCheckins, postCheckin, postCheckout, uploadImage } from "../../services/api";
 import CheckinList from "./CheckinList";
 import ChildCareIcon from '@mui/icons-material/ChildCare';
 import { Alert } from "@mui/material";
-
+import { isValidImage, MAX_FILE_SIZE } from "../../services/fileValidate";
+import * as yup from 'yup';
 // CSS
 import styles from './ChildDetails.module.css'
 /**
@@ -20,6 +21,7 @@ import styles from './ChildDetails.module.css'
 const ChildDetails = () => {
     const location = useLocation();
     const { curUser } = useAuth();
+    const [message, setMessage] = useState([]);
     const [showAlert, setShowAlert] = useState(false);
     const [alertMessage, setAlertMsg] = useState('');
     const [alertSeverity, setAlertSeverity] = useState('');
@@ -32,6 +34,19 @@ const ChildDetails = () => {
     const [toDate, setToDate] = useState('');
     const [resetDates, setResetDates] = useState(false);
     const parents = location.state.parents;
+    const [isUploading, setIsUploading] = useState(false);
+    const [formData, setFormData] = useState({
+        upload: ''
+    })
+    // Form validation schema
+    const schema = yup.object({
+        upload: yup
+      .mixed()
+      .test("is-valid-type", "Not a valid image type. Image must be jpeg, jpg, or png.",
+        value => isValidImage(value && value.name.toLowerCase(), "image"))
+      .test("is-valid-size", "Max allowed image size is 1MB",
+        value => value && value.size <= MAX_FILE_SIZE)
+      });
     
     // Get child parent object from the navigation state
     const childParent = parents.filter(parent => child.parent === parent.id)
@@ -110,6 +125,37 @@ const ChildDetails = () => {
         const response = await getCheckins({ child: child.id, from: fromDate, to: toDate });
         setCheckins(response)
     };
+    //Adds the uploaded photo to formData
+    const handlePhotoUpload = (evt) => {
+        setFormData({ ...formData, upload: evt.target.files[0] })
+    }
+    //Submits photo to backend after Save
+    const handlePhotoSubmit = async evt => {
+        evt.preventDefault()
+        try {
+          if (!import.meta.env.VITE_BACK_END_SERVER_URL) {
+            throw new Error('No VITE_BACK_END_SERVER_URL in front-end .env')
+          }
+          //Validates file size and type
+          await schema.validate(formData, { abortEarly: false });
+          const response = await uploadImage(formData, child.url);
+          //Updates the child data with the new image
+          if(response){
+            setChild({...child, upload: response.upload})
+            setIsUploading(false)
+          }
+        } catch (err) {
+            if(err?.inner){
+                const newErrors= [];
+                err.inner.forEach((error) => {
+                  newErrors.push(error.message)
+                })
+                setMessage(newErrors)
+              } else {
+                setMessage([err.message])
+              }
+        }
+      }
     // Fetch checkins from the current month to today for the selected child
     useEffect(() => {
         const fetchCheckins = async () => {
@@ -160,7 +206,16 @@ const ChildDetails = () => {
                     </div>
                 }
                 <div className={styles.info}>
-                    <img src={photo} alt="child's photo" />
+                    {/* Shows a form to upload a child image */}
+                    {isUploading ? <div className="App">
+            <h2>Add Image:</h2>
+            <input type="file" onChange={handlePhotoUpload} />
+            <button onClick={handlePhotoSubmit}>Save</button>
+            <button onClick={() => setIsUploading(!isUploading)}>Cancel</button>
+            {message && message.map( (msg, id) => <p className={styles.message} key={id}>{msg}</p>
+        )}
+        </div> : <img src={photo} alt="child's photo" />}
+                    
                     <div>
                         <label>Address: <span>{child.address}</span></label>
                         <label>Parent/Guardian: <span>{childParent[0].first_name} {childParent[0].last_name}</span></label>
@@ -171,6 +226,7 @@ const ChildDetails = () => {
                         <label>Notes: <span>{child.notes}</span></label>
                     </div>
                 </div>
+                {!isUploading &&<button onClick={() => setIsUploading(!isUploading)}>Upload</button>}
                 <div className={styles.actions}>
                     <Link to={'/'}>Go back</Link>
                     {curUser && curUser.permissions.edit_children &&

@@ -1,6 +1,11 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+def image_upload_path(instance, filename):
+    extension = filename.split('.')[-1]
+    new_filename = f"{instance.pk}_{instance.last_name}.{extension}" 
+    return f"profile_pics/{new_filename}"
+
 class Child(models.Model):
     '''Model for child'''
     GENDER = {
@@ -18,7 +23,7 @@ class Child(models.Model):
     em_contact_name = models.CharField(max_length=200)
     em_contact_number = models.CharField(max_length=12)
     parent = models.ForeignKey(User, on_delete=models.CASCADE, related_name='parent')
-    upload = models.FileField(upload_to="uploads/", blank=True)
+    upload = models.FileField(upload_to=image_upload_path, blank=True)
 
 class Checkin(models.Model):
     '''Model for check in/out, report card records
