@@ -104,6 +104,14 @@
   margin-bottom: 1rem;
 }
 
+.message {
+  margin-top: 0;
+  height: 10px;
+  color: #dd1b16;
+  font-size: 16px;
+  font-weight: bold;
+}
+
 .reportFilter button {
   width: 4.5rem;
   padding: 0.5rem;

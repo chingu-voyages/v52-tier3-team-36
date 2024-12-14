@@ -209,6 +209,7 @@ const ChildDetails = () => {
                     {/* Shows a form to upload a child image */}
                     {isUploading ? <div className="App">
             <h2>Add Image:</h2>
+            <p>Allowed files types are jpg, jpeg, and png. Image size must be less than 1MB.</p>
             <input type="file" onChange={handlePhotoUpload} />
             <button onClick={handlePhotoSubmit}>Save</button>
             <button onClick={() => setIsUploading(!isUploading)}>Cancel</button>
