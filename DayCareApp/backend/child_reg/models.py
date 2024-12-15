@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 
 def image_upload_path(instance, filename):
     extension = filename.split('.')[-1]
-    new_filename = f"{instance.pk}_{instance.last_name}.{extension}" 
+    new_filename = f"{instance.pk}_{instance.last_name}.{extension}"
     return f"profile_pics/{new_filename}"
 
 class Child(models.Model):
