@@ -3,12 +3,12 @@ from django.utils import timezone
 from django.utils.dateparse import parse_date
 from rest_framework import viewsets
 from rest_framework.decorators import permission_classes
-from app_auth.permissions import ChildrenActions, CheckinActions
+from app_auth.permissions import ChildrenActions, CheckinActions, OwnChildrenActions
 from app_auth.models import Permission
 from .serializers import ChildSerializer, CheckinSerializer, CheckinGETSerializer
 from .models import Child, Checkin
 
-@permission_classes([ChildrenActions])
+@permission_classes([ChildrenActions | OwnChildrenActions])
 class ChildViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows children to be viewed or edited.

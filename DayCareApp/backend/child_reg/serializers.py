@@ -16,6 +16,18 @@ class CheckinSerializer(serializers.ModelSerializer):
         fields = ['url', 'id', 'child', 'checkin', 'checkout', 'checkin_staff', 
                   'checkout_staff', 'report_card', 'report_staff']
         
+    def validate(self, data):
+        if self.context['request'].method == 'POST':
+            child_checkin = Checkin.objects.filter(child=data['child'])
+            if child_checkin:
+                last_checkin = child_checkin.last()
+                if not last_checkin.checkout:
+                    raise serializers.ValidationError(
+                        'Already checked in!'
+                    )
+                return data
+        return data
+    
     def to_representation(self, instance):
         request = self.context.get('request')
         serializer = CheckinGETSerializer(instance, context={'request': request})

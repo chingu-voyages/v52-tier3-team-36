@@ -39,11 +39,10 @@ const Dashboard = ({curUser}) => {
         setCurCheckedIn(checkedInList);
         setParents(parentsList);
       } : async () => {
-        const [childList, checkedInList] = await Promise.all(
-          [getChildren(), getCheckedIn()]
+        const [childList] = await Promise.all(
+          [getChildren()]
         );
         setChildren(childList);
-        setCurCheckedIn(checkedInList);
       };
     // Send the request to fetch necessary data to display on the dashboard
     useEffect(() => {
