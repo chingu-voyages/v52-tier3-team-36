@@ -161,7 +161,11 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.RawMediaCloudinaryStorage'
+STORAGES = {
+    "default": {
+        "BACKEND": 'cloudinary_storage.storage.MediaCloudinaryStorage',
+    },
+}
 
 # Configure Cloudinary settings
 CLOUDINARY_STORAGE = {
