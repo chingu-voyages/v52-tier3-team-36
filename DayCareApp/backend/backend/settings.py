@@ -32,7 +32,7 @@ SECRET_KEY = SECRET
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = [os.getenv['RENDER_EXTERNAL_HOSTNAME']]
 
 
 # Application definition
