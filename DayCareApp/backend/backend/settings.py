@@ -63,11 +63,11 @@ MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
-CORS_ALLOWED_ORIGINS = [
-    'https://kinderly-frontend.onrender.com'
-]
+# CORS_ALLOWED_ORIGINS = [
+#     'https://kinderly-frontend.onrender.com'
+# ]
 
-# CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 
 ROOT_URLCONF = 'backend.urls'
