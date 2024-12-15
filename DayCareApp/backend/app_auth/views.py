@@ -239,7 +239,7 @@ class PermissionViewSet(viewsets.ModelViewSet):
 
         return queryset
     
-@permission_classes([UsersActions or ParentsActions])
+@permission_classes([UsersActions | ParentsActions])
 class ParentViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows users to be viewed or edited. Filters by active parameter.
