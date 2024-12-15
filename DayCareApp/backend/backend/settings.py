@@ -19,6 +19,7 @@ import os
 load_dotenv()
 DB_URL = os.getenv('DATABASE_URL')
 SECRET = os.getenv('SECRET_KEY')
+RENDER_EXTERNAL_HOSTNAME = os.getenv('RENDER_EXTERNAL_HOSTNAME')
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -32,7 +33,7 @@ SECRET_KEY = SECRET
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = [os.getenv['RENDER_EXTERNAL_HOSTNAME']]
+ALLOWED_HOSTS = [RENDER_EXTERNAL_HOSTNAME]
 
 
 # Application definition
