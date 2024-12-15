@@ -159,14 +159,14 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-# STORAGES = {
-#     "default": {
-#         "BACKEND": 'cloudinary_storage.storage.MediaCloudinaryStorage',
-#     },
-#     "staticfiles": {
-#         "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
-#     },
-# }
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
+}
 
 # Configure Cloudinary settings
 # CLOUDINARY_STORAGE = {
