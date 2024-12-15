@@ -3,6 +3,7 @@ from .models import Child, Checkin
 
 class ChildSerializer(serializers.ModelSerializer):
     '''Serializer for the child instance. Returns a JSON with the selected fields'''
+    upload = serializers.FileField()
     class Meta:
         model = Child
         fields = ['url', 'id', 'first_name', 'last_name', 'notes', 'dob', 

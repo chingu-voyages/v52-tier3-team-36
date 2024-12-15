@@ -1,9 +1,13 @@
 import { useEffect, useState } from "react"
 import { getGroups, getParents, getUsers } from "../../services/api";
-import styles from "./UserEdit.module.css";
+import styles from "./Settings.module.css";
 import UsersList from "../Landing/Users";
 import ParentsList from "../Landing/Parents";
 import { editGroupPermissions, getGroupPermissions, addGroup, deleteGroup } from "../../services/authService";
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import PersonOffIcon from '@mui/icons-material/PersonOff';
+import SettingsIcon from '@mui/icons-material/Settings';
+
 /**
  * Represents a settings component for the app groups and permissions.
  *
@@ -101,163 +105,172 @@ const SettingsPage = () => {
 
   return (
     <main className={styles.container}>
-      <h1>Settings</h1>
-      <div className={styles.dashView}>
-            <div className={styles.column}>
+      <section>
+        <div className={styles.header}>
+          <SettingsIcon></SettingsIcon>
+          <h1>Settings</h1>
+        </div>
+        <div className={styles.dashView}>
+          <div className={styles.column}>
             <h2>Groups</h2>
-        <button onClick={handleAdding}>Add group</button>
-        <ul>
-          {groups.map(group => <li key={group.id}>{group.name}<button onClick={() => handleEdit(group.id)}>Edit</button><button onClick={() => handleDelete(group.id)}>Delete</button></li>
-          )}
-        </ul>
-      </div>
+            <button onClick={handleAdding}>Add New</button>
+            <table>
+              <tbody>
+              {groups.map(group => <tr key={group.id}>
+                
+                <td><button onClick={() => handleEdit(group.id)}><ManageAccountsIcon></ManageAccountsIcon></button></td>
+                <td>{group.name}</td>
+                <td><button onClick={() => handleDelete(group.id)}><PersonOffIcon></PersonOffIcon></button></td></tr>
+              )}
+              </tbody>
+            </table>
+          </div>
 
-      {editing &&
-        <section>
-          <h1>{adding ? "Add group" : "Edit group"}</h1>
-          <p className={styles.message}>{message}</p>
-          <form autoComplete="off" onSubmit={handleSubmit} className={styles.form}>
-            <label className={styles.label}>
-              Group name
-              <input
-                type="text"
-                value={groupName}
-                name="group"
-                onChange={(e) => setGroupName(e.target.value)}
-                autoComplete='off'
-              />
-            </label>
-            <p>Staff permissions:</p>
-            <label className={styles.label}>
-              List Users
-              <input
-                type="checkbox"
-                value="list_users"
-                name="list_users"
-                checked={permissions['list_users']}
-                onChange={handleChange}
-                autoComplete='off'
-              />
-            </label>
-            <label className={styles.label}>
-              Edit Users
-              <input
-                type="checkbox"
-                value="edit_users"
-                name="edit_users"
-                checked={permissions['edit_users']}
-                onChange={handleChange}
-                autoComplete='off'
-              />
-            </label>
-            <label className={styles.label}>
-              List Parents
-              <input
-                type="checkbox"
-                value="list_parents"
-                name="list_parents"
-                checked={permissions['list_parents']}
-                onChange={handleChange}
-                autoComplete='off'
-              />
-            </label>
-            <label className={styles.label}>
-              Edit Parents
-              <input
-                type="checkbox"
-                value="edit_parents"
-                name="edit_parents"
-                checked={permissions['edit_parents']}
-                onChange={handleChange}
-                autoComplete='off'
-              />
-            </label>
-            <label className={styles.label}>
-              List Children
-              <input
-                type="checkbox"
-                value="list_children"
-                name="list_children"
-                checked={permissions['list_children']}
-                onChange={handleChange}
-                autoComplete='off'
-              />
-            </label>
-            <label className={styles.label}>
-              Edit Children
-              <input
-                type="checkbox"
-                value="edit_children"
-                name="edit_children"
-                checked={permissions['edit_children']}
-                onChange={handleChange}
-                autoComplete='off'
-              />
-            </label>
-            <label className={styles.label}>
-              Edit Report Cards
-              <input
-                type="checkbox"
-                value="edit_report_cards"
-                name="edit_report_cards"
-                checked={permissions['edit_report_cards']}
-                onChange={handleChange}
-                autoComplete='off'
-              />
-            </label>
-            <label className={styles.label}>
-              Allow Check In
-              <input
-                type="checkbox"
-                value="check_in"
-                name="check_in"
-                checked={permissions['check_in']}
-                onChange={handleChange}
-                autoComplete='off'
-              />
-            </label>
-            <label className={styles.label}>
-              View Dashboard Statistics
-              <input
-                type="checkbox"
-                value="view_stats"
-                name="view_stats"
-                checked={permissions['view_stats']}
-                onChange={handleChange}
-                autoComplete='off'
-              />
-            </label>
-            <p>Parent permissions:</p>
-            <label className={styles.label}>
-              List Own Children
-              <input
-                type="checkbox"
-                value="list_own_children"
-                name="list_own_children"
-                checked={permissions['list_own_children']}
-                onChange={handleChange}
-                autoComplete='off'
-              />
-            </label>
-            <div className={styles.actions}>
-              <button onClick={() => setEditing(false)} className={styles.button}>Cancel</button>
-              <button className={styles.button}>
-                Submit
-              </button>
-            </div>
-            </form>
-            </section>
-      }
-            <div>
-              <h2>Deactivated</h2>
-            <div className={styles.column}>
+          {editing &&
+            <section>
+              <h1>{adding ? "Add group" : "Edit group"}</h1>
+              <p className={styles.message}>{message}</p>
+              <form autoComplete="off" onSubmit={handleSubmit} className={styles.form}>
+                <label className={styles.label}>
+                  Group name
+                  <input
+                    type="text"
+                    value={groupName}
+                    name="group"
+                    onChange={(e) => setGroupName(e.target.value)}
+                    autoComplete='off'
+                  />
+                </label>
+                <p>Staff permissions:</p>
+                <label className={styles.label}>
+                  List Users
+                  <input
+                    type="checkbox"
+                    value="list_users"
+                    name="list_users"
+                    checked={permissions['list_users']}
+                    onChange={handleChange}
+                    autoComplete='off'
+                  />
+                </label>
+                <label className={styles.label}>
+                  Edit Users
+                  <input
+                    type="checkbox"
+                    value="edit_users"
+                    name="edit_users"
+                    checked={permissions['edit_users']}
+                    onChange={handleChange}
+                    autoComplete='off'
+                  />
+                </label>
+                <label className={styles.label}>
+                  List Parents
+                  <input
+                    type="checkbox"
+                    value="list_parents"
+                    name="list_parents"
+                    checked={permissions['list_parents']}
+                    onChange={handleChange}
+                    autoComplete='off'
+                  />
+                </label>
+                <label className={styles.label}>
+                  Edit Parents
+                  <input
+                    type="checkbox"
+                    value="edit_parents"
+                    name="edit_parents"
+                    checked={permissions['edit_parents']}
+                    onChange={handleChange}
+                    autoComplete='off'
+                  />
+                </label>
+                <label className={styles.label}>
+                  List Children
+                  <input
+                    type="checkbox"
+                    value="list_children"
+                    name="list_children"
+                    checked={permissions['list_children']}
+                    onChange={handleChange}
+                    autoComplete='off'
+                  />
+                </label>
+                <label className={styles.label}>
+                  Edit Children
+                  <input
+                    type="checkbox"
+                    value="edit_children"
+                    name="edit_children"
+                    checked={permissions['edit_children']}
+                    onChange={handleChange}
+                    autoComplete='off'
+                  />
+                </label>
+                <label className={styles.label}>
+                  Edit Report Cards
+                  <input
+                    type="checkbox"
+                    value="edit_report_cards"
+                    name="edit_report_cards"
+                    checked={permissions['edit_report_cards']}
+                    onChange={handleChange}
+                    autoComplete='off'
+                  />
+                </label>
+                <label className={styles.label}>
+                  Allow Check In
+                  <input
+                    type="checkbox"
+                    value="check_in"
+                    name="check_in"
+                    checked={permissions['check_in']}
+                    onChange={handleChange}
+                    autoComplete='off'
+                  />
+                </label>
+                <label className={styles.label}>
+                  View Dashboard Statistics
+                  <input
+                    type="checkbox"
+                    value="view_stats"
+                    name="view_stats"
+                    checked={permissions['view_stats']}
+                    onChange={handleChange}
+                    autoComplete='off'
+                  />
+                </label>
+                <p>Parent permissions:</p>
+                <label className={styles.label}>
+                  List Own Children
+                  <input
+                    type="checkbox"
+                    value="list_own_children"
+                    name="list_own_children"
+                    checked={permissions['list_own_children']}
+                    onChange={handleChange}
+                    autoComplete='off'
+                  />
+                </label>
+                <div className={styles.actions}>
+                  <button onClick={() => setEditing(false)} className={styles.button}>Cancel</button>
+                  <button className={styles.button}>
+                    Submit
+                  </button>
+                </div>
+                </form>
+              </section>
+          }
+          <div className={styles.column}>
+            <h2>Deactivated</h2>
+            <div className={styles.list}>
               <UsersList users={deactivatedUsers} />
-            </div>
-            <div className={styles.column}>
               <ParentsList parents={deactivatedParents} />
             </div>
-            </div>
-            </div>
+          </div>
+        </div>
+      </section>
     </main>
   )
 }

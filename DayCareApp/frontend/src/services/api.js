@@ -104,6 +104,29 @@ export const editRecord = async (formData, url) => {
         }))
     }
 }
+
+export const uploadImage = async (formData, url) => {
+    try {
+        const response = await axios.patch(url, 
+            formData
+        , {
+            withCredentials: true,
+            headers: {
+                'Content-Type': 'multipart/form-data'
+              }
+        })
+        return response.data
+    } catch (error) {
+        return call_refresh (error, axios.patch(url, 
+            formData
+        , {
+            withCredentials: true,
+            headers: {
+                'Content-Type': 'multipart/form-data'
+              }
+        }))
+    }
+}
 /* Get all cehckins for a child between the first of the current month and today.
 Also, can receive optional from-to date range for filtering.
 */

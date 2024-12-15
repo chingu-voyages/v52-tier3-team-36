@@ -6,6 +6,7 @@ import { getGroups } from '../../services/api';
 import AdminPasswordChange from "./AdminPasswordChange";
 import { useAuth } from "../../contexts/useAuth";
 import SelfPasswordChange from "./SelfPasswordChange";
+import { Alert } from "@mui/material";
 // css
 import styles from './UserDetails.module.css';
 /**
@@ -17,6 +18,8 @@ import styles from './UserDetails.module.css';
 const UserDetails = () => {
     const location = useLocation();
     const{ curUser } = useAuth();
+    const [showAlert, setShowAlert] = useState(false);
+    const [alertMessage, setAlertMsg] = useState('');
     const [isEditing, setIsEditing] = useState(false);
     const [isChangingPass, setIsChangingPass] = useState(false);
     // Get selected user from passed navigation state
@@ -32,8 +35,15 @@ const UserDetails = () => {
     const handleIsChangingPass = () => {
         setIsChangingPass(!isChangingPass);
     };
+    // Display banner on successful password change
+    const handlePassChangeSuccess = () => {
+        setAlertMsg(`Password successfully changed!`)
+        setShowAlert(true)
+    }
     // Add selected user details to state
     const handleSetUser = (editedUser) => {
+        setAlertMsg(`User ${editedUser.username} successfully updated!`)
+        setShowAlert(true)
         setUser(editedUser)
     };
     // Fetch all available groups
@@ -44,9 +54,20 @@ const UserDetails = () => {
         };
         fetchGroups();
       }, [])
+    //Hide alert after 3 seconds.
+    useEffect(() => {
+            const timeId = setTimeout(() => {
+                setShowAlert(false);
+                setAlertMsg('');
+            }, 15000)
+            
+            return () => {
+                clearTimeout(timeId)
+            }
+    }, [showAlert])
     //   If current user is changing password - show the user change form, if admin - show only reset password form
-    const resetOrChangePass = user.username === curUser.username ? <SelfPasswordChange user={user} edit={handleIsChangingPass}/> :
-                            <AdminPasswordChange user={user} edit={handleIsChangingPass}/>
+    const resetOrChangePass = user.username === curUser.username ? <SelfPasswordChange user={user} edit={handleIsChangingPass} showBanner={handlePassChangeSuccess}/> :
+                            <AdminPasswordChange user={user} edit={handleIsChangingPass} showBanner={handlePassChangeSuccess}/>
     // If editing - show user edit form, if changing/resetting pass - show pass forms, otherwise show user details
     const content = isEditing ? <UserEdit curUser={curUser} user={user} userGroups={userGroups} edit={handleEditing} editedUser={handleSetUser} /> :
                    isChangingPass ? resetOrChangePass :
@@ -67,6 +88,7 @@ const UserDetails = () => {
                   </main>
     return (
         <>
+        {showAlert && <Alert severity="success">{alertMessage}</Alert>}
         {content}
         </>
     )

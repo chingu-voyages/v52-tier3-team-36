@@ -28,7 +28,7 @@ function App() {
   const handleLogout = async () => {
     const success = await authService.logout();
     if(success){
-      navigate('/auth/login')
+      navigate('/auth/login?success=true')
     }
   }
 

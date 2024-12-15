@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
 import { getChildren, getUsers, getCheckedIn, getParents } from '../../services/api';
 import { useNavigate } from 'react-router-dom';
+import { Alert } from '@mui/material';
 import ChildrenList from "./Children";
 import UsersList from "./Users";
 import ParentsList from "./Parents";
 import styles from './Dashboard.module.css';
+import DashboardIcon from '@mui/icons-material/Dashboard';
 /**
  * Dashboard component for displaying lists of staff/parents/children when a user logs in
  *
@@ -14,6 +16,7 @@ import styles from './Dashboard.module.css';
  * @returns {React.ReactElement} A dashboard element.
  */
 const Dashboard = ({curUser}) => {
+    const [showAlert, setShowAlert] = useState(false);
     const [children, setChildren] = useState([])
     const [curCheckedIn, setCurCheckedIn] = useState([])
     const [users, setUsers] = useState([])
@@ -46,6 +49,20 @@ const Dashboard = ({curUser}) => {
     useEffect(() => {
       fetchData();
     }, [])
+    //Check if success when adding users/children and display a banner
+    useEffect(() => {
+        const queryParams = new URLSearchParams(window.location.search);
+        if (queryParams.get('success') === 'true') {
+            setShowAlert(true)
+            const timeId = setTimeout(() => {
+                setShowAlert(false);
+            }, 15000)
+            
+            return () => {
+                clearTimeout(timeId)
+            }
+        }
+    }, [navigate])
     // Handle user registration - navigate to the Register component
     const handleRegister = () => {
       navigate('/auth/register')
@@ -57,7 +74,12 @@ const Dashboard = ({curUser}) => {
     
     return (
         <section>
-            <h1>Dashboard</h1>
+            {showAlert && <Alert severity="success">New record successfully registered!</Alert>}
+            <div className={styles.header}>
+              <DashboardIcon></DashboardIcon>
+              <h1>Dashboard</h1>
+            </div>
+            
             {/* If a user is logged in and the user has the view_stats permission, display the stats */}
             { curUser && curUser.permissions.view_stats && 
             <div>

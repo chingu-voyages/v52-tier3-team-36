@@ -10,10 +10,10 @@ Staff and parents can view all the records of the children and filter them based
 Day care admin (setup the day care system), Day care Staff (login, register or add a new child, view list, and fill in the report card), and parents (login, view records)
 
 ## Screenshots
-[Kinderly Admin Dashboard](/docs/DashboardAdmin.png)
-[Kinderly Staff Dashboard](/docs/DashboardStaff.png)
-[Kinderly Parent Dashboard](/docs/DashboardParent.png)
-[Kinderly Staff Child Details](/docs/StaffChildDetails.png)
+[Kinderly Admin Dashboard](/docs/DashboardAdmin.png) <br />
+[Kinderly Staff Dashboard](/docs/DashboardStaff.png) <br />
+[Kinderly Parent Dashboard](/docs/DashboardParent.png) <br />
+[Kinderly Staff Child Details](/docs/StaffChildDetails.png) <br />
 
 ### Tech Stack
 - Django / Django REST Framework
@@ -52,14 +52,19 @@ Day care admin (setup the day care system), Day care Staff (login, register or a
 
 ## Project management
 
-[Project Board](url to Jira)
-[Issues](url to Issues in Jira)
+ - **[Gdrive](https://drive.google.com/drive/u/0/folders/1dz7En8VuEC4wSh8wO3zWwWz8ttegZdW1)**<br />
+- **[Our Team whiteboard for brainstorming](https://zoom.us/wb/doc/rBUG2fDGQYObdTIw-LNrAQ)**<br />
+- **[Jira](https://chinguteam.atlassian.net/jira/software/projects/SCRUM/boards/1/backlog)**<br />
+- **[Confluence](https://chinguteam.atlassian.net/wiki/spaces/SCRUM)**<br />
+- **[Git Repo](https://github.com/chingu-voyages/v52-tier3-team-36)**<br />
+- **[Design](https://whimsical.com/join/CdTaW6krn1wgZaE1f8hccN?invite=ymkugnf2)**<br />
+- [Meeting](https://schej.it/home)<br />
 
 ## Live Demo
-[Live demo](https://kinderly-frontend.onrender.com/)
-Demo admin username and password: testadmin
-Demo admin username and password: teststaff
-Demo admin username and password: testparent
+[Live demo](https://kinderly-frontend.onrender.com/) <br />
+Demo admin username and password: testadmin <br />
+Demo admin username and password: teststaff <br />
+Demo admin username and password: testparent <br />
 Notes: The app is deployed as a free instance on Render. The web server spins down after inactivity. Please allow a minute for the server to come back up.
 
 ## Our Team
@@ -68,4 +73,3 @@ Notes: The app is deployed as a free instance on Render. The web server spins do
 - Valerie Johnson, Secondary SM: [LinkedIn](https://www.linkedin/in/valeriemichellejohnson) , [Email](valeriejohnsonprofessional@gmail.com) / [GitHub](https://github.com/johnsonval)
 - Rumen Ivanov, Developer: [GitHub](https://github.com/rumenji) / [LinkedIn](https://www.linkedin.com/in/rumen-ivanov-it/)
 - Sunny, Developer: [Linkedin](https://www.linkedin.com/in/sunnymaster/) , [GitHub](https://github.com/Sunny-Master) , [Email](master.codeworks@gmail.com) 
-- Yi, Developer: [Github](https://github.com/yi-lin-1234?tab=repositories), [Email](chinesejasonlin@gmail.com)

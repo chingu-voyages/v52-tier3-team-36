@@ -2,9 +2,10 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { register } from '../../services/authService';
+import { getGroups } from '../../services/api';
+import * as yup from 'yup';
 // css
 import styles from './Register.module.css'
-import { getGroups } from '../../services/api';
 /**
  * Represents a user registration component.
  *
@@ -14,7 +15,7 @@ import { getGroups } from '../../services/api';
 const RegisterPage = () => {
   const navigate = useNavigate();
   const [userGroups, setUserGroups] = useState([]);
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState([]);
   const [selectedGroup, setSelectedGroup] = useState();
   const [formData, setFormData] = useState({
     username: '',
@@ -25,6 +26,15 @@ const RegisterPage = () => {
     confirm_password: '',
     groups: ''
   })
+  // Form validation schema
+  const schema = yup.object({
+    username: yup.string().min(4, 'Username must be at least 4 characters!').required('Username is required!'),
+    first_name: yup.string().required('First name is required!'),
+    last_name: yup.string().required('Last name is required!'),
+    email: yup.string().email('Please enter a valid email address!').required('Email is required!'),
+    password: yup.string().min(8, 'Password must be at least 8 characters!').required('Password is required!'),
+    confirm_password: yup.string().min(8).required('Password confirmation is required').oneOf([yup.ref('password'), null], 'Passwords must match!'),
+  });
   // Fetch user groups to show a select element
   useEffect(() => {
     const fetchGroups = async () => {
@@ -39,18 +49,17 @@ const RegisterPage = () => {
   }
   // Handle change in the text input elements
   const handleChange = evt => {
-    setMessage('')
+    setMessage([])
     setFormData({ ...formData, [evt.target.name]: evt.target.value })
   }
   // Submit user registration form to the backend API endpoint
   const handleSubmit = async evt => {
     evt.preventDefault()
     try {
+      // Validate form
+      await schema.validate(formData, { abortEarly: false });
       if (!import.meta.env.VITE_BACK_END_SERVER_URL) {
         throw new Error('No VITE_BACK_END_SERVER_URL in front-end .env')
-      }
-      if (formData.password !== formData.confirm_password){
-        throw new Error('Password and confirm password do not match!')
       }
       // Set the group from the selected option and make sure it is an integer
       formData.groups = [+selectedGroup];
@@ -58,10 +67,17 @@ const RegisterPage = () => {
       if(response.username[0] === 'A user with that username already exists.'){
         throw new Error('A user with that username already exists.')
       }
-      navigate('/')
+      navigate('/?success=true')
     } catch (err) {
-      console.error(err)
-      setMessage(err.message)
+      if(err?.inner){
+        const newErrors= [];
+        err.inner.forEach((error) => {
+          newErrors.push(error.message)
+        })
+        setMessage(newErrors)
+      } else {
+        setMessage([err.message])
+      }
     }
   }
 
@@ -75,10 +91,9 @@ const RegisterPage = () => {
     <main className={styles.container}>
       <section>
         <h1>Add user</h1>
-        <p className={styles.message}>{message}</p>
         <form autoComplete="off" onSubmit={handleSubmit} className={styles.form}>
           <label className={styles.label}>
-            Username
+            Username *
             <input
               type="text"
               value={username}
@@ -88,7 +103,7 @@ const RegisterPage = () => {
             />
           </label>
           <label className={styles.label}>
-            First name
+            First name *
             <input
               type="text"
               value={first_name}
@@ -98,7 +113,7 @@ const RegisterPage = () => {
             />
           </label>
           <label className={styles.label}>
-            Last name
+            Last name *
             <input
               type="text"
               value={last_name}
@@ -108,7 +123,7 @@ const RegisterPage = () => {
             />
           </label>
           <label className={styles.label}>
-            Email address
+            Email address *
             <input
               type="email"
               value={email}
@@ -118,7 +133,7 @@ const RegisterPage = () => {
             />
           </label>
           <label className={styles.label}>
-            Password
+            Password *
             <input
               type="password"
               value={password}
@@ -128,7 +143,7 @@ const RegisterPage = () => {
             />
           </label>
           <label className={styles.label}>
-            Confirm password
+            Confirm password *
             <input
               type="password"
               value={confirm_password}
@@ -138,7 +153,7 @@ const RegisterPage = () => {
             />
           </label>
           <label className={styles.label}>
-            Groups
+            Groups *
             <select value={selectedGroup} onChange={handleGroupChange}>
               <option key="blank-group">Select user group</option>
               {userGroups.map((option) => (
@@ -155,6 +170,8 @@ const RegisterPage = () => {
             </button>
           </div>
         </form>
+        {message && message.map( (msg, id) => <p className={styles.message} key={id}>{msg}</p>
+        )}
       </section>
     </main>
   )
