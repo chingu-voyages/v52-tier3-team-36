@@ -23,7 +23,7 @@ class Child(models.Model):
     em_contact_name = models.CharField(max_length=200)
     em_contact_number = models.CharField(max_length=12)
     parent = models.ForeignKey(User, on_delete=models.CASCADE, related_name='parent')
-    upload = models.FileField(upload_to=image_upload_path, blank=True)
+    upload = models.ImageField(upload_to=image_upload_path, blank=True)
 
 class Checkin(models.Model):
     '''Model for check in/out, report card records
