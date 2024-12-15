@@ -19,9 +19,9 @@ import os
 load_dotenv()
 DB_URL = os.getenv('DATABASE_URL')
 SECRET = os.getenv('SECRET_KEY')
-CLOUDINARY_CLOUD_NAME = os.getenv('CLOUDINARY_CLOUD_NAME'),
-CLOUDINARY_API_KEY = os.getenv('CLOUDINARY_API_KEY'),
-CLOUDINARY_API_SECRET = os.getenv('CLOUDINARY_API_SECRET')
+# CLOUDINARY_CLOUD_NAME = os.getenv('CLOUDINARY_CLOUD_NAME'),
+# CLOUDINARY_API_KEY = os.getenv('CLOUDINARY_API_KEY'),
+# CLOUDINARY_API_SECRET = os.getenv('CLOUDINARY_API_SECRET')
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -46,9 +46,9 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'cloudinary_storage',
     'django.contrib.staticfiles',
-    'cloudinary',
+    # 'cloudinary_storage',
+    # 'cloudinary',
     'rest_framework',
     'corsheaders',
     'rest_framework_simplejwt',
@@ -163,7 +163,8 @@ STATIC_URL = '/static/'
 
 STORAGES = {
     "default": {
-        "BACKEND": 'cloudinary_storage.storage.MediaCloudinaryStorage',
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+        # "BACKEND": 'cloudinary_storage.storage.MediaCloudinaryStorage',
     },
     "staticfiles": {
         "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
@@ -171,11 +172,11 @@ STORAGES = {
 }
 
 # Configure Cloudinary settings
-CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': CLOUDINARY_CLOUD_NAME,
-    'API_KEY': CLOUDINARY_API_KEY,
-    'API_SECRET': CLOUDINARY_API_SECRET
-}
+# CLOUDINARY_STORAGE = {
+#     'CLOUD_NAME': CLOUDINARY_CLOUD_NAME,
+#     'API_KEY': CLOUDINARY_API_KEY,
+#     'API_SECRET': CLOUDINARY_API_SECRET
+# }
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
