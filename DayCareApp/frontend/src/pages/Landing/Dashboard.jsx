@@ -71,7 +71,7 @@ const Dashboard = ({curUser}) => {
     const handleRegisterChild = () => {
       navigate('/register-child', {state: {parents}})
     }
-    console.log(curUser)
+    
     return (
         <section>
             {showAlert && <Alert severity="success">New record successfully registered!</Alert>}
