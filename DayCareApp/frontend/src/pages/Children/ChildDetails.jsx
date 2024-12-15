@@ -47,7 +47,6 @@ const ChildDetails = () => {
       .test("is-valid-size", "Max allowed image size is 1MB",
         value => value && value.size <= MAX_FILE_SIZE)
       });
-    
     // Get child parent object from the navigation state
     const childParent = parents.filter(parent => child.parent === parent.id)
     // Set state to show details or editing form
@@ -219,7 +218,7 @@ const ChildDetails = () => {
                     
                     <div>
                         <label>Address: <span>{child.address}</span></label>
-                        <label>Parent/Guardian: <span>{childParent[0].first_name} {childParent[0].last_name}</span></label>
+                        <label>Parent/Guardian: <span>{childParent[0]?.first_name || curUser.first_name} {childParent[0]?.last_name || curUser.last_name}</span></label>
                         <label>Dob: <span>{child.dob}</span></label>
                         <label>Gender: <span>{child.gender}</span></label>
                         <label>Emergency Contact Name: <span>{child.em_contact_name}</span></label>

@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from .serializers import UserSerializer, GroupSerializer, UserRegistrationSerializer, ChangePasswordSerializer, ResetPasswordSerializer, PermissionSerializer
-from .permissions import UsersActions, ParentsActions
+from .permissions import UsersActions, ParentsActions, OwnChildrenActions
 from .models import Permission
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
@@ -213,7 +213,7 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all().order_by('-date_joined')
     serializer_class = UserSerializer
 
-@permission_classes([UsersActions])
+@permission_classes([UsersActions | OwnChildrenActions])
 class GroupViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows groups to be viewed or edited.

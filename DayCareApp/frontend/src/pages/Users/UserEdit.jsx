@@ -116,6 +116,7 @@ const UserEdit = ({curUser, user, edit, editedUser, userGroups}) => {
               autoComplete='on'
             />
           </label>
+          { curUser.permissions.edit_user &&
           <label className={styles.label}>
             Groups
             <select name="groups" value={selectedGroup} onChange={handleGroupChange} disabled={!curUser.permissions.edit_users}>
@@ -127,6 +128,7 @@ const UserEdit = ({curUser, user, edit, editedUser, userGroups}) => {
               ))}
             </select>
           </label>
+}
           <label className={styles.label}>
               Active
               <input
