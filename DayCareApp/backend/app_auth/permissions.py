@@ -20,8 +20,9 @@ class UsersActions(permissions.BasePermission):
             user_permissions = Permission.objects.filter(group=user_groups[0])
             if request.method == 'GET':
                 # Allow listing users
-                required_permissions = {'list_users': True}
-                return user_permissions.filter(**required_permissions)
+                required_users_permissions = {'list_users': True}
+                required_parents_permissions = {'list_parents': True}
+                return user_permissions.filter(**required_users_permissions) | user_permissions.filter(**required_parents_permissions)
             else:
                 # Allow creating/editing users
                 required_permissions = {'edit_users': True}
