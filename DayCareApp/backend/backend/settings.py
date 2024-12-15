@@ -32,7 +32,7 @@ SECRET_KEY = SECRET
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['https://kinderly-frontend.onrender.com']
+ALLOWED_HOSTS = ['https://kinderly-backend.onrender.com']
 
 
 # Application definition
