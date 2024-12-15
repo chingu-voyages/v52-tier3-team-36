@@ -19,9 +19,13 @@ import os
 load_dotenv()
 DB_URL = os.getenv('DATABASE_URL')
 SECRET = os.getenv('SECRET_KEY')
+
 # CLOUDINARY_CLOUD_NAME = os.getenv('CLOUDINARY_CLOUD_NAME'),
 # CLOUDINARY_API_KEY = os.getenv('CLOUDINARY_API_KEY'),
 # CLOUDINARY_API_SECRET = os.getenv('CLOUDINARY_API_SECRET')
+
+RENDER_EXTERNAL_HOSTNAME = os.getenv('RENDER_EXTERNAL_HOSTNAME')
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -33,9 +37,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = SECRET
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = [RENDER_EXTERNAL_HOSTNAME]
 
 
 # Application definition
@@ -68,13 +72,11 @@ MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
-# CORS_ALLOWED_ORIGINS = [
-#     '*',
-#     # "http://localhost:3000",
-#     # "http://127.0.0.1:3000",
-# ]
+CORS_ALLOWED_ORIGINS = [
+    'https://kinderly-frontend.onrender.com'
+]
 
-CORS_ALLOW_ALL_ORIGINS = True
+# CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 
 ROOT_URLCONF = 'backend.urls'
@@ -107,8 +109,6 @@ DATABASES = {
         conn_max_age=600
     )
 }
-
-# AUTH_USER_MODEL = 'app_auth.User'
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators

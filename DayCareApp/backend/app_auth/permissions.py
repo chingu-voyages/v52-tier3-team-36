@@ -75,6 +75,24 @@ class ChildrenActions(permissions.BasePermission):
                 required_permissions = {'edit_children': True}
                 return user_permissions.filter(**required_permissions)
         return False
+
+class OwnChildrenActions(permissions.BasePermission):
+    def has_permission(self, request, view):
+        """
+        Checks if the request user has the permissions to list/edit children.
+        Returns True/False
+        """
+        
+        if request.user.is_authenticated:
+            if request.user.is_superuser:
+                return True
+            user_groups = request.user.groups.all()
+            user_permissions = Permission.objects.filter(group=user_groups[0])
+    
+            if request.method == 'GET':
+                required_permissions = {'list_own_children': True}
+                return user_permissions.filter(**required_permissions)
+        return False
     
 class OwnChildrenActions(permissions.BasePermission):
     def has_permission(self, request, view):
