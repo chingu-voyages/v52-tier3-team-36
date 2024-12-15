@@ -81,7 +81,9 @@ const UserDetails = () => {
                       </div>
                       <div className={styles.actions}>
                         <Link to={'/'}>Go back</Link>
+                        { curUser.permissions.edit_users &&
                         <button onClick={handleEditing}>Edit</button>
+                        }
                       </div>
                       <button onClick={handleIsChangingPass} className={styles.button}>Change password</button>
                     </section>

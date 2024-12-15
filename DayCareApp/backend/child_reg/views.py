@@ -27,7 +27,7 @@ class ChildViewSet(viewsets.ModelViewSet):
         else:
             return queryset
 
-@permission_classes([CheckinActions])
+@permission_classes([CheckinActions | OwnChildrenActions])
 class CheckinViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows for check in/out and report card operations to be viewed or edited.

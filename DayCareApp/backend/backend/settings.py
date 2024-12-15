@@ -19,7 +19,13 @@ import os
 load_dotenv()
 DB_URL = os.getenv('DATABASE_URL')
 SECRET = os.getenv('SECRET_KEY')
+
+# CLOUDINARY_CLOUD_NAME = os.getenv('CLOUDINARY_CLOUD_NAME'),
+# CLOUDINARY_API_KEY = os.getenv('CLOUDINARY_API_KEY'),
+# CLOUDINARY_API_SECRET = os.getenv('CLOUDINARY_API_SECRET')
+
 RENDER_EXTERNAL_HOSTNAME = os.getenv('RENDER_EXTERNAL_HOSTNAME')
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -45,6 +51,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # 'cloudinary_storage',
+    # 'cloudinary',
     'rest_framework',
     'corsheaders',
     'rest_framework_simplejwt',
@@ -97,8 +105,6 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 DATABASES = {
     'default': dj_database_url.config(
-        # Replace this value with your local database's connection string.
-        # default='postgresql://postgres:postgres@localhost:5432/mysite',
         default=DB_URL,
         conn_max_age=600
     )
@@ -155,12 +161,28 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+        # "BACKEND": 'cloudinary_storage.storage.MediaCloudinaryStorage',
+    },
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
+}
+
+# Configure Cloudinary settings
+# CLOUDINARY_STORAGE = {
+#     'CLOUD_NAME': CLOUDINARY_CLOUD_NAME,
+#     'API_KEY': CLOUDINARY_API_KEY,
+#     'API_SECRET': CLOUDINARY_API_SECRET
+# }
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # This production code might break development mode, so we check whether we're in DEBUG mode
 # if not DEBUG:
     # Tell Django to copy static assets into a path called `staticfiles` (this is specific to Render)
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
     # Enable the WhiteNoise storage backend, which compresses static files to reduce disk use
     # and renames the files with unique names for each version to support long-term caching
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
