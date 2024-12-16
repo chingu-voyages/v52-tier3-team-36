@@ -160,14 +160,11 @@ const ChildDetails = () => {
         const fetchCheckins = async () => {
             const response = await getCheckins({ child: child.id });
             setCheckins(response);
-            const todayCheckin = response.filter(checkin => {
-                const today = new Date()
-                const todayJSON = today.toJSON().slice(0, 10);
-                const checkinDateJSON = checkin.checkin.slice(0, 10);
-                return checkinDateJSON === todayJSON && !checkin.checkout
+            const openCheckin = response.filter(checkin => {
+                return !checkin.checkout
             })
-            if (todayCheckin.length > 0) {
-                setCheckInId(todayCheckin[0].id)
+            if (openCheckin.length > 0) {
+                setCheckInId(openCheckin[0].id)
             }
         };
         fetchCheckins();
